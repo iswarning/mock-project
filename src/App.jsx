@@ -10,7 +10,6 @@ function App() {
 
   console.log(process.env.VITE_API_URL);
   //sdsdsds
-  //Yen Linh
   return (
     <div>
       <h1>Hello</h1>
