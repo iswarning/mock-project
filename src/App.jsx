@@ -10,7 +10,6 @@ function App() {
 
   console.log(status, userList);
   //sdsdsds
-  //Yen Linh
   return (
     <div>
       <h1>Hello</h1>
