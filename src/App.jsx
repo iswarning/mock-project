@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUser } from "./store/actions/userAction";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Login from "./pages/login/Login";
 
 function App() {
   const dispatch = useDispatch();
@@ -9,18 +11,18 @@ function App() {
   };
 
   console.log(process.env.VITE_API_URL);
-  //sdsdsds
   return (
-    <div>
-      <h1>Hello</h1>
-      <button
-        onClick={() => {
-          handleClick();
-        }}
-      >
-        CLICK me
-      </button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        {/* <Route element={<ProtectedLayout />}>
+          <Route path="/" element={<Homes />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/reviews" element={<Reviews />} />
+          <Route path="/checkout" element={<Checkout />} />
+        </Route> */}
+      </Routes>
+    </BrowserRouter>
   );
 }
 
