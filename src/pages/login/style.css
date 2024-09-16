@@ -8,7 +8,7 @@
 	font-family:  sans-serif;
 	background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
 }
-.main{
+.mainLogin{
 	width: 350px;
 	height: 500px;
 	background: red;
@@ -25,7 +25,7 @@
 	width:100%;
 	height: 100%;
 }
-label{
+.labelLogin{
 	color: #fff;
 	font-size: 2.3em;
 	justify-content: center;
@@ -35,10 +35,10 @@ label{
 	cursor: pointer;
 	transition: .5s ease-in-out;
 }
-.login label{
+.login .labelLogin{
 	margin: 80px 0 30px;
 }
-input{
+.inputLogin{
 	width: 60%;
 	height: 20px;
 	background: #e0dede;
@@ -50,7 +50,7 @@ input{
 	outline: none;
 	border-radius: 5px;
 }
-button{
+.btnLogin{
 	width: 60%;
 	height: 40px;
 	margin: 10px auto;
@@ -67,7 +67,7 @@ button{
 	transition: .2s ease-in;
 	cursor: pointer;
 }
-button:hover{
+.btnLogin:hover{
 	background: #6d44b8;
 }
 .signUp{
@@ -77,7 +77,7 @@ button:hover{
 	transform: translateY(-200px);
 	transition: .8s ease-in-out;
 }
-.signUp label{
+.signUp .labelLogin{
 	color: #573b8a;
 	transform: scale(.6);
 }
@@ -85,11 +85,11 @@ button:hover{
 #chk:checked ~ .signUp{
 	transform: translateY(-500px);
 }
-#chk:checked ~ .signUp label{
+#chk:checked ~ .signUp .labelLogin{
     padding-top: 30px;
 	transform: scale(1);	
 }
-#chk:checked ~ .login label{
+#chk:checked ~ .login .labelLogin{
 	margin: 50px 0 30px;
 	transform: scale(.6);
 }
