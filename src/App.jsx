@@ -8,7 +8,7 @@ function App() {
     dispatch(getAllUser());
   };
 
-  console.log(status, userList);
+  console.log(process.env.VITE_API_URL);
   //sdsdsds
   //Yen Linh
   return (
