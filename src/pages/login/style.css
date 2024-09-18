@@ -10,7 +10,7 @@
 }
 .mainLogin{
 	width: 350px;
-	height: 500px;
+	height: 550px;
 	background: red;
 	overflow: hidden;
 	background: url(../../assets/backgroudLogin.png) no-repeat center/ cover;
@@ -36,7 +36,7 @@
 	transition: .5s ease-in-out;
 }
 .login .labelLogin{
-	margin: 80px 0 30px;
+	margin: 90px 0 30px;
 }
 .inputLogin{
 	width: 60%;
@@ -68,28 +68,35 @@
 	cursor: pointer;
 }
 .btnLogin:hover{
-	background: #6d44b8;
+	background: #5d3a9d;
 }
 .signUp{
-	height: 460px;
+	height: 500px;
 	background: #eee;
 	border-radius: 60% / 10%;
 	transform: translateY(-200px);
 	transition: .8s ease-in-out;
 }
 .signUp .labelLogin{
-	color: #573b8a;
+	color: #342353;
 	transform: scale(.6);
 }
 
 #chk:checked ~ .signUp{
-	transform: translateY(-500px);
+	transform: translateY(-550px);
 }
 #chk:checked ~ .signUp .labelLogin{
     padding-top: 30px;
 	transform: scale(1);	
 }
+#chk:checked ~ .signUp .labelLogin:hover{
+	color: #734bbe;
+}
+
 #chk:checked ~ .login .labelLogin{
 	margin: 50px 0 30px;
 	transform: scale(.6);
+}
+#chk:checked ~ .login .labelLogin:hover{
+	color: #5d3a9d;
 }

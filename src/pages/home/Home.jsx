@@ -2,8 +2,13 @@ import React from "react";
 import { ToastCommon } from "../../components/ToastCommon.jsx";
 import { TOAST } from "../../store/constants.js";
 import { Toaster } from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const { userInfo } = useSelector((state) => state.loginStore);
+
+  console.log(userInfo);
+
   const handleToaster = () => {
     ToastCommon(TOAST.SUCCESS, "Added Successfully!!");
   };

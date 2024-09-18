@@ -5,10 +5,12 @@ export const ToastCommon = (type, message) => {
   toast.dismiss();
   switch (type) {
     case TOAST.SUCCESS:
-      toast.success(message);
+      toast.success(message, {
+        icon: "👏",
+      });
       break;
     case TOAST.ERROR:
-      toast.error(message);
+      toast.error(message, { icon: "💥" });
       break;
 
     default:
