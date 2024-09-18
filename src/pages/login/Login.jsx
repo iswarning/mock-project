@@ -49,7 +49,7 @@ const Login = () => {
       name,
       email,
       password,
-      role: 0
+      role: "0"
     }))
 
   }
@@ -90,6 +90,7 @@ const Login = () => {
 
     if (!registerErrorMessage && registerStatus === REGISTER_STATUS.SUCCESS) {
       setShowSignUp(false)
+      ToastCommon(TOAST.SUCCESS, 'Successfully registered')
     }
   },[registerErrorMessage, registerStatus]) 
 

@@ -12,6 +12,7 @@ export const LOGIN_STATUS = {
 
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_ERROR = "LOGIN_ERROR";
+export const LOGOUT = "LOGOUT";
 
 export const REGISTER_STATUS = {
   SUCCESS: "SUCCESS",

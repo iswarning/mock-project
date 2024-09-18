@@ -1,4 +1,4 @@
-import { LOGIN_ERROR, LOGIN_STATUS, LOGIN_SUCCESS } from "../constants";
+import { LOGIN_ERROR, LOGIN_STATUS, LOGIN_SUCCESS, LOGOUT } from "../constants";
 
 const initState = {
   loginStatus: null,
@@ -21,6 +21,12 @@ const loginReducer = (state = initState, { type, payload }) => {
           loginErrorMessage: payload,
           loginStatus: LOGIN_STATUS.ERROR
         }
+    
+    case LOGOUT:
+      return {
+        ...state,
+        loginStatus: LOGIN_STATUS.ERROR
+      }
 
     default:
       return state;
