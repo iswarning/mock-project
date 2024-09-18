@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./pages/login/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/home/Home";
+import WrapperLogin from "./pages/login/WrapperLogin";
 
 function App() {
   // const dispatch = useDispatch();
@@ -10,7 +10,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<WrapperLogin />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Home />} />
           {/* <Route path="/products" element={<Products />} />

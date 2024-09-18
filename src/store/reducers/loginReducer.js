@@ -1,32 +1,46 @@
-import { LOGIN_ERROR, LOGIN_STATUS, LOGIN_SUCCESS, LOGOUT } from "../constants";
+import {
+  LOGIN_ERROR,
+  LOGIN_STATUS,
+  LOGIN_SUCCESS,
+  LOGOUT,
+  SET_USER_INFO,
+} from "../constants";
 
 const initState = {
   loginStatus: null,
   loginErrorMessage: null,
-  userInfo: null
+  userInfo: null,
 };
 
 const loginReducer = (state = initState, { type, payload }) => {
+  console.log(state.loginErrorMessage);
+
   switch (type) {
     case LOGIN_SUCCESS:
       return {
         ...state,
         loginErrorMessage: null,
-        loginStatus: LOGIN_STATUS.SUCCESS
-      }
+        loginStatus: LOGIN_STATUS.SUCCESS,
+      };
 
     case LOGIN_ERROR:
-        return {
-          ...state,
-          loginErrorMessage: payload,
-          loginStatus: LOGIN_STATUS.ERROR
-        }
-    
+      return {
+        ...state,
+        loginErrorMessage: payload,
+        loginStatus: LOGIN_STATUS.ERROR,
+      };
+
     case LOGOUT:
       return {
         ...state,
-        loginStatus: LOGIN_STATUS.ERROR
-      }
+        loginStatus: LOGIN_STATUS.ERROR,
+      };
+
+    case SET_USER_INFO:
+      return {
+        ...state,
+        userInfo: payload,
+      };
 
     default:
       return state;
