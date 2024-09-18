@@ -13,8 +13,6 @@ const initState = {
 };
 
 const loginReducer = (state = initState, { type, payload }) => {
-  console.log(state.loginErrorMessage);
-
   switch (type) {
     case LOGIN_SUCCESS:
       return {
