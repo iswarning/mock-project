@@ -1,7 +1,54 @@
-import React from "react";
+import { useState } from "react";
 import "./style.css";
+import { useDispatch } from "react-redux";
+import { login, signUp } from "../../store/actions/userAction";
+import { validateEmail } from "../../common/validate";
 
 const Login = () => {
+  const dispatch = useDispatch()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleLogin = () => {
+
+    // validate
+    if (email.length === 0) {
+      //
+      return
+    }
+
+    if (!validateEmail(email)) {
+      //
+      return
+    }
+
+    if (password.length <= 6) {
+      //
+      return
+    }
+
+    dispatch(login({
+      email: email,
+      password: password
+    }))
+  }
+
+  const handleSignUp = () => {
+    dispatch(signUp({
+      email: email,
+      password: password,
+      role: 0
+    }))
+  }
+
+  const handleSetEmail = () => {
+    setEmail(email)
+  }
+
+  const handleSetPassword = () => {
+    setPassword(password)
+  }
+
   return (
     <div className="containerLogin">
       <div className="main">
@@ -11,14 +58,14 @@ const Login = () => {
             <label htmlFor="chk" aria-hidden="true">
               Login
             </label>
-            <input type="email" name="email" placeholder="Email" required="" />
+            <input type="email" name="email" placeholder="Email" required onChange={(e) => handleSetEmail(e.target.value)} />
             <input
               type="password"
               name="pswd"
               placeholder="Password"
-              required=""
+              required
             />
-            <button>Login</button>
+            <button onClick={() => handleLogin()}>Login</button>
           </form>
         </div>
         <div className="signUp">
@@ -26,15 +73,16 @@ const Login = () => {
             <label htmlFor="chk" aria-hidden="true">
               Sign up
             </label>
-            <input type="text" name="txt" placeholder="User name" required="" />
-            <input type="email" name="email" placeholder="Email" required="" />
+            <input type="text" name="txt" placeholder="User name" required />
+            <input type="email" name="email" placeholder="Email" required />
             <input
               type="password"
               name="pswd"
               placeholder="Password"
-              required=""
+              required
+              onChange={(e) => handleSetPassword(e.target.value)}
             />
-            <button>Sign up</button>
+            <button onClick={() => handleSignUp()}>Sign up</button>
           </form>
         </div>
       </div>

@@ -1,26 +1,19 @@
-import { useDispatch, useSelector } from "react-redux";
-import { getAllUser } from "./store/actions/userAction";
+import { useDispatch } from "react-redux";
+import { login, signUp } from "./store/actions/userAction";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/login/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const dispatch = useDispatch();
-  const { status, userList } = useSelector((state) => state.userStore);
-  const handleClick = () => {
-    dispatch(getAllUser());
-  };
 
-  console.log(process.env.VITE_API_URL);
   return (
     <BrowserRouter>
+      <Route path="/login" element={<Login />} />
       <Routes>
-        <Route path="/login" element={<Login />} />
-        {/* <Route element={<ProtectedLayout />}>
-          <Route path="/" element={<Homes />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/reviews" element={<Reviews />} />
-          <Route path="/checkout" element={<Checkout />} />
-        </Route> */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<App />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

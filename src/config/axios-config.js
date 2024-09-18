@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const BASE_URL = "http://localhost:4003";
+export const BASE_URL = process.env.VITE_BASE_URL;
 
 // Tạo một instance Axios
 const axiosInstance = axios.create({
