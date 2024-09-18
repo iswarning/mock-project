@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const BASE_URL = process.env.VITE_BASE_URL;
+export const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 // Tạo một instance Axios
 const axiosInstance = axios.create({
