@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Login from "./Login";
 import SignUp from "./SignUp";
-import "./style.css";
+import "./style.scss";
 
 function WrapperLogin(props) {
   const [showSignUp, setShowSignUp] = useState(false);
