@@ -8,7 +8,7 @@ export default ({ mode }) => {
     plugins: [react()],
     base: env.VITE_ROUTER_BASE_URL || '/',
     define: {
-      'process.env': env,
+      'import.meta.env': env,
     }
   })
 }
