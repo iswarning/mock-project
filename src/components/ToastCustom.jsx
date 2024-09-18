@@ -7,7 +7,7 @@ function ToastCustom() {
         duration: 2000,
         position: "bottom-start",
         style: {
-          background: "linear-gradient(to bottom, #16eca5, #10B981)",
+          background: "linear-gradient(to bottom, #1AFFB3, #0C7C57)",
           color: "#fff",
         },
       }}

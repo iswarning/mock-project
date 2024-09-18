@@ -1,3 +1,5 @@
+@import '../../index.scss';
+
 .containerLogin{
 	margin: 0;
 	padding: 0;
@@ -6,12 +8,11 @@
 	align-items: center;
 	min-height: 100vh;
 	font-family:  sans-serif;
-	background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+	background: linear-gradient(to bottom, $darkBlue, $lightBlue, $darkBlue);
 }
 .mainLogin{
-	width: 350px;
+	width: 400px;
 	height: 550px;
-	background: red;
 	overflow: hidden;
 	background: url(../../assets/backgroudLogin.png) no-repeat center/ cover;
 	border-radius: 10px;
@@ -39,7 +40,7 @@
 	margin: 90px 0 30px;
 }
 .inputLogin{
-	width: 60%;
+	width: 70%;
 	height: 20px;
 	background: #e0dede;
 	justify-content: center;
@@ -48,27 +49,27 @@
 	padding: 20px;
 	border: none;
 	outline: none;
-	border-radius: 5px;
+	border-radius: 8px;
 }
 .btnLogin{
-	width: 60%;
+	width: 70%;
 	height: 40px;
 	margin: 10px auto;
 	justify-content: center;
 	display: block;
 	color: #fff;
-	background: #8d5fe2;
+	background: $primary;
 	font-size: 1em;
 	font-weight: bold;
 	margin-top: 30px;
 	outline: none;
 	border: none;
-	border-radius: 5px;
+	border-radius: 8px;
 	transition: .2s ease-in;
 	cursor: pointer;
 }
 .btnLogin:hover{
-	background: #5d3a9d;
+	background: $hoverPrimary;
 }
 .signUp{
 	height: 500px;
@@ -78,7 +79,7 @@
 	transition: .8s ease-in-out;
 }
 .signUp .labelLogin{
-	color: #342353;
+	color: $Blue;
 	transform: scale(.6);
 }
 
@@ -90,7 +91,8 @@
 	transform: scale(1);	
 }
 #chk:checked ~ .signUp .labelLogin:hover{
-	color: #734bbe;
+	transform: scale(.9);
+	color: $darkBlue;
 }
 
 #chk:checked ~ .login .labelLogin{
@@ -98,5 +100,6 @@
 	transform: scale(.6);
 }
 #chk:checked ~ .login .labelLogin:hover{
-	color: #5d3a9d;
+	color: $Blue;
+	transform: scale(.8);
 }
