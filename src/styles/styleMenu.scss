@@ -1,0 +1,50 @@
+@import "./index.scss";
+
+.text-menu {
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    color: #828282;
+    &:hover{
+        color: #000;
+    }
+    &.active {
+        color: #000;
+        border: none;
+        position: relative;
+  
+        span {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            top: 0px;
+            left: 45%;
+        }
+    }
+  }
+  
+.logo {
+    font-size: 26px;
+    color: $Blue;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    width:  90px;
+    padding: 10px 0;
+}
+
+.text-align-items-center {
+    display: flex;
+    align-items: center;
+}
+
+#leftMenu {
+    height: 92vh;
+    // background: linear-gradient(to bottom, $darkBlue, $lightBlue);
+    background-color: $Blue;
+    color: #fff;
+    padding: 20px;
+}
+

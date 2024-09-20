@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat');
+
+$Blue: #082B6D;
+$lightBlue: #3C89CD;
+$darkBlue: #050D20;
+$primary: #FF5C00;
+$hoverPrimary: darken($primary, 10%);
+
+*{
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+ul, li {
+  list-style: none;
+}
+
+

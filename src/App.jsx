@@ -1,23 +1,26 @@
 import { useDispatch } from "react-redux";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/home/Home";
 import WrapperLogin from "./pages/login/WrapperLogin";
+import TopMenu from "./components/TopMenu";
+import LeftMenu from "./components/LeftMenu";
 
 function App() {
   // const dispatch = useDispatch();
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<WrapperLogin />} />
-        <Route element={<ProtectedRoute />}>
+      <TopMenu />
+      <div className="row m-0 p-0">
+        <LeftMenu />
+        <Routes>
+          <Route path="/login" element={<WrapperLogin />} />
+          {/* <Route element={<ProtectedRoute />}> */}
           <Route path="/" element={<Home />} />
-          {/* <Route path="/products" element={<Products />} />
-          <Route path="/reviews" element={<Reviews />} />
-          <Route path="/checkout" element={<Checkout />} /> */}
-        </Route>
-      </Routes>
+          {/* </Route> */}
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }
