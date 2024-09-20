@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/styleMenu.scss";
 
 function LeftMenu(props) {
   return (
