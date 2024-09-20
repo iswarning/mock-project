@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
 
 function TopMenu(props) {
   const navigate = useNavigate();
@@ -41,9 +40,7 @@ function TopMenu(props) {
             </ul>
           </div>
           <div className="col-2 text-center ">
-            <span className="logo ">
-              <img src={logo} alt="" className="logo" />
-            </span>
+            <span className="logo ">Logo</span>
           </div>
           <div className="col-5 text-align-items-center  ">
             <div className="text-end w-100">Search</div>
