@@ -13,7 +13,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div className="col-9">
       <Toaster
         toastOptions={{
           duration: 2000,
