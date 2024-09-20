@@ -1,5 +1,4 @@
-import { useDispatch } from "react-redux";
-import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/home/Home";
 import WrapperLogin from "./pages/login/WrapperLogin";
