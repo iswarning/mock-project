@@ -1,8 +1,3 @@
-export const TOAST = {
-  SUCCESS: "SUCCESS",
-  ERROR: "ERROR",
-};
-
 export const LOGIN_STATUS = {
   SUCCESS: "SUCCESS",
   ERROR: "ERROR",

@@ -1,27 +1,21 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../store/actions/userAction";
-import { ToastCommon } from "../../components/ToastCommon";
-import { LOGIN_STATUS, TOAST } from "../../store/constants";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../store/actions/loginAction";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const dispatch = useDispatch();
-  const { loginErrorMessage, loginStatus } = useSelector(
-    (state) => state.loginStore
-  );
-
-  const navigate = useNavigate();
 
   const handleLogin = () => {
     dispatch(
       login({
         email,
         password,
-      })
+      }, navigate('/'))
     );
   };
 
@@ -33,15 +27,6 @@ const Login = () => {
     setPassword(value);
   };
 
-  useEffect(() => {
-    if (loginErrorMessage) {
-      ToastCommon(TOAST.ERROR, loginErrorMessage);
-    }
-
-    if (!loginErrorMessage && loginStatus === LOGIN_STATUS.SUCCESS) {
-      navigate("/");
-    }
-  }, [loginErrorMessage, loginStatus]);
 
   return (
     <div className="login">

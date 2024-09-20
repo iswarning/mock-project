@@ -1,15 +1,17 @@
+
+// Seperate function move to 2 files loginAction + registerAction
+
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { TOAST } from "../../common/constants";
+import { ToastCommon } from "../../components/ToastCommon";
 import {
-  LOGIN_ERROR,
   LOGIN_SUCCESS,
   LOGOUT,
-  REGISTER_ERROR,
-  REGISTER_SUCCESS,
   SET_USER_INFO
 } from "../constants";
-import { jwtDecode } from "jwt-decode";
 
-export const login = (params) => {
+export const login = (params, navigateToHome) => {
   return async (dispatch, getState) => {
     try {
       const resp = await axios.post(
@@ -26,36 +28,15 @@ export const login = (params) => {
           type: SET_USER_INFO,
           payload: jwtDecode(resp.data.access_token)
         });
+        navigateToHome()
       }
     } catch (error) {
-      dispatch({
-        type: LOGIN_ERROR,
-        payload: error.response.data.message || "Login failed",
-      });
+      ToastCommon(TOAST.ERROR, error.response.data.message || "Login failed")
     }
   };
 };
 
-export const signUp = (params) => {
-  return async (dispatch, getState) => {
-    try {
-      const resp = await axios.post(
-        import.meta.env.VITE_BASE_URL + "/api/signup",
-        params
-      );
-      if (resp) {
-        dispatch({
-          type: REGISTER_SUCCESS,
-        });
-      }
-    } catch (error) {
-      dispatch({
-        type: REGISTER_ERROR,
-        payload: error.response.data.message || "Login failed",
-      });
-    }
-  };
-};
+
 
 export const logout = (params) => {
   return async (dispatch, getState) => {

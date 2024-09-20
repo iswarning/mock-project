@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { REGISTER_STATUS, TOAST } from "../../store/constants";
-import { ToastCommon } from "../../components/ToastCommon";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { TOAST } from "../../common/constants";
 import { validateEmail } from "../../common/validate";
-import { signUp } from "../../store/actions/userAction";
+import { ToastCommon } from "../../components/ToastCommon";
+import { signUp } from "../../store/actions/registerAction";
 
+// eslint-disable-next-line react/prop-types
 function SignUp({ showSignUp }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const dispatch = useDispatch();
-
-  const { registerErrorMessage, registerStatus } = useSelector(
-    (state) => state.registerStore
-  );
 
   const handleSignUp = () => {
     // validate
@@ -39,7 +36,7 @@ function SignUp({ showSignUp }) {
         email,
         password,
         role: "0",
-      })
+      }, showSignUp())
     );
   };
 
@@ -58,17 +55,6 @@ function SignUp({ showSignUp }) {
   const handleSetName = (value) => {
     setName(value);
   };
-
-  useEffect(() => {
-    if (registerErrorMessage) {
-      ToastCommon(TOAST.ERROR, registerErrorMessage);
-    }
-
-    if (!registerErrorMessage && registerStatus === REGISTER_STATUS.SUCCESS) {
-      showSignUp();
-      ToastCommon(TOAST.SUCCESS, "Successfully registered");
-    }
-  }, [registerErrorMessage, registerStatus]);
 
   return (
     <div className="signUp">

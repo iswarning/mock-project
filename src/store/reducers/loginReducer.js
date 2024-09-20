@@ -5,6 +5,7 @@ import {
   LOGOUT,
   SET_USER_INFO,
 } from "../constants";
+// delete State LOGIN_ERROR
 
 const initState = {
   loginStatus: null,
