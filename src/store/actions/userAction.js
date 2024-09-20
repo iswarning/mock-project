@@ -2,9 +2,10 @@ import axios from "axios";
 import {
   LOGIN_ERROR,
   LOGIN_SUCCESS,
+  LOGOUT,
   REGISTER_ERROR,
   REGISTER_SUCCESS,
-  SET_USER_INFO,
+  SET_USER_INFO
 } from "../constants";
 import { jwtDecode } from "jwt-decode";
 
@@ -19,11 +20,11 @@ export const login = (params) => {
         localStorage.setItem("access_token", resp.data.access_token);
         localStorage.setItem("refresh_token", resp.data.refresh_token);
         dispatch({
-          type: LOGIN_SUCCESS,
+          type: LOGIN_SUCCESS
         });
         dispatch({
           type: SET_USER_INFO,
-          payload: jwtDecode(resp.data.access_token),
+          payload: jwtDecode(resp.data.access_token)
         });
       }
     } catch (error) {
@@ -60,5 +61,8 @@ export const logout = (params) => {
   return async (dispatch, getState) => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+    dispatch({
+      type: LOGOUT
+    })
   };
 };
