@@ -31,8 +31,7 @@
     font-family: "Ubuntu", sans-serif;
     font-weight: 700;
     font-style: normal;
-    width:  90px;
-    padding: 10px 0;
+    height:  50px;
 }
 
 .text-align-items-center {
@@ -44,6 +43,7 @@
     height: 92vh;
     // background: linear-gradient(to bottom, $darkBlue, $lightBlue);
     background-color: $Blue;
+    
     color: #fff;
     padding: 20px;
 }

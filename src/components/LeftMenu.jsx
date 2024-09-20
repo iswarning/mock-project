@@ -3,7 +3,7 @@ import "../styles/styleMenu.scss";
 
 function LeftMenu(props) {
   return (
-    <div className="col-3 ps-0">
+    <div className="col-3 px-0 shadow">
       <div id="leftMenu">LeftMenu</div>
     </div>
   );
