@@ -16,9 +16,9 @@ function App() {
         <LeftMenu />
         <Routes>
           <Route path="/login" element={<WrapperLogin />} />
-          {/* <Route element={<ProtectedRoute />}> */}
-          <Route path="/" element={<Home />} />
-          {/* </Route> */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<Home />} />
+          </Route>
         </Routes>
       </div>
     </BrowserRouter>
