@@ -1,8 +1,7 @@
-import React from "react";
 import { ToastCommon } from "../../components/ToastCommon.jsx";
-import { TOAST } from "../../store/constants.js";
 import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { TOAST } from "../../common/constants.js";
 
 const Home = () => {
   const { userInfo } = useSelector((state) => state.loginStore);

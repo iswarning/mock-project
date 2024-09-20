@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/home/Home";
 import WrapperLogin from "./pages/login/WrapperLogin";
+import { ROUTES } from "./common/constants";
 
 function App() {
   // const dispatch = useDispatch();
@@ -10,9 +11,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<WrapperLogin />} />
+        <Route path={ROUTES.login} element={<WrapperLogin />} />
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<Home />} />
+          <Route path={ROUTES.home} element={<Home />} />
           {/* <Route path="/products" element={<Products />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/checkout" element={<Checkout />} /> */}
