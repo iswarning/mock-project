@@ -18,7 +18,7 @@ const loginReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         loginErrorMessage: null,
-        loginStatus: LOGIN_STATUS.SUCCESS,
+        loginStatus: LOGIN_STATUS.SUCCESS
       };
 
     case LOGIN_ERROR:
@@ -32,6 +32,7 @@ const loginReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         loginStatus: LOGIN_STATUS.ERROR,
+        userInfo: null,
       };
 
     case SET_USER_INFO:

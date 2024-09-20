@@ -1,4 +1,3 @@
-@import '../../index.scss';
 
 .containerLogin{
 	margin: 0;
@@ -8,7 +7,7 @@
 	align-items: center;
 	min-height: 100vh;
 	font-family:  sans-serif;
-	background: linear-gradient(to bottom, $darkBlue, $lightBlue, $darkBlue);
+	background: linear-gradient(to bottom, var(--darkBlue), var(--lightBlue), var(--darkBlue));
 }
 .mainLogin{
 	width: 400px;
@@ -58,7 +57,7 @@
 	justify-content: center;
 	display: block;
 	color: #fff;
-	background: $primary;
+	background: var(--primary);
 	font-size: 1em;
 	font-weight: bold;
 	margin-top: 30px;
@@ -69,7 +68,7 @@
 	cursor: pointer;
 }
 .btnLogin:hover{
-	background: $hoverPrimary;
+	background: var(--hoverPrimary);
 }
 .signUp{
 	height: 500px;
@@ -79,7 +78,7 @@
 	transition: .8s ease-in-out;
 }
 .signUp .labelLogin{
-	color: $Blue;
+	color: var(--blue);
 	transform: scale(.6);
 }
 
@@ -92,7 +91,7 @@
 }
 #chk:checked ~ .signUp .labelLogin:hover{
 	transform: scale(.9);
-	color: $darkBlue;
+	color: var(--darkBlue);
 }
 
 #chk:checked ~ .login .labelLogin{
@@ -100,6 +99,6 @@
 	transform: scale(.6);
 }
 #chk:checked ~ .login .labelLogin:hover{
-	color: $Blue;
+	color: var(--blue);
 	transform: scale(.8);
 }
