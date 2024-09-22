@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { TOAST } from "../../common/constants.js";
 
 const Home = () => {
-  const { userInfo } = useSelector((state) => state.loginStore);
+  const { userInfo } = useSelector((state) => state.authStore);
 
   console.log(userInfo);
 
