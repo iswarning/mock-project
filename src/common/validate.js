@@ -12,11 +12,11 @@ export const validatePassword = (password) => {
       (?=.*\d)                            // should contain at least one digit
       (?=.*[a-z])                         // should contain at least one lower case
       (?=.*[A-Z])                         // should contain at least one upper case
-      (?=.*[!@#$%^&*(),.?":{}|<>])        // should contain at least one special character
+      (?=.*[!@#$%^&*().?:{}|<>])        // should contain at least one special character
       [A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}  // should contain at least 8 from the mentioned characters
     $/
   */
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*().?:{}|<>]{8,}$/
   return passwordRegex.test(password)
 };
 

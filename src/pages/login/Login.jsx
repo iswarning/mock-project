@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../store/actions/authAction";
+import { login, loginWithGoogle } from "../../store/actions/authAction";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -18,6 +18,10 @@ const Login = () => {
         password: password.current.value,
       })
     );
+  };
+
+  const handleLoginWithGoogle = async() => {
+    dispatch(loginWithGoogle())
   };
 
   useEffect(() => {
@@ -52,6 +56,13 @@ const Login = () => {
           onClick={() => handleLogin()}
         >
           Login
+        </button>
+        <button
+          type="button"
+          className="btnLogin"
+          onClick={() => handleLoginWithGoogle()}
+        >
+          Login with Google
         </button>
       </form>
     </div>

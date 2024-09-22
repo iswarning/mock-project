@@ -8,6 +8,8 @@ import {
   SET_SHOW_SIGNUP,
     SET_USER_INFO
 } from "../constants";
+import { auth, db, provider } from "../../../firebase";
+import generatePassword from "../../common/generatePassword";
 
 export const login = (params) => {
   return async (dispatch, getState) => {
@@ -72,5 +74,46 @@ export const logout = (params) => {
         type: SET_USER_INFO,
         payload: null
     })
+  };
+};
+
+export const loginWithGoogle = () => {
+  return async (dispatch, getState) => {
+    try {
+      const credential = await auth.signInWithPopup(provider)
+      const ref = await db.collection('users').where('email', '==', credential.user.email).get()
+      
+      if (ref.docs.length > 0) {
+
+        dispatch(login({
+          email: ref.docs[0].data().email,
+          password: ref.docs[0].data().password,
+        }))
+
+      } else {
+        const password = generatePassword()
+
+        db.collection('users').add({
+          email: credential.user.email,
+          password: password
+        })
+
+        dispatch(signUp({
+          name: credential.user.displayName,
+          email: credential.user.email,
+          password: password,
+          confirmPassword: password,
+        }))
+
+        setTimeout(() => {
+          dispatch(login({
+            email: credential.user.email,
+            password: password,
+          }))
+        },[1000])
+      }
+    } catch (error) {
+      ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message)
+    }
   };
 };
