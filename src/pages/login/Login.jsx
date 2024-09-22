@@ -1,32 +1,30 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../store/actions/loginAction";
+import { login } from "../../store/actions/authAction";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.authStore);
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const email = useRef(null)
+  const password = useRef(null)
 
   const handleLogin = () => {
     dispatch(
       login({
-        email,
-        password,
-      }, navigate('/'))
+        email: email.current.value,
+        password: password.current.value,
+      })
     );
   };
 
-  const handleSetEmail = (value) => {
-    setEmail(value);
-  };
-
-  const handleSetPassword = (value) => {
-    setPassword(value);
-  };
-
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  },[navigate, userInfo])
 
   return (
     <div className="login">
@@ -39,16 +37,14 @@ const Login = () => {
           type="email"
           name="email"
           placeholder="Email"
-          required
-          onChange={(e) => handleSetEmail(e.target.value)}
+          ref={email}
         />
         <input
           className="inputLogin"
           type="password"
           name="pswd"
           placeholder="Password"
-          required
-          onChange={(e) => handleSetPassword(e.target.value)}
+          ref={password}
         />
         <button
           type="button"

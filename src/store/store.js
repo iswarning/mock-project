@@ -1,18 +1,18 @@
 import { combineReducers } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
-import loginReducer from "./reducers/loginReducer";
-import registerReducer from "./reducers/registerReducer";
 import persistReducer from "redux-persist/es/persistReducer";
 import storage from "redux-persist/lib/storage";
 import persistStore from "redux-persist/es/persistStore";
+import appReducer from "./reducers/appReducer";
+import authReducer from "./reducers/authReducer";
 
 const customizedMiddleware = {
   serializableCheck: false,
 };
 
 const allReducer = combineReducers({
-  loginStore: loginReducer,
-  registerStore: registerReducer
+  authStore: authReducer,
+  appStore: appReducer,
 });
 
 const persistConfig = {

@@ -5,3 +5,57 @@ export const validateEmail = (email) => {
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
 };
+
+export const validatePassword = (password) => {
+  /**
+    /^
+      (?=.*\d)                            // should contain at least one digit
+      (?=.*[a-z])                         // should contain at least one lower case
+      (?=.*[A-Z])                         // should contain at least one upper case
+      (?=.*[!@#$%^&*(),.?":{}|<>])        // should contain at least one special character
+      [A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}  // should contain at least 8 from the mentioned characters
+    $/
+  */
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/
+  return passwordRegex.test(password)
+};
+
+export const validateFormLogin = (params) => {
+  const { email, password } = params
+
+  if (!email || email.length === 0) {
+      throw new Error('Email is required')
+  }
+
+  if (!password || password.length === 0) {
+      throw new Error('Password is required')
+  }
+}
+
+export const validateFormSignUp = (params) => {
+  const { email, password, confirmPassword, name } = params
+
+  if (!name || name.length === 0) {
+      throw new Error('Name is required')
+  }
+
+  if (!email || email.length === 0) {
+      throw new Error('Email is required')
+  }
+
+  if (!validateEmail(email)) {
+      throw new Error('Invalid email')
+  }
+
+  if (password.length < 8) {
+      throw new Error('Password at least 8 characters')
+  }
+
+  // if (!validatePassword(password)) {
+  //     throw new Error('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character')
+  // }
+
+  if (confirmPassword !== password) {
+      throw new Error('Confirm Password not match')
+  }
+}
