@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import imageAVT from "../assets/avatarUser.png";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../store/actions/userAction";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../common/constants";
+import { logout } from "../store/actions/authAction";
 
 function TopMenu(props) {
   const dispatch = useDispatch();
