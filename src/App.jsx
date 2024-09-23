@@ -16,16 +16,18 @@ function App() {
       <TopMenu />
       <div className="row m-0 p-0">
         <LeftMenu />
-        <Routes>
-          <Route path={ROUTES.login} element={<WrapperLogin />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path={ROUTES.home} element={<Home />} />
-            <Route path={ROUTES.products} element={<Products />} />
-            <Route path={ROUTES.users} element={<Users />} />
-            <Route path={ROUTES.dashboard} element={<Dashboard />} />
-            <Route path={ROUTES.tasks} element={<Tasks />} />
-          </Route>
-        </Routes>
+        <div className="col-10 mt-3 ps-4">
+          <Routes>
+            <Route path={ROUTES.login} element={<WrapperLogin />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path={ROUTES.home} element={<Home />} />
+              <Route path={ROUTES.products} element={<Products />} />
+              <Route path={ROUTES.users} element={<Users />} />
+              <Route path={ROUTES.dashboard} element={<Dashboard />} />
+              <Route path={ROUTES.tasks} element={<Tasks />} />
+            </Route>
+          </Routes>
+        </div>
       </div>
     </BrowserRouter>
   );

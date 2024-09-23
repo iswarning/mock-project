@@ -2,7 +2,7 @@ import React from "react";
 
 function Users(props) {
   return (
-    <div className="col-9">
+    <div>
       <h2>Users Page</h2>
     </div>
   );

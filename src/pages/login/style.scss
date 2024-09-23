@@ -12,6 +12,7 @@
 	min-height: 100vh;
 	font-family:  sans-serif;
 	background: linear-gradient(to bottom, var(--darkBlue), var(--lightBlue), var(--darkBlue));
+	z-index: 1000;
 }
 .mainLogin{
 	width: 400px;

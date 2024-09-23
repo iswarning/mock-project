@@ -6,15 +6,13 @@ import { LOGIN_STATUS, TOAST } from "../../store/constants";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const dispatch = useDispatch();
   const { loginErrorMessage, loginStatus } = useSelector(
     (state) => state.loginStore
   );
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = () => {
     dispatch(
