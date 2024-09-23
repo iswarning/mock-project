@@ -7,6 +7,7 @@ import Products from "./pages/products/Products";
 import Users from "./pages/users/WrapperUsers";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Tasks from "./pages/tasks/Tasks";
+import RoleAdmin from "./pages/users/RoleAdmin";
 import RoleUser from "./pages/users/RoleUser";
 
 function App() {
