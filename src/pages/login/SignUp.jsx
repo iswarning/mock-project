@@ -1,74 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { REGISTER_STATUS, TOAST } from "../../store/constants";
-import { ToastCommon } from "../../components/ToastCommon";
-import { validateEmail } from "../../common/validate";
-import { signUp } from "../../store/actions/userAction";
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { signUp } from "../../store/actions/authAction";
 
-function SignUp({ showSignUp }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [name, setName] = useState("");
+// eslint-disable-next-line react/prop-types
+function SignUp() {
   const dispatch = useDispatch();
 
-  const { registerErrorMessage, registerStatus } = useSelector(
-    (state) => state.registerStore
-  );
+  const email = useRef(null)
+  const password = useRef(null)
+  const confirmPassword = useRef(null)
+  const name = useRef(null)
 
-  const handleSignUp = () => {
-    // validate
-    if (!validateEmail(email)) {
-      ToastCommon(TOAST.ERROR, "Invalid email");
-      return;
-    }
-
-    if (password.length < 6) {
-      ToastCommon(TOAST.ERROR, "Password at least 6 characters");
-      return;
-    }
-
-    if (confirmPassword !== password) {
-      ToastCommon(TOAST.ERROR, "Confirm Password not match");
-      return;
-    }
-
+  const handleSignUp = async() => {
     dispatch(
       signUp({
-        name,
-        email,
-        password,
-        role: "0",
+        name: name.current.value,
+        email: email.current.value,
+        password: password.current.value,
+        confirmPassword: confirmPassword.current.value
       })
     );
   };
-
-  const handleSetEmail = (value) => {
-    setEmail(value);
-  };
-
-  const handleSetPassword = (value) => {
-    setPassword(value);
-  };
-
-  const handleSetConfirmPassword = (value) => {
-    setConfirmPassword(value);
-  };
-
-  const handleSetName = (value) => {
-    setName(value);
-  };
-
-  useEffect(() => {
-    if (registerErrorMessage) {
-      ToastCommon(TOAST.ERROR, registerErrorMessage);
-    }
-
-    if (!registerErrorMessage && registerStatus === REGISTER_STATUS.SUCCESS) {
-      showSignUp();
-      ToastCommon(TOAST.SUCCESS, "Successfully registered");
-    }
-  }, [registerErrorMessage, registerStatus]);
 
   return (
     <div className="signUp">
@@ -81,32 +33,28 @@ function SignUp({ showSignUp }) {
           type="text"
           name="name"
           placeholder="Name"
-          required
-          onChange={(e) => handleSetName(e.target.value)}
+          ref={name}
         />
         <input
           className="inputLogin"
           type="email"
           name="email"
           placeholder="Email"
-          required
-          onChange={(e) => handleSetEmail(e.target.value)}
+          ref={email}
         />
         <input
           className="inputLogin"
           type="password"
           name="pswd"
           placeholder="Password"
-          required
-          onChange={(e) => handleSetPassword(e.target.value)}
+          ref={password}
         />
         <input
           className="inputLogin"
           type="password"
           name="pswd"
           placeholder="Confirm Password"
-          required
-          onChange={(e) => handleSetConfirmPassword(e.target.value)}
+          ref={confirmPassword}
         />
         <button
           type="button"

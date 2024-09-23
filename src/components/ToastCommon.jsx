@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { TOAST } from "../store/constants";
+import { TOAST } from "../common/constants";
 
 export const ToastCommon = (type, message) => {
   toast.dismiss();

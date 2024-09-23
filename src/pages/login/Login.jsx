@@ -1,45 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../store/actions/userAction";
-import { ToastCommon } from "../../components/ToastCommon";
-import { LOGIN_STATUS, TOAST } from "../../store/constants";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../store/actions/authAction";
 
 const Login = () => {
-  const { loginErrorMessage, loginStatus } = useSelector(
-    (state) => state.loginStore
-  );
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.authStore);
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const email = useRef(null);
+  const password = useRef(null);
 
   const handleLogin = () => {
     dispatch(
       login({
-        email,
-        password,
+        email: email.current.value,
+        password: password.current.value,
       })
     );
   };
 
-  const handleSetEmail = (value) => {
-    setEmail(value);
-  };
-
-  const handleSetPassword = (value) => {
-    setPassword(value);
-  };
-
   useEffect(() => {
-    if (loginErrorMessage) {
-      ToastCommon(TOAST.ERROR, loginErrorMessage);
-    }
-
-    if (!loginErrorMessage && loginStatus === LOGIN_STATUS.SUCCESS) {
+    if (userInfo) {
       navigate("/");
     }
-  }, [loginErrorMessage, loginStatus]);
+  }, [navigate, userInfo]);
 
   return (
     <div className="login">
@@ -52,16 +36,14 @@ const Login = () => {
           type="email"
           name="email"
           placeholder="Email"
-          required
-          onChange={(e) => handleSetEmail(e.target.value)}
+          ref={email}
         />
         <input
           className="inputLogin"
           type="password"
           name="pswd"
           placeholder="Password"
-          required
-          onChange={(e) => handleSetPassword(e.target.value)}
+          ref={password}
         />
         <button
           type="button"

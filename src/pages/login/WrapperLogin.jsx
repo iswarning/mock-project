@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_SHOW_SIGNUP } from "../../store/constants";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import "./style.scss";
 
-function WrapperLogin(props) {
-  const [showSignUp, setShowSignUp] = useState(false);
+function WrapperLogin() {
+  const { isShowSignUp } = useSelector((state) => state.appStore)
+  const dispatch = useDispatch();
+
+  const handleShowSignUp = () => {
+    dispatch({
+      type: SET_SHOW_SIGNUP,
+      payload:!isShowSignUp,
+    })
+  }
+
 
   return (
     <div className="containerLogin">
@@ -14,11 +24,11 @@ function WrapperLogin(props) {
           type="checkbox"
           id="chk"
           aria-hidden="true"
-          checked={showSignUp}
-          onChange={(e) => setShowSignUp(e.target.checked)}
+          checked={isShowSignUp}
+          onChange={handleShowSignUp}
         />
         <Login />
-        <SignUp showSignUp={() => setShowSignUp(false)} />
+        <SignUp />
       </div>
     </div>
   );
