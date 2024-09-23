@@ -9,6 +9,7 @@ import Products from "./pages/products/Products";
 import Users from "./pages/users/Users";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Tasks from "./pages/tasks/Tasks";
+import RoleAdmin from "./pages/users/RoleAdmin";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path={ROUTES.home} element={<Home />} />
               <Route path={ROUTES.products} element={<Products />} />
-              <Route path={ROUTES.users} element={<Users />} />
+              <Route path={ROUTES.users} element={<RoleAdmin />} />
               <Route path={ROUTES.dashboard} element={<Dashboard />} />
               <Route path={ROUTES.tasks} element={<Tasks />} />
             </Route>
