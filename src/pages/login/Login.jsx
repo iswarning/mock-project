@@ -7,9 +7,8 @@ const Login = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.authStore);
   const navigate = useNavigate();
-
-  const email = useRef(null)
-  const password = useRef(null)
+  const email = useRef(null);
+  const password = useRef(null);
 
   const handleLogin = () => {
     dispatch(
@@ -24,7 +23,7 @@ const Login = () => {
     if (userInfo) {
       navigate("/");
     }
-  },[navigate, userInfo])
+  }, [navigate, userInfo]);
 
   return (
     <div className="login">
