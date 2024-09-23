@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import imageAVT from "../assets/avatarUser.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../common/constants";
 import { logout } from "../store/actions/authAction";
 
 function TopMenu(props) {
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.authStore);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -23,14 +24,14 @@ function TopMenu(props) {
   return (
     <div className="bg-white container-fluid shadow " id="topMenu">
       <div className="row">
-        <div className="col-3  ">
+        <div className="col-3">
           <div className="dropdownTopMenu">
             <button
               type="button"
               className="dropdownTopMenu-toggle"
               onClick={toggleDropdown}
             >
-              <span className="smallScreenSpan">name user</span>
+              <span className="smallScreenSpan">{userInfo.name}</span>
               <img src={imageAVT} alt="" />
             </button>
             {isOpen && (
