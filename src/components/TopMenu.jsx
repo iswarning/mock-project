@@ -7,9 +7,9 @@ import { logout } from "../store/actions/authAction";
 
 function TopMenu(props) {
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.authStore);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const  { userInfo } = useSelector((state) => state.authStore)
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -24,7 +24,7 @@ function TopMenu(props) {
   return (
     <div className="bg-white container-fluid shadow " id="topMenu">
       <div className="row">
-        <div className="col-3  ">
+        <div className="col-3">
           <div className="dropdownTopMenu">
             <button
               type="button"
