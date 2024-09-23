@@ -31,7 +31,7 @@ function TopMenu(props) {
               className="dropdownTopMenu-toggle"
               onClick={toggleDropdown}
             >
-              <span className="smallScreenSpan">{userInfo.name}</span>
+              <span className="smallScreenSpan">{userInfo?.name}</span>
               <img src={imageAVT} alt="" />
             </button>
             {isOpen && (
