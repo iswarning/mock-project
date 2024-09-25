@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../store/actions/authAction";
+import { ROUTES } from "../../common/constants";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate(ROUTES.home);
     }
   }, [navigate, userInfo]);
 

@@ -1,2 +1,4 @@
-export const SET_USER_INFO = "SET_USER_INFO"
-export const SET_SHOW_SIGNUP = "SET_SHOW_SIGNUP"
+export const SET_USER_INFO = "SET_USER_INFO";
+export const SET_SHOW_SIGNUP = "SET_SHOW_SIGNUP";
+export const UPDATE_USER_INFO = "UPDATE_USER_INFO";
+export const SET_DATA_USER = "SET_DATA_USER";

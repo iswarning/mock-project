@@ -37,15 +37,7 @@ function TopMenu(props) {
             {isOpen && (
               <ul className="dropdownTopMenu-menu">
                 <li>list info</li>
-                <li className="logout ">
-                  <button
-                    type="button"
-                    className="btn "
-                    onClick={() => handleLogout()}
-                  >
-                    Logout
-                  </button>
-                </li>
+                <li onClick={() => handleLogout()}>Logout</li>
               </ul>
             )}
           </div>
