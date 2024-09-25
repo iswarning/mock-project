@@ -31,25 +31,25 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     // Bất kì mã trạng thái nào lọt ra ngoài tầm 2xx đều khiến hàm này được trigger    if (error.response && error.response.status === 401) {
-      try {
-        // Gọi API refresh token với phương thức GET, kèm theo token cũ trong header
-        const refresh_token = localStorage.getItem("refresh_token");
-        const { data } = await axios.get(BASE_URL + "/api/refresh-token", {
-          headers: {
-            Authorization: "Bearer" + " " + refresh_token,
-          },
-        });
-        // Lưu access-token mới vào localStorage
-        localStorage.setItem("access_token", data.access_token);
-        // Cập nhật lại token mới vào headers và gửi lại request ban đầu
-        error.config.headers["Authorization"] =
-          "Bearer" + " " + data.access_token;
-        // Gọi lại API ban đầu này với axiosInstance để thực thi
-        return axiosInstance(error.config);
+    try {
+      // Gọi API refresh token với phương thức GET, kèm theo token cũ trong header
+      const refresh_token = localStorage.getItem("refresh_token");
+      const { data } = await axios.get(BASE_URL + "/api/refresh-token", {
+        headers: {
+          Authorization: "Bearer" + " " + refresh_token,
+        },
+      });
+      // Lưu access-token mới vào localStorage
+      localStorage.setItem("access_token", data.access_token);
+      // Cập nhật lại token mới vào headers và gửi lại request ban đầu
+      error.config.headers["Authorization"] =
+        "Bearer" + " " + data.access_token;
+      // Gọi lại API ban đầu này với axiosInstance để thực thi
+      return axiosInstance(error.config);
     } catch (err) {
-        return Promise.reject(err);
-      }
+      return Promise.reject(err);
     }
+  }
 );
 
 export default axiosInstance;

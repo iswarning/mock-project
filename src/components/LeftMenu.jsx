@@ -1,13 +1,16 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { ROUTES } from "../common/constants";
+import { useSelector } from "react-redux";
 
 function LeftMenu(props) {
+  const { userInfo } = useSelector((state) => state.authStore);
+
   return (
     <div className="col-2  px-0 shadow">
       <div id="leftMenu">
-        <ul className=" m-0 p-0">
-          <li>
+        <ul className=" m-0 p-0 pt-3">
+          <li className={userInfo?.role === 1 ? "d-block" : "d-none"}>
             <NavLink
               to={ROUTES.dashboard}
               className={({ isActive }) =>

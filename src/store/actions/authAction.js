@@ -1,39 +1,35 @@
-
 import axios from "axios";
 import { TOAST } from "../../common/constants";
 import { validateFormSignUp } from "../../common/validate";
 import { ToastCommon } from "../../components/ToastCommon";
-import {
-  SET_SHOW_SIGNUP
-} from "../constants";
+import { SET_SHOW_SIGNUP } from "../constants";
 
 export const signUp = (params) => {
-    return async (dispatch, getState) => {
-      try {
-        // validation
-        validateFormSignUp(params)
+  return async (dispatch, getState) => {
+    try {
+      // validation
+      validateFormSignUp(params);
 
-        const resp = await axios.post(
-          import.meta.env.VITE_BASE_URL + "/api/signup",
-          {
-            name: params.name,
-            email: params.email,
-            password: params.password
-          }
-        );
-
-        if (resp) {
-          ToastCommon(TOAST.SUCCESS, "Successfully registered");
-          dispatch({
-            type: SET_SHOW_SIGNUP,
-            payload: false
-          })
+      const resp = await axios.post(
+        import.meta.env.VITE_BASE_URL + "/api/signup",
+        {
+          name: params.name,
+          email: params.email,
+          password: params.password,
         }
+      );
 
-      } catch (error) {
-        ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message)
+      if (resp) {
+        ToastCommon(TOAST.SUCCESS, "Successfully registered");
+        dispatch({
+          type: SET_SHOW_SIGNUP,
+          payload: false,
+        });
       }
-    };
+    } catch (error) {
+      ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
+    }
+  };
 };
 
 export const logout = () => {

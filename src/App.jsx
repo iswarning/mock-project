@@ -9,14 +9,13 @@ import Tasks from "./pages/tasks/Tasks";
 import Users from "./pages/users/WrapperUsers";
 
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>
         <Route path={ROUTES.login} element={<WrapperLogin />} />
         <Route element={<ProtectedRoute />}>
           <Route path={ROUTES.home} element={<Home />} />
-          <Route path={ROUTES.products} element={<RoleUser />} />
+          <Route path={ROUTES.products} element={<Products />} />
           <Route path={ROUTES.users} element={<Users />} />
           <Route path={ROUTES.dashboard} element={<Dashboard />} />
           <Route path={ROUTES.tasks} element={<Tasks />} />

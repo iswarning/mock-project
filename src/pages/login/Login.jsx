@@ -10,28 +10,27 @@ const Login = () => {
   const password = useRef(null);
   const navigate = useNavigate();
 
-  const handleLogin = async() => {
+  const handleLogin = async () => {
     try {
       // validation
       let params = {
         email: email.current.value,
         password: password.current.value,
-      }
-      validateFormLogin(params)
+      };
+      validateFormLogin(params);
 
       const resp = await axios.post(
-          import.meta.env.VITE_BASE_URL + "/api/login",
-          params
-      ) 
+        import.meta.env.VITE_BASE_URL + "/api/login",
+        params
+      );
 
       if (resp) {
         localStorage.setItem("access_token", resp.data.access_token);
         localStorage.setItem("refresh_token", resp.data.refresh_token);
-        navigate('/')
+        navigate("/");
       }
-
     } catch (error) {
-      ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message)
+      ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
     }
   };
 
