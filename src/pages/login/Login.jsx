@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { login } from "../../store/actions/authAction";
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../../store/actions/authAction';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate('/');
     }
   }, [navigate, userInfo]);
 
@@ -31,13 +31,7 @@ const Login = () => {
         <label className="labelLogin" htmlFor="chk" aria-hidden="true">
           Login
         </label>
-        <input
-          className="inputLogin"
-          type="email"
-          name="email"
-          placeholder="Email"
-          ref={email}
-        />
+        <input className="inputLogin" type="email" name="email" placeholder="Email" ref={email} />
         <input
           className="inputLogin"
           type="password"
@@ -45,11 +39,7 @@ const Login = () => {
           placeholder="Password"
           ref={password}
         />
-        <button
-          type="button"
-          className="btnLogin"
-          onClick={() => handleLogin()}
-        >
+        <button type="button" className="btnLogin" onClick={() => handleLogin()}>
           Login
         </button>
       </form>

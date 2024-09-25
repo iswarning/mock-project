@@ -1,6 +1,6 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { ROUTES } from "../common/constants";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { ROUTES } from '../common/constants';
 
 function LeftMenu(props) {
   return (
@@ -10,9 +10,7 @@ function LeftMenu(props) {
           <li>
             <NavLink
               to={ROUTES.dashboard}
-              className={({ isActive }) =>
-                isActive ? "btn text-menu active" : "btn text-menu"
-              }
+              className={({ isActive }) => (isActive ? 'btn text-menu active' : 'btn text-menu')}
             >
               Dashboard
             </NavLink>
@@ -20,9 +18,7 @@ function LeftMenu(props) {
           <li>
             <NavLink
               to={ROUTES.users}
-              className={({ isActive }) =>
-                isActive ? "btn text-menu active" : "btn text-menu"
-              }
+              className={({ isActive }) => (isActive ? 'btn text-menu active' : 'btn text-menu')}
             >
               Users
             </NavLink>
@@ -30,9 +26,7 @@ function LeftMenu(props) {
           <li>
             <NavLink
               to={ROUTES.products}
-              className={({ isActive }) =>
-                isActive ? "btn text-menu active" : "btn text-menu"
-              }
+              className={({ isActive }) => (isActive ? 'btn text-menu active' : 'btn text-menu')}
             >
               Products
             </NavLink>
@@ -40,11 +34,17 @@ function LeftMenu(props) {
           <li>
             <NavLink
               to={ROUTES.tasks}
-              className={({ isActive }) =>
-                isActive ? "btn text-menu active" : "btn text-menu"
-              }
+              className={({ isActive }) => (isActive ? 'btn text-menu active' : 'btn text-menu')}
             >
               Tasks
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={ROUTES.projects}
+              className={({ isActive }) => (isActive ? 'btn text-menu active' : 'btn text-menu')}
+            >
+              Projects
             </NavLink>
           </li>
         </ul>

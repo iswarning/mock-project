@@ -1,10 +1,11 @@
-import { combineReducers } from "redux";
-import { configureStore } from "@reduxjs/toolkit";
-import persistReducer from "redux-persist/es/persistReducer";
-import storage from "redux-persist/lib/storage";
-import persistStore from "redux-persist/es/persistStore";
-import appReducer from "./reducers/appReducer";
-import authReducer from "./reducers/authReducer";
+import { combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
+import persistReducer from 'redux-persist/es/persistReducer';
+import storage from 'redux-persist/lib/storage';
+import persistStore from 'redux-persist/es/persistStore';
+import appReducer from './reducers/appReducer';
+import authReducer from './reducers/authReducer';
+import projectReducer from './reducers/projectReducer';
 
 const customizedMiddleware = {
   serializableCheck: false,
@@ -13,21 +14,21 @@ const customizedMiddleware = {
 const allReducer = combineReducers({
   authStore: authReducer,
   appStore: appReducer,
+  projectStore: projectReducer,
 });
 
 const persistConfig = {
   key: 'root',
-  storage
-}
- 
-const persistedReducer = persistReducer(persistConfig, allReducer)
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, allReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware(customizedMiddleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(customizedMiddleware),
 });
 
-const persistor = persistStore(store)
+const persistor = persistStore(store);
 
-export { store, persistor }
+export { store, persistor };
