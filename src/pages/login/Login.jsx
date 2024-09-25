@@ -1,29 +1,39 @@
-import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../store/actions/authAction";
+import { validateFormLogin } from "../../common/validate";
+import axios from "axios";
+import { ToastCommon } from "../../components/ToastCommon";
+import { TOAST } from "../../common/constants";
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.authStore);
-  const navigate = useNavigate();
   const email = useRef(null);
   const password = useRef(null);
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    dispatch(
-      login({
+  const handleLogin = async() => {
+    try {
+      // validation
+      let params = {
         email: email.current.value,
         password: password.current.value,
-      })
-    );
-  };
+      }
+      validateFormLogin(params)
 
-  useEffect(() => {
-    if (userInfo) {
-      navigate("/");
+      const resp = await axios.post(
+          import.meta.env.VITE_BASE_URL + "/api/login",
+          params
+      ) 
+
+      if (resp) {
+        localStorage.setItem("access_token", resp.data.access_token);
+        localStorage.setItem("refresh_token", resp.data.refresh_token);
+        navigate('/')
+      }
+
+    } catch (error) {
+      ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message)
     }
-  }, [navigate, userInfo]);
+  };
 
   return (
     <div className="login">
