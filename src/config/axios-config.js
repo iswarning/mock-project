@@ -2,19 +2,19 @@ import axios from "axios";
 
 export const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-// Tạo một instance Axios
+// Create an Axios instance
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   timeout: 5000,
 });
 
-// Đón chặn Request
+// Request Interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Check hệ thống có access_token hay không và cập nhật Authorization header nếu có
+    // Check if access_token is available and update Authorization header
     const access_token = localStorage.getItem("access_token");
     if (access_token) {
-      config.headers.Authorization = "Bearer" + " " + access_token;
+      config.headers.Authorization = `Bearer ${access_token}`;
     }
     return config;
   },
@@ -23,32 +23,42 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Đón chặn Response
+// Response Interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
-    // Bất kì mã trạng thái nào nằm trong tầm 2xx đều khiến hàm này được trigger
+    // Any status code in the 2xx range triggers this function
     return response;
   },
   async (error) => {
-    // Bất kì mã trạng thái nào lọt ra ngoài tầm 2xx đều khiến hàm này được trigger    if (error.response && error.response.status === 401) {
-    try {
-      // Gọi API refresh token với phương thức GET, kèm theo token cũ trong header
-      const refresh_token = localStorage.getItem("refresh_token");
-      const { data } = await axios.get(BASE_URL + "/api/refresh-token", {
-        headers: {
-          Authorization: "Bearer" + " " + refresh_token,
-        },
-      });
-      // Lưu access-token mới vào localStorage
-      localStorage.setItem("access_token", data.access_token);
-      // Cập nhật lại token mới vào headers và gửi lại request ban đầu
-      error.config.headers["Authorization"] =
-        "Bearer" + " " + data.access_token;
-      // Gọi lại API ban đầu này với axiosInstance để thực thi
-      return axiosInstance(error.config);
-    } catch (err) {
-      return Promise.reject(err);
+    if (error.response && error.response.status === 401) {
+      try {
+        const refresh_token = localStorage.getItem("refresh_token");
+        if (!refresh_token) {
+          // If no refresh token is available, log out the user or handle the error
+          return Promise.reject(error);
+        }
+
+        // Call the refresh token API
+        const { data } = await axios.get(`${BASE_URL}/api/refresh-token`, {
+          headers: {
+            Authorization: `Bearer ${refresh_token}`,
+          },
+        });
+
+        // Save new access_token to localStorage
+        localStorage.setItem("access_token", data.access_token);
+
+        // Update the Authorization header and retry the original request
+        error.config.headers.Authorization = `Bearer ${data.access_token}`;
+        return axiosInstance(error.config);
+      } catch (err) {
+        // Optional: clear tokens if refresh fails
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        return Promise.reject(err);
+      }
     }
+    return Promise.reject(error);
   }
 );
 

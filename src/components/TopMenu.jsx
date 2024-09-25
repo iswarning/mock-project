@@ -8,6 +8,7 @@ import { logout } from "../store/actions/authAction";
 function TopMenu(props) {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.authStore);
+  // const { listUser } = useSelector((state) => state.userStore);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
