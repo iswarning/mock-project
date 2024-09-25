@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import imageAVT from "../assets/avatarUser.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import imageAVT from "../assets/avatarUser.png";
 import { ROUTES } from "../common/constants";
 import { logout } from "../store/actions/authAction";
 
