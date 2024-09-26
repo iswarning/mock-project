@@ -3,6 +3,7 @@ import RoleAdmin from "./RoleAdmin";
 import RoleUser from "./RoleUser";
 import { useEffect } from "react";
 import { getListUser } from "../../store/actions/userAction";
+import Loading from "../../components/Loading";
 
 function WrapperUsers() {
 
@@ -14,8 +15,8 @@ function WrapperUsers() {
   useEffect(() => {
     dispatch(getListUser())
   },[])
-console.log(userInfo?.role)
-  if (isLoading) return <div>Loading...</div>  
+
+  if (isLoading) return <Loading />  
   
   return (
     <div className="container">

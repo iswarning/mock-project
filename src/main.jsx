@@ -8,9 +8,9 @@ import { store } from "./store/store.js";
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
-  <Provider store={store}>
-    <App />
-    <ToastCustom />
-  </Provider>
+    <Provider store={store}>
+      <App />
+      <ToastCustom />
+    </Provider>
   // </StrictMode>
 );

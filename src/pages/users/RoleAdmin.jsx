@@ -98,6 +98,7 @@ export default function RoleAdmin() {
             </tbody>
           </table>
         </div>
+        
       </div>
       {userDetail && (
         <EditUserModal

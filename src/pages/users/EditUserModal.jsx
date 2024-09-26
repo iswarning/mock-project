@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Button, Modal } from "react-bootstrap"
 import { useDispatch } from "react-redux"
-import { updateUser } from "../../store/actions/userAction"
+import { getListUser, updateUser } from "../../store/actions/userAction"
 
 function EditUserModal({ userDetail, isShowModal, onRequestCloseModal }) {
 
@@ -10,7 +10,7 @@ function EditUserModal({ userDetail, isShowModal, onRequestCloseModal }) {
     const [email, setEmail] = useState(userDetail.email)
     const [name, setName] = useState(userDetail.name)
 
-    const handleOnSubmit = () => {
+    const handleOnSubmit = async() => {
         dispatch(updateUser({
             email,
             name
