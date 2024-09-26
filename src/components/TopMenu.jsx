@@ -8,6 +8,7 @@ import { logout } from "../store/actions/authAction";
 function TopMenu(props) {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.authStore);
+  // const { listUser } = useSelector((state) => state.userStore);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -37,15 +38,7 @@ function TopMenu(props) {
             {isOpen && (
               <ul className="dropdownTopMenu-menu">
                 <li>list info</li>
-                <li className="logout ">
-                  <button
-                    type="button"
-                    className="btn "
-                    onClick={() => handleLogout()}
-                  >
-                    Logout
-                  </button>
-                </li>
+                <li onClick={() => handleLogout()}>Logout</li>
               </ul>
             )}
           </div>

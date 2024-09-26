@@ -1,4 +1,3 @@
-
 import { TOAST } from "../../common/constants";
 import { validateFormSignUp } from "../../common/validate";
 import { ToastCommon } from "../../components/ToastCommon";
@@ -11,36 +10,41 @@ import { hideLoading, showLoading } from "./appAction";
 export const getListUser = () => {
   return async (dispatch, getState) => {
     try {
-        dispatch(showLoading())
-        const resp = await axiosInstance.get(import.meta.env.VITE_BASE_URL + '/api/user')
-        if (resp) {
-          dispatch({
-              type: SET_LIST_USER,
-              payload: resp.data
-          })
-          dispatch(hideLoading())
-        }
+      dispatch(showLoading());
+      const resp = await axiosInstance.get(
+        import.meta.env.VITE_BASE_URL + "/api/user"
+      );
+      if (resp) {
+        dispatch({
+          type: SET_LIST_USER,
+          payload: resp.data,
+        });
+        dispatch(hideLoading());
+      }
     } catch (error) {
       console.log(error.response?.data?.message);
-      dispatch(hideLoading())
+      dispatch(hideLoading());
     }
   };
 };
 
 export const createUser = (params) => {
-    return async (dispatch, getState) => {
-      try {
-          validateFormSignUp(params)
+  return async (dispatch, getState) => {
+    try {
+      validateFormSignUp(params);
 
-          const resp = await axiosInstance.post(import.meta.env.VITE_BASE_URL + '/api/user', params)
-          if (resp) {
-            dispatch(getListUser())
-            ToastCommon(TOAST.SUCCESS, 'Created user successfully')
-          }
-      } catch (error) {
-        console.log(error.response?.data?.message);
+      const resp = await axiosInstance.post(
+        import.meta.env.VITE_BASE_URL + "/api/user",
+        params
+      );
+      if (resp) {
+        dispatch(getListUser());
+        ToastCommon(TOAST.SUCCESS, "Created user successfully");
       }
-    };
+    } catch (error) {
+      console.log(error.response?.data?.message);
+    }
+  };
 };
 
 export const deleteUser = (params) => {
@@ -54,38 +58,59 @@ export const deleteUser = (params) => {
       } catch (error) {
         console.log(error.response?.data?.message);
       }
-    };
+  };
 };
 
 export const updateUser = (params) => {
-    return async (dispatch, getState) => {
-      try {
-          const resp = await axiosInstance.put(import.meta.env.VITE_BASE_URL + '/api/user', params)
-          if (resp) {
-            dispatch(getListUser())
-            ToastCommon(TOAST.SUCCESS, 'Updated user successfully')
-          }
-      } catch (error) {
-        console.log(error.response?.data?.message);
+  return async (dispatch, getState) => {
+    try {
+      const resp = await axiosInstance.put(
+        import.meta.env.VITE_BASE_URL + "/api/user",
+        params
+      );
+      if (resp) {
+        dispatch(getListUser());
+        ToastCommon(TOAST.SUCCESS, "Updated user successfully");
       }
-    };
+    } catch (error) {
+      console.log(error.response?.data?.message);
+    }
+  };
+};
+
+export const updateUserByUser = (params) => {
+  return async (dispatch, getState) => {
+    try {
+      const resp = await axiosInstance.put(
+        import.meta.env.VITE_BASE_URL + "/api/user",
+        params
+      );
+      if (resp) {
+        ToastCommon(TOAST.SUCCESS, "Updated user successfully");
+      }
+    } catch (error) {
+      console.log(error.response?.data?.message);
+    }
+  };
 };
 
 export const changeRole = (params) => {
-    return async (dispatch, getState) => {
-      try {
-        const resp = await axiosInstance.put(import.meta.env.VITE_BASE_URL + '/api/user/changerole', {
-            email: params.email,
-            role: params.role
-        })
-
-        if (resp) {
-            dispatch(getListUser())
-            ToastCommon(TOAST.SUCCESS, 'Role has been changed successfully.')
+  return async (dispatch, getState) => {
+    try {
+      const resp = await axiosInstance.put(
+        import.meta.env.VITE_BASE_URL + "/api/user/changerole",
+        {
+          email: params.email,
+          role: params.role,
         }
+      );
 
-      } catch (error) {
-        console.log(error.response?.data?.message);
+      if (resp) {
+        dispatch(getListUser());
+        ToastCommon(TOAST.SUCCESS, "Role has been changed successfully.");
       }
-    };
+    } catch (error) {
+      console.log(error.response?.data?.message);
+    }
+  };
 };

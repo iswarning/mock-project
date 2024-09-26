@@ -1,8 +1,7 @@
 import { SET_LIST_USER } from "../constants";
 
 const initState = {
-    listUser: [],
-    currentUser: null
+  listUser: []
 };
 
 const userReducer = (state = initState, { type, payload }) => {
@@ -18,4 +17,4 @@ const userReducer = (state = initState, { type, payload }) => {
     }
 };
 
-export default userReducer
+export default userReducer;

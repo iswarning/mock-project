@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import TopMenu from "./TopMenu";
 import LeftMenu from "./LeftMenu";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SET_USER_INFO } from "../store/constants";
 import { jwtDecode } from "jwt-decode";
 
@@ -14,7 +14,7 @@ function ProtectedRoute() {
       dispatch({
         type: SET_USER_INFO,
         payload: jwtDecode(accessToken),
-      })
+      });
 
       return (
         <>
@@ -26,13 +26,13 @@ function ProtectedRoute() {
             </div>
           </div>
         </>
-      )
+      );
     } else {
-      return <Navigate to="/login" />
+      return <Navigate to="/login" />;
     }
-  }
+  };
 
-  return render()
+  return render();
 }
 
 export default ProtectedRoute;

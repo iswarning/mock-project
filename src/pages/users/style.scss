@@ -1,0 +1,18 @@
+.infoUser {
+    padding: 10px;
+}
+.containerInfo {
+    margin-bottom: 30px;
+    h2 {
+        font-weight: 600;
+        font-size: 24px;
+        color: var(--darkBlue);
+        border-bottom: 3px solid #dedede;
+        padding: 10px 0;
+    }
+    .col-3 {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+    }
+}

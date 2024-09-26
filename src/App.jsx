@@ -9,7 +9,6 @@ import Tasks from "./pages/tasks/Tasks";
 import Users from "./pages/users/WrapperUsers";
 
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>
