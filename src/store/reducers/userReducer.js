@@ -1,4 +1,4 @@
-import { SET_CURRENT_USER, SET_LIST_USER } from "../constants";
+import { SET_LIST_USER } from "../constants";
 
 const initState = {
     listUser: [],
@@ -11,12 +11,6 @@ const userReducer = (state = initState, { type, payload }) => {
         return {
           ...state,
           listUser: payload,
-        };
-    
-    case SET_CURRENT_USER:
-        return {
-            ...state,
-            currentUser: payload,
         };
   
       default:

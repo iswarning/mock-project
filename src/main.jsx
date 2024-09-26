@@ -9,10 +9,10 @@ import { store } from "./store/store.js";
 // const queryClient = new QueryClient()
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  // <StrictMode>
     <Provider store={store}>
       <App />
       <ToastCustom />
     </Provider>
-  </StrictMode>
+  // </StrictMode>
 );

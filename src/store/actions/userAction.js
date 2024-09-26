@@ -4,7 +4,6 @@ import { validateFormSignUp } from "../../common/validate";
 import { ToastCommon } from "../../components/ToastCommon";
 import axiosInstance from "../../config/axios-config";
 import {
-  SET_CURRENT_USER,
     SET_LIST_USER
 } from "../constants";
 import { hideLoading, showLoading } from "./appAction";
@@ -28,24 +27,6 @@ export const getListUser = () => {
   };
 };
 
-export const getUserById = (params) => {
-  return async (dispatch, getState) => {
-    try {
-      console.log(333);
-
-        const resp = await axiosInstance.get(import.meta.env.VITE_BASE_URL + '/api/user/' + params.id)
-        if (resp) {        
-          dispatch({
-              type: SET_CURRENT_USER,
-              payload: resp.data
-          })
-        }
-    } catch (error) {
-      console.log(error.response?.data?.message);
-    }
-  };
-};
-
 export const createUser = (params) => {
     return async (dispatch, getState) => {
       try {
@@ -65,7 +46,7 @@ export const createUser = (params) => {
 export const deleteUser = (params) => {
     return async (dispatch, getState) => {
       try {
-          const resp = await axiosInstance.delete(import.meta.env.VITE_BASE_URL + '/api/user', params)
+          const resp = await axiosInstance.delete(import.meta.env.VITE_BASE_URL + '/api/user', { data: params})
           if (resp) {
             dispatch(getListUser())
             ToastCommon(TOAST.SUCCESS, 'Deleted user successfully')

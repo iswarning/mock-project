@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeRole, deleteUser } from "../../store/actions/userAction";
 import CreateUserModal from "./CreateUserModal";
 import EditUserModal from "./EditUserModal";
+import axiosInstance from "../../config/axios-config";
+import axios from "axios";
 
 export default function RoleAdmin() {
 
@@ -27,7 +29,7 @@ export default function RoleAdmin() {
     setOpenEditUserModal(!openEditUserModal)
   }
 
-  const handleDeleteUser = (id) => {
+  const handleDeleteUser = async(id) => {
     if (confirm('Are you sure you want to delete')){
       dispatch(deleteUser({
         id
@@ -40,7 +42,7 @@ export default function RoleAdmin() {
       <div className="row">    
         <div>
           <Button variant="success" onClick={() => setOpenCreateUserModal(!openCreateUserModal)}>
-            Create User
+          < i className="fa-solid fa-user-plus"></i>
           </Button>
         </div>
         <div className="col-md-12">
@@ -67,9 +69,9 @@ export default function RoleAdmin() {
                           </td>
                           <td>
                             <Button variant="primary" onClick={() => handleEditUser(user)}>
-                              Edit
+                            <i className="fa-solid fa-pen-to-square"></i>
                             </Button>&nbsp;
-                            <button disabled={user.role === 1} className="btn btn-danger" onClick={() => handleDeleteUser(user.id)}>Delete</button>
+                            <button disabled={user.role === 1} className="btn btn-danger" onClick={() => handleDeleteUser(user.id)}><i className="fa-solid fa-trash"></i></button>
                           </td>
                       </tr>
                     ))
@@ -77,6 +79,7 @@ export default function RoleAdmin() {
               </tbody>     
           </table>
         </div>
+        
       </div>
       { userDetail && <EditUserModal userDetail={userDetail} isShowModal={openEditUserModal} onRequestCloseModal={() => setOpenEditUserModal(!openEditUserModal)} /> }
       <CreateUserModal isShowModal={openCreateUserModal} onRequestCloseModal={() => setOpenCreateUserModal(!openCreateUserModal)} />
