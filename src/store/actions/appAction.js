@@ -1,4 +1,4 @@
-import { SET_LOADING, SET_MODAL } from "../constants"
+import { SET_LOADING } from "../constants"
 
 export const showLoading = () => {
     return async (dispatch, getState) => {
