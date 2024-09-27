@@ -28,9 +28,10 @@ export const getListUser = () => {
   };
 };
 
-export const createUser = (params) => {
+export const createUser = (params, onRequestCloseModal, showSaving, hideSaving) => {
   return async (dispatch, getState) => {
     try {
+      showSaving()
       validateFormSignUp(params);
 
       const resp = await axiosInstance.post(
@@ -38,11 +39,14 @@ export const createUser = (params) => {
         params
       );
       if (resp) {
-        dispatch(getListUser());
+        hideSaving()
+        onRequestCloseModal()
         ToastCommon(TOAST.SUCCESS, "Created user successfully");
+        dispatch(getListUser());
       }
     } catch (error) {
-      console.log(error.response?.data?.message);
+      ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
+      hideSaving()
     }
   };
 };
@@ -56,24 +60,27 @@ export const deleteUser = (params) => {
             ToastCommon(TOAST.SUCCESS, 'Deleted user successfully')
           }
       } catch (error) {
-        console.log(error.response?.data?.message);
+        ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
       }
   };
 };
 
-export const updateUser = (params) => {
+export const updateUser = (params, onRequestCloseModal, showSaving, hideSaving) => {
   return async (dispatch, getState) => {
     try {
+      showSaving()
       const resp = await axiosInstance.put(
         import.meta.env.VITE_BASE_URL + "/api/user",
         params
       );
       if (resp) {
-        dispatch(getListUser());
+        hideSaving()
+        onRequestCloseModal()
         ToastCommon(TOAST.SUCCESS, "Updated user successfully");
+        dispatch(getListUser());
       }
     } catch (error) {
-      console.log(error.response?.data?.message);
+      ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
     }
   };
 };
@@ -89,7 +96,7 @@ export const updateUserByUser = (params) => {
         ToastCommon(TOAST.SUCCESS, "Updated user successfully");
       }
     } catch (error) {
-      console.log(error.response?.data?.message);
+      ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
     }
   };
 };
@@ -106,11 +113,11 @@ export const changeRole = (params) => {
       );
 
       if (resp) {
-        dispatch(getListUser());
         ToastCommon(TOAST.SUCCESS, "Role has been changed successfully.");
+        dispatch(getListUser());
       }
     } catch (error) {
-      console.log(error.response?.data?.message);
+      ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
     }
   };
 };

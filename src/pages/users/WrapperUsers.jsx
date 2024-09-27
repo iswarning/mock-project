@@ -1,9 +1,9 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Loading from "../../components/Loading";
+import { getListUser } from "../../store/actions/userAction";
 import RoleAdmin from "./RoleAdmin";
 import RoleUser from "./RoleUser";
-import { useEffect } from "react";
-import { getListUser } from "../../store/actions/userAction";
-import Loading from "../../components/Loading";
 
 function WrapperUsers() {
 
