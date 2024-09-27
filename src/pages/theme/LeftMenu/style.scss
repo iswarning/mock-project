@@ -1,0 +1,78 @@
+
+.text-menu {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    color: #dedede;
+    border: none;
+  
+    &:hover{
+        color: var(--lightBlue);
+    }
+  }
+  
+  .active {
+    font-weight: bold;
+    color: var(--lightBlue);
+  }
+
+.sidebar {
+  background: linear-gradient(to bottom, var(--darkBlue), var(--lightBlue));
+  height: 92vh;
+  width: 15vw;
+  padding: 10px 0 10px 20px;
+  color: #fff;
+  margin: 0;
+    transition: transform 0.3s ease;
+    transform: translateX(-110%);
+    overflow-y: auto;
+    z-index: 1000;
+
+    &.open {
+        transform: translateX(0);
+      }
+    
+      @media (min-width: 767px) {
+        transform: translateX(0);
+        
+          }
+}
+
+.textMenuBig{
+  padding: 0 20px;
+}
+
+@media only screen and (max-width: 767px) {
+  .sidebar{
+    display: none;
+    &.open {
+      position: fixed;
+      left: 0;
+      width: 35vw;
+      display: block;
+
+    }
+  }
+
+  .text-menu {
+    font-size: 14px;
+  }
+
+  .dropdownHeader-toggle img {
+    height: 6vh;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .text-menu {
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+  .sidebar {
+  padding: 10px 0 10px 10px;
+  }
+  
+}
+

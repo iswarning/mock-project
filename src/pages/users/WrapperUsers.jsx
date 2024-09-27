@@ -5,23 +5,20 @@ import { useEffect } from "react";
 import { getListUser } from "../../store/actions/userAction";
 
 function WrapperUsers() {
+  const { userInfo } = useSelector((state) => state.authStore);
+  const { isLoading } = useSelector((state) => state.appStore);
 
-  const { userInfo } = useSelector((state) => state.authStore)
-  const { isLoading } = useSelector((state) => state.appStore)
-  
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getListUser())
-  },[])
-console.log(userInfo?.role)
-  if (isLoading) return <div>Loading...</div>  
-  
+    dispatch(getListUser());
+  }, []);
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <div className="container">
-      {
-        Number(userInfo?.role) === 1 ? <RoleAdmin /> : <RoleUser />
-      }
+      {Number(userInfo?.role) === 1 ? <RoleAdmin /> : <RoleUser />}
     </div>
   );
 }
