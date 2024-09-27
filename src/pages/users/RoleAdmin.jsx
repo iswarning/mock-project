@@ -1,26 +1,30 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import usePagination from "../../hooks/usePagination";
 import { changeRole, deleteUser } from "../../store/actions/userAction";
 import CreateUserModal from "./CreateUserModal";
 import EditUserModal from "./EditUserModal";
-import { Button } from "react-bootstrap";
 
 export default function RoleAdmin() {
   const [openEditUserModal, setOpenEditUserModal] = useState(false);
   const [openCreateUserModal, setOpenCreateUserModal] = useState(false);
 
   const [userDetail, setUserDetail] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [text, setText] = useState('')
 
   const { listUser } = useSelector((state) => state.userStore);
   const dispatch = useDispatch();
 
-  const handleChangeRole = async (email, role) => {
+  const { totalPage, paginatedData } = usePagination(listUser, text)
+
+  const handleChangeRole = (email, role) => {
     dispatch(
       changeRole({
         email,
         role,
       })
-    );
+    )
   };
 
   const handleEditUser = (user) => {
@@ -38,16 +42,24 @@ export default function RoleAdmin() {
     }
   };
 
+  const handleSetText = (value) => {
+    setText(value)
+  }
+
   return (
     <>
       <div className="row">
-        <div>
-          <Button
-            variant="success"
-            onClick={() => setOpenCreateUserModal(!openCreateUserModal)}
-          >
-            Create User
-          </Button>
+        <div className="d-flex justify-content-between m-2">
+          <div>
+            <button 
+              className="btn btn-success" 
+              onClick={() => setOpenCreateUserModal(!openCreateUserModal)}>
+              <i className="fa-solid fa-plus"></i>
+            </button>
+          </div>
+          <div>
+            <input type="text" className="form-control" placeholder="Search..." onChange={(e) => handleSetText(e.target.value)} />
+          </div>
         </div>
         <div className="col-md-12">
           <table className="table table-responsive">
@@ -60,8 +72,8 @@ export default function RoleAdmin() {
               </tr>
             </thead>
             <tbody>
-              {listUser?.length > 0 &&
-                listUser.map((user) => (
+              { paginatedData['page' + currentPage] &&
+                (paginatedData['page' + currentPage]).map((user) => (
                   <tr key={user.id}>
                     <td>{user.name}</td>
                     <td>{user.email}</td>
@@ -78,19 +90,18 @@ export default function RoleAdmin() {
                       </select>
                     </td>
                     <td>
-                      <Button
-                        variant="primary"
-                        onClick={() => handleEditUser(user)}
-                      >
-                        Edit
-                      </Button>
+                      <button 
+                        className="btn btn-primary"
+                        onClick={() => handleEditUser(user)}>
+                        <i className="fa-solid fa-pen-to-square"></i>
+                      </button>
                       &nbsp;
                       <button
                         disabled={user.role === 1}
                         className="btn btn-danger"
                         onClick={() => handleDeleteUser(user.id)}
                       >
-                        Delete
+                        <i className="fa-solid fa-trash"></i>
                       </button>
                     </td>
                   </tr>
@@ -98,6 +109,37 @@ export default function RoleAdmin() {
             </tbody>
           </table>
         </div>
+
+        {
+          totalPage > 1 && (
+            <div className="col-md-12">
+              <nav aria-label="Page navigation example">
+                <ul className="pagination justify-content-center">
+                  <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                    <a role="button" className="page-link" onClick={() => setCurrentPage(currentPage - 1)}>Previous</a>
+                  </li>
+                  {
+                    Array.from({ length: totalPage }).map((p, i) => (
+                      (i + 1) === currentPage ? (
+                        <li key={i} className="page-item active" aria-current="page">
+                          <span role="button" className="page-link" onClick={() => setCurrentPage(i + 1)}>{i + 1}</span>
+                        </li>
+                      ) : (
+                        <li key={i} className="page-item">
+                          <a className="page-link" role="button" href="javascript:void(0)" onClick={() => setCurrentPage(i + 1)}>{i + 1}</a>
+                        </li>
+                      )
+                    ))
+                  }
+                  <li className={`page-item ${currentPage === totalPage ? 'disabled' : ''}`}>
+                    <a role="button" className="page-link" href="javascript:void(0)" onClick={() => setCurrentPage(currentPage + 1)}>Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          )
+        }
+        
       </div>
       {userDetail && (
         <EditUserModal

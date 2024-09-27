@@ -1,7 +1,7 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { createUser } from "../../store/actions/userAction"
 import { useDispatch } from "react-redux"
-import { Button, Modal } from "react-bootstrap"
+import { Button, Modal, Spinner } from "react-bootstrap"
 
 function CreateUserModal({ isShowModal, onRequestCloseModal }) {
 
@@ -9,19 +9,23 @@ function CreateUserModal({ isShowModal, onRequestCloseModal }) {
     const name = useRef(null)
     const password = useRef(null)
     const confirmPassword = useRef(null)
-    const role = useRef(null)
+    const [isSaving, setSaving] = useState(false)
  
     const dispatch = useDispatch()
 
     const handleOnSubmit = () => {
-        dispatch(createUser({
-            name: name.current.value,
-            email: email.current.value,
-            password: password.current.value,
-            confirmPassword: password.current.value,
-            role: role.current.value
-        }))
-        onRequestCloseModal()
+        dispatch(
+            createUser({
+                name: name.current.value,
+                email: email.current.value,
+                password: password.current.value,
+                confirmPassword: confirmPassword.current.value,
+                role: 0
+            },
+            onRequestCloseModal, 
+            () => setSaving(true),
+            () => setSaving(false))
+        )
     }
 
   return (
@@ -47,19 +51,16 @@ function CreateUserModal({ isShowModal, onRequestCloseModal }) {
                     <label className="form-label">Confirm Password</label>
                     <input type="password" className="form-control" ref={confirmPassword} />
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Role</label>
-                    <select className="form-select" ref={role}>
-                        <option value="0">User</option>
-                        <option value="1">Admin</option>
-                    </select>
-                </div>
             </form>
         </Modal.Body>
         <Modal.Footer>
-        <Button variant="primary" onClick={handleOnSubmit}>
-            Save Changes
-        </Button>
+            {
+                isSaving ? <button className="btn btn-primary" disabled>
+                    <Spinner animation="border" size="sm" /> Saving...
+                </button> : <button className="btn btn-primary" onClick={handleOnSubmit}>
+                    Save Changes
+                </button>
+            }
         </Modal.Footer>
     </Modal>
   )

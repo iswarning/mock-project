@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Loading from "../../components/Loading";
+import { getListUser } from "../../store/actions/userAction";
 import RoleAdmin from "./RoleAdmin";
 import RoleUser from "./RoleUser";
-import { useEffect } from "react";
-import { getListUser } from "../../store/actions/userAction";
 
 function WrapperUsers() {
   const { userInfo } = useSelector((state) => state.authStore);
@@ -14,7 +15,7 @@ function WrapperUsers() {
     dispatch(getListUser());
   }, []);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
 
   return (
     <div className="container">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Button, Modal } from "react-bootstrap"
+import { Modal, Spinner } from "react-bootstrap"
 import { useDispatch } from "react-redux"
 import { updateUser } from "../../store/actions/userAction"
 
@@ -9,13 +9,18 @@ function EditUserModal({ userDetail, isShowModal, onRequestCloseModal }) {
 
     const [email, setEmail] = useState(userDetail.email)
     const [name, setName] = useState(userDetail.name)
+    const [isSaving, setSaving] = useState(false)
 
     const handleOnSubmit = () => {
-        dispatch(updateUser({
-            email,
-            name
-        }))
-        onRequestCloseModal()
+        dispatch(
+            updateUser({
+                email,
+                name
+            },
+            onRequestCloseModal, 
+            () => setSaving(true),
+            () => setSaving(false))
+        )
     }
 
     useEffect(() => {
@@ -41,9 +46,13 @@ function EditUserModal({ userDetail, isShowModal, onRequestCloseModal }) {
                 </form>
             </Modal.Body>
             <Modal.Footer>
-            <Button variant="primary" onClick={handleOnSubmit}>
-                Save Changes
-            </Button>
+            {
+                isSaving ? <button className="btn btn-primary" disabled>
+                    <Spinner animation="border" size="sm" /> Saving...
+                </button> : <button className="btn btn-primary" onClick={handleOnSubmit}>
+                    Save Changes
+                </button>
+            }
             </Modal.Footer>
         </Modal>
     )
