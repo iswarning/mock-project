@@ -43,7 +43,7 @@ function RoleUser(props) {
           <div className="col-9">
             <input
               type="text"
-              className="form-control w-50 py-2"
+              className="form-control widthInput py-2"
               name="name"
               value={formState.name}
               onChange={handleChange}
@@ -55,7 +55,7 @@ function RoleUser(props) {
           <div className="col-9">
             <input
               type="text"
-              className="form-control w-50 py-2"
+              className="form-control widthInput py-2"
               name="email"
               value={formState.email}
               disabled
