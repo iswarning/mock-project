@@ -36,7 +36,7 @@ function LeftMenu({ sidebarOpen, closeSidebar }) {
                 isActive ? "btn text-menu active" : "btn text-menu"
               }
             >
-              <i class="fa-solid fa-house"></i>
+              <i className="fa-solid fa-house"></i>
               <span className="textMenuBig">Dashboard</span>
             </NavLink>
           </li>
@@ -48,7 +48,7 @@ function LeftMenu({ sidebarOpen, closeSidebar }) {
               isActive ? "btn text-menu active" : "btn text-menu"
             }
           >
-            <i class="fa-solid fa-user"></i>
+            <i className="fa-solid fa-user"></i>
             <span className="textMenuBig">Users</span>
           </NavLink>
         </li>
@@ -59,7 +59,7 @@ function LeftMenu({ sidebarOpen, closeSidebar }) {
               isActive ? "btn text-menu active" : "btn text-menu"
             }
           >
-            <i class="fa-solid fa-diagram-project"></i>
+            <i className="fa-solid fa-diagram-project"></i>
             <span className="textMenuBig">Project</span>
           </NavLink>
         </li>
@@ -70,7 +70,7 @@ function LeftMenu({ sidebarOpen, closeSidebar }) {
               isActive ? "btn text-menu active" : "btn text-menu"
             }
           >
-            <i class="fa-solid fa-list-check"></i>
+            <i className="fa-solid fa-list-check"></i>
             <span className="textMenuBig">Tasks</span>
           </NavLink>
         </li>

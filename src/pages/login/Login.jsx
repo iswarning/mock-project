@@ -4,11 +4,15 @@ import { validateFormLogin } from "../../common/validate";
 import axios from "axios";
 import { ToastCommon } from "../../components/ToastCommon";
 import { TOAST } from "../../common/constants";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { SET_USER_INFO } from "../../store/constants";
 
 const Login = () => {
   const email = useRef(null);
   const password = useRef(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
     try {
@@ -27,6 +31,10 @@ const Login = () => {
       if (resp) {
         localStorage.setItem("access_token", resp.data.access_token);
         localStorage.setItem("refresh_token", resp.data.refresh_token);
+        dispatch({
+          type: SET_USER_INFO,
+          payload: jwtDecode(resp.data.access_token),
+        })
         navigate("/");
       }
     } catch (error) {

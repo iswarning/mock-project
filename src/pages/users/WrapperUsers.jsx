@@ -6,16 +6,7 @@ import RoleAdmin from "./RoleAdmin";
 import RoleUser from "./RoleUser";
 
 function WrapperUsers() {
-  const { userInfo } = useSelector((state) => state.authStore);
-  const { isLoading } = useSelector((state) => state.appStore);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getListUser());
-  }, []);
-
-  if (isLoading) return <Loading />;
+  const { userInfo } = useSelector((state) => state.authStore)
 
   return (
     <div className="container">
