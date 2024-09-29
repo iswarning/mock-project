@@ -2,7 +2,7 @@ import axios from "axios";
 import { TOAST } from "../../common/constants";
 import { validateFormSignUp } from "../../common/validate";
 import { ToastCommon } from "../../components/ToastCommon";
-import { SET_SHOW_SIGNUP } from "../constants";
+import { SET_SHOW_SIGNUP, SET_USER_INFO } from "../constants";
 
 export const signUp = (params) => {
   return async (dispatch, getState) => {
@@ -36,5 +36,9 @@ export const logout = () => {
   return async (dispatch, getState) => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+    dispatch({
+      type: SET_USER_INFO,
+      payload: null,
+    })
   };
 };
