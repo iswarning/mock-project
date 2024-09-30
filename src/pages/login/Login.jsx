@@ -31,6 +31,10 @@ const Login = () => {
       if (resp) {
         localStorage.setItem("access_token", resp.data.access_token);
         localStorage.setItem("refresh_token", resp.data.refresh_token);
+        dispatch({
+          type: SET_USER_INFO,
+          payload: jwtDecode(resp.data.access_token),
+        });
         localStorage.setItem(
           "userName",
           jwtDecode(resp.data.access_token).name

@@ -101,7 +101,6 @@ export const updateUserByUser = (params) => {
     try {
       // Get userInfo from the Redux state
       const { userInfo } = getState().authStore;
-      console.log(userInfo);
 
       const resp = await axiosInstance.put(
         import.meta.env.VITE_BASE_URL + "/api/user",

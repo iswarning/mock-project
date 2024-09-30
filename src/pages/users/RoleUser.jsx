@@ -5,12 +5,12 @@ import { updateUserByUser } from "../../store/actions/userAction";
 
 function RoleUser() {
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.authStore);
 
   const [formState, setFormState] = useState({
     ...userInfo,
     name: localStorage.getItem("userName") || userInfo.name,
   });
-  console.log(listUser);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
