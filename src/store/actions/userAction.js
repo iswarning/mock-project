@@ -70,9 +70,6 @@ export const deleteUser = (params) => {
 export const updateUser = (params, showSaving, hideSaving) => {
   return async (dispatch, getState) => {
     try {
-      // Get userInfo from the Redux state
-      const { userInfo } = getState().authStore;
-
       showSaving();
       const resp = await axiosInstance.put(
         import.meta.env.VITE_BASE_URL + "/api/user",
@@ -83,11 +80,6 @@ export const updateUser = (params, showSaving, hideSaving) => {
         document.getElementById("close-edit-user-btn").click();
         ToastCommon(TOAST.SUCCESS, "Updated user successfully");
         dispatch(getListUser());
-
-        const dataUpdate = JSON.parse(resp.config.data);
-        if (dataUpdate.email === userInfo.email) {
-          localStorage.setItem("userName", dataUpdate.name);
-        }
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
@@ -99,9 +91,6 @@ export const updateUser = (params, showSaving, hideSaving) => {
 export const updateUserByUser = (params) => {
   return async (dispatch, getState) => {
     try {
-      // Get userInfo from the Redux state
-      const { userInfo } = getState().authStore;
-
       const resp = await axiosInstance.put(
         import.meta.env.VITE_BASE_URL + "/api/user",
         params
@@ -109,11 +98,10 @@ export const updateUserByUser = (params) => {
 
       if (resp) {
         ToastCommon(TOAST.SUCCESS, "Updated user successfully");
-
-        const dataUpdate = JSON.parse(resp.config.data);
-        if (dataUpdate.email === userInfo.email) {
-          localStorage.setItem("userName", dataUpdate.name);
-        }
+        dispatch({
+          type: SET_USER_INFO,
+          payload: JSON.parse(resp.config.data),
+        });
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
