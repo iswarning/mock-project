@@ -1,5 +1,4 @@
 import { useRef, useState } from "react"
-import { Spinner } from "react-bootstrap"
 import { useDispatch } from "react-redux"
 import { createUser } from "../../store/actions/userAction"
 
@@ -61,7 +60,7 @@ function CreateUserModal() {
                 <div className="modal-footer">
                     {
                         isSaving ? <button className="btn btn-primary" disabled>
-                            <Spinner animation="border" size="sm" /> Saving...
+                            <span className="saving"></span> Saving...
                         </button> : <button className="btn btn-primary" onClick={handleOnSubmit}>
                             Save Changes
                         </button>

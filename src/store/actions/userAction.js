@@ -3,6 +3,7 @@ import { validateFormSignUp } from "../../common/validate";
 import { ToastCommon } from "../../components/ToastCommon";
 import axiosInstance from "../../config/axios-config";
 import {
+  SET_CURRENT_PAGE,
     SET_LIST_USER,
     SET_USER_INFO
 } from "../constants";
@@ -82,6 +83,7 @@ export const updateUser = (params, showSaving, hideSaving) => {
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
+      hideSaving()
     }
   };
 };

@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react"
-import { Spinner } from "react-bootstrap"
+import { useEffect, useRef, useState } from "react"
 import { useDispatch } from "react-redux"
 import { updateUser } from "../../store/actions/userAction"
 
@@ -7,25 +6,21 @@ function EditUserModal({ userDetail }) {
 
     const dispatch = useDispatch()
 
-    const [email, setEmail] = useState(userDetail.email)
-    const [name, setName] = useState(userDetail.name)
+    const email = useRef(null)
+    const name = useRef(null)
+ 
     const [isSaving, setSaving] = useState(false)
 
     const handleOnSubmit = () => {
         dispatch(
             updateUser({
-                email,
-                name
+                email: email.current.value,
+                name: name.current.value
             },
             () => setSaving(true),
             () => setSaving(false))
         )
     }
-
-    useEffect(() => {
-        setEmail(userDetail.email)
-        setName(userDetail.name)
-    },[userDetail])
 
     return (
         <div className="modal fade" id="modalEditUser">
@@ -41,11 +36,11 @@ function EditUserModal({ userDetail }) {
                     <form>
                         <div className="mb-3">
                             <label className="form-label">Email</label>
-                            <input type="text" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                            <input disabled type="text" className="form-control" defaultValue={userDetail ? userDetail.email : ''} ref={email}/>
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Name</label>
-                            <input type="text" className="form-control" value={name} onChange={(e) => setName(e.target.value)}/>
+                            <input type="text" className="form-control" defaultValue={userDetail ? userDetail.name : ''} ref={name}/>
                         </div>
                     </form>
                 </div>
@@ -53,7 +48,7 @@ function EditUserModal({ userDetail }) {
                 <div className="modal-footer">
                     {
                         isSaving ? <button className="btn btn-primary" disabled>
-                            <Spinner animation="border" size="sm" /> Saving...
+                            <span className="saving"></span> Saving...
                         </button> : <button className="btn btn-primary"  onClick={handleOnSubmit}>
                             Save Changes
                         </button>

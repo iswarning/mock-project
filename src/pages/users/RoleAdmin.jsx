@@ -5,12 +5,10 @@ import EditUserModal from "./EditUserModal";
 import ListUser from "./ListUser";
 import { useDispatch, useSelector } from "react-redux";
 import { getListUser } from "../../store/actions/userAction";
+import { SET_CURRENT_PAGE } from "../../store/constants";
 
 function RoleAdmin() {
   
-  const [openEditUserModal, setOpenEditUserModal] = useState(false);
-  const [openCreateUserModal, setOpenCreateUserModal] = useState(false);
-
   const [userDetail, setUserDetail] = useState(null); 
 
   const dispatch = useDispatch()
@@ -29,6 +27,10 @@ function RoleAdmin() {
 
   useEffect(() => {
     dispatch(getListUser())
+    dispatch({
+      type: SET_CURRENT_PAGE,
+      payload: 1
+    })
   },[])
 
   if (isLoading) return <Loading />
@@ -42,11 +44,9 @@ function RoleAdmin() {
         /> 
         
       </div>
-      {userDetail && (
-        <EditUserModal
-          userDetail={userDetail}
-        />
-      )}
+      <EditUserModal
+        userDetail={userDetail}
+      />
       <CreateUserModal />
     </>
   );

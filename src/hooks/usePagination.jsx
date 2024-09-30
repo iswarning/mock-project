@@ -13,6 +13,7 @@ function usePagination(data = [], text = '', itemPerPage = 5) {
     const totalPage = Math.ceil(totalRow / itemPerPage)
 
     const [paginatedData, setPaginatedData] = useState({})
+console.log(123);
 
     useEffect(() => {
         let obj = {}
