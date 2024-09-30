@@ -18,13 +18,25 @@ function ProtectedRoute() {
       payload: jwtDecode(accessToken),
     });
 
+    // Toggle the sidebar open/close
+    const toggleSidebar = () => {
+      setSidebarOpen((prev) => !prev);
+    };
+
     return (
       <>
-        <Header openSidebar={() => setSidebarOpen(true)} />
+        <Header
+          openSidebar={() => toggleSidebar()}
+          closeSidebar={() => setSidebarOpen(false)}
+        />
         <div className="d-flex w-100">
           <LeftMenu
             sidebarOpen={sidebarOpen}
             closeSidebar={() => setSidebarOpen(false)}
+          />
+          <div
+            className={`overlay ${sidebarOpen ? "open" : ""}`}
+            onClick={() => setSidebarOpen(false)}
           />
           <div className="main-content">
             <Outlet />

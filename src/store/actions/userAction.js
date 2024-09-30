@@ -2,9 +2,7 @@ import { TOAST } from "../../common/constants";
 import { validateFormSignUp } from "../../common/validate";
 import { ToastCommon } from "../../components/ToastCommon";
 import axiosInstance from "../../config/axios-config";
-import {
-    SET_LIST_USER
-} from "../constants";
+import { SET_LIST_USER } from "../constants";
 import { hideLoading, showLoading } from "./appAction";
 
 export const getListUser = () => {
@@ -14,11 +12,13 @@ export const getListUser = () => {
       const resp = await axiosInstance.get(
         import.meta.env.VITE_BASE_URL + "/api/user"
       );
+
       if (resp) {
         dispatch({
           type: SET_LIST_USER,
           payload: resp.data,
         });
+
         dispatch(hideLoading());
       }
     } catch (error) {
@@ -28,10 +28,15 @@ export const getListUser = () => {
   };
 };
 
-export const createUser = (params, onRequestCloseModal, showSaving, hideSaving) => {
+export const createUser = (
+  params,
+  onRequestCloseModal,
+  showSaving,
+  hideSaving
+) => {
   return async (dispatch, getState) => {
     try {
-      showSaving()
+      showSaving();
       validateFormSignUp(params);
 
       const resp = await axiosInstance.post(
@@ -39,45 +44,62 @@ export const createUser = (params, onRequestCloseModal, showSaving, hideSaving) 
         params
       );
       if (resp) {
-        hideSaving()
-        onRequestCloseModal()
+        hideSaving();
+        onRequestCloseModal();
         ToastCommon(TOAST.SUCCESS, "Created user successfully");
         dispatch(getListUser());
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
-      hideSaving()
+      hideSaving();
     }
   };
 };
 
 export const deleteUser = (params) => {
-    return async (dispatch, getState) => {
-      try {
-          const resp = await axiosInstance.delete(import.meta.env.VITE_BASE_URL + '/api/user', { data: params})
-          if (resp) {
-            dispatch(getListUser())
-            ToastCommon(TOAST.SUCCESS, 'Deleted user successfully')
-          }
-      } catch (error) {
-        ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
+  return async (dispatch, getState) => {
+    try {
+      const resp = await axiosInstance.delete(
+        import.meta.env.VITE_BASE_URL + "/api/user",
+        { data: params }
+      );
+      if (resp) {
+        dispatch(getListUser());
+        ToastCommon(TOAST.SUCCESS, "Deleted user successfully");
       }
+    } catch (error) {
+      ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
+    }
   };
 };
 
-export const updateUser = (params, onRequestCloseModal, showSaving, hideSaving) => {
+export const updateUser = (
+  params,
+  onRequestCloseModal,
+  showSaving,
+  hideSaving
+) => {
   return async (dispatch, getState) => {
     try {
-      showSaving()
+      // Get userInfo from the Redux state
+      const { userInfo } = getState().authStore;
+
+      showSaving();
       const resp = await axiosInstance.put(
         import.meta.env.VITE_BASE_URL + "/api/user",
         params
       );
+
       if (resp) {
-        hideSaving()
-        onRequestCloseModal()
+        hideSaving();
+        onRequestCloseModal();
         ToastCommon(TOAST.SUCCESS, "Updated user successfully");
         dispatch(getListUser());
+
+        const dataUpdate = JSON.parse(resp.config.data);
+        if (dataUpdate.email === userInfo.email) {
+          localStorage.setItem("userName", dataUpdate.name);
+        }
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
@@ -88,12 +110,22 @@ export const updateUser = (params, onRequestCloseModal, showSaving, hideSaving) 
 export const updateUserByUser = (params) => {
   return async (dispatch, getState) => {
     try {
+      // Get userInfo from the Redux state
+      const { userInfo } = getState().authStore;
+      console.log(userInfo);
+
       const resp = await axiosInstance.put(
         import.meta.env.VITE_BASE_URL + "/api/user",
         params
       );
+
       if (resp) {
         ToastCommon(TOAST.SUCCESS, "Updated user successfully");
+
+        const dataUpdate = JSON.parse(resp.config.data);
+        if (dataUpdate.email === userInfo.email) {
+          localStorage.setItem("userName", dataUpdate.name);
+        }
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);

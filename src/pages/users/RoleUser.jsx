@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./style.scss";
 import { updateUserByUser } from "../../store/actions/userAction";
@@ -9,7 +9,10 @@ function RoleUser(props) {
   const { userInfo } = useSelector((state) => state.authStore);
   const dispatch = useDispatch();
 
-  const [formState, setFormState] = useState(userInfo);
+  const [formState, setFormState] = useState({
+    ...userInfo,
+    name: localStorage.getItem("userName") || userInfo.name,
+  });
   console.log(listUser);
 
   const handleChange = (e) => {
@@ -19,6 +22,7 @@ function RoleUser(props) {
       [name]: value,
     }));
   };
+
   const handleSubmit = async () => {
     try {
       // Dispatch action to update user information
@@ -32,7 +36,6 @@ function RoleUser(props) {
       console.error("Error updating user info:", error);
     }
   };
-  console.log("formState", formState);
 
   return (
     <div className="infoUser">
@@ -63,9 +66,11 @@ function RoleUser(props) {
           </div>
         </div>
       </div>
-      <button className="btn btn-primary" onClick={handleSubmit}>
-        Submit
-      </button>
+      <div className="text-center">
+        <button className="btn btn-primary px-5 py-2" onClick={handleSubmit}>
+          Submit
+        </button>
+      </div>
     </div>
   );
 }

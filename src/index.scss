@@ -29,7 +29,7 @@ ul, li {
 
 .main-content {
   background-color: #E5E9ED;
-  width: 85vw;
+  width: 82vw;
   padding: 20px;
   height: 92vh;
 }
@@ -37,7 +37,12 @@ ul, li {
 @media (max-width: 767px) {
   .main-content {
     width: 100vw;
-    padding: 20px;
+    padding: 10px;
   }
 }
 
+@media only screen and (min-width: 768px) and (max-width: 1024px){
+  .main-content {
+    width: 70vw;
+  }
+}

@@ -4,6 +4,7 @@ import { validateFormLogin } from "../../common/validate";
 import axios from "axios";
 import { ToastCommon } from "../../components/ToastCommon";
 import { TOAST } from "../../common/constants";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const email = useRef(null);
@@ -27,6 +28,10 @@ const Login = () => {
       if (resp) {
         localStorage.setItem("access_token", resp.data.access_token);
         localStorage.setItem("refresh_token", resp.data.refresh_token);
+        localStorage.setItem(
+          "userName",
+          jwtDecode(resp.data.access_token).name
+        );
         navigate("/");
       }
     } catch (error) {
