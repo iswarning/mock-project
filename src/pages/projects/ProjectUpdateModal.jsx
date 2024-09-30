@@ -1,20 +1,15 @@
 import { useEffect, useState } from 'react';
-import {
-  convertYYYYMMDDToISOWithCurrentTime,
-  formatISODateToYYYYMMDD,
-} from '../../common/dateFormat';
+import { convertDateToYMD, convertDateWithCurrentTime } from '../../common/dateFormat';
+import { useDispatch } from 'react-redux';
+import { updateProject } from '../../store/actions/projectAction';
 
 /* eslint-disable react/prop-types */
 function ProjectUpdateModal({ projectData }) {
-  const initialValue = '';
-  const [project, setProject] = useState(projectData || initialValue);
-
-  // const dispatch = useDispatch();
+  const [project, setProject] = useState(projectData);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (projectData !== undefined) {
-      setProject(projectData);
-    }
+    setProject(projectData);
   }, [projectData]);
 
   const handleProjectNameChange = (e) => {
@@ -30,20 +25,20 @@ function ProjectUpdateModal({ projectData }) {
   };
 
   const handleTimeStartChange = (e) => {
-    setProject({ ...project, time_start: convertYYYYMMDDToISOWithCurrentTime(e.target.value) });
+    setProject({ ...project, time_start: convertDateWithCurrentTime(e.target.value) });
   };
   const handleTimeEndChange = (e) => {
-    setProject({ ...project, time_end: convertYYYYMMDDToISOWithCurrentTime(e.target.value) });
+    setProject({ ...project, time_end: convertDateWithCurrentTime(e.target.value) });
   };
 
   const handlePriorityChange = (e) => {
-    setProject({ ...project, priority: e.target.value });
+    setProject({ ...project, priority: Number(e.target.value) });
   };
 
   const handleUpdateProject = () => {
-    console.log(project);
-
-    // dispatch(updateProject(project));
+    if (project) {
+      dispatch(updateProject(project));
+    }
   };
 
   return (
@@ -81,7 +76,7 @@ function ProjectUpdateModal({ projectData }) {
                         className="form-control"
                         id="name"
                         placeholder="Project Name..."
-                        value={project.name}
+                        value={project?.name}
                         onChange={(e) => handleProjectNameChange(e)}
                       />
                     </div>
@@ -96,7 +91,7 @@ function ProjectUpdateModal({ projectData }) {
                         className="form-control"
                         id="note"
                         placeholder="Note..."
-                        value={project.note}
+                        value={project?.note}
                         onChange={(e) => handleNoteChange(e)}
                       />
                     </div>
@@ -111,7 +106,7 @@ function ProjectUpdateModal({ projectData }) {
                         className="form-control"
                         id="payment"
                         placeholder="Payment"
-                        value={project.payment}
+                        value={project?.payment}
                         onChange={(e) => handlePaymentChange(e)}
                       />
                     </div>
@@ -126,7 +121,7 @@ function ProjectUpdateModal({ projectData }) {
                         type="date"
                         className="form-control"
                         id="timeStart"
-                        value={formatISODateToYYYYMMDD(project.time_start)}
+                        value={convertDateToYMD(project?.time_start)}
                         onChange={(e) => handleTimeStartChange(e)}
                       />
                     </div>
@@ -140,7 +135,7 @@ function ProjectUpdateModal({ projectData }) {
                         type="date"
                         className="form-control"
                         id="timeEnd"
-                        value={formatISODateToYYYYMMDD(project.time_end)}
+                        value={convertDateToYMD(project?.time_end)}
                         onChange={(e) => handleTimeEndChange(e)}
                       />
                     </div>
@@ -150,14 +145,16 @@ function ProjectUpdateModal({ projectData }) {
                       Priority
                     </label>
                     <div className="col-8">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="priority"
-                        placeholder="Priority"
-                        value={project.priority}
+                      <select
+                        className="form-select"
+                        aria-label="priority"
+                        value={project?.priority}
                         onChange={(e) => handlePriorityChange(e)}
-                      />
+                      >
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                      </select>
                     </div>
                   </div>
                 </form>

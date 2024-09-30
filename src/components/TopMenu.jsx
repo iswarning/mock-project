@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import imageAVT from "../assets/avatarUser.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import imageAVT from "../assets/avatarUser.png";
 import { ROUTES } from "../common/constants";
 import { logout } from "../store/actions/authAction";
 
 function TopMenu(props) {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.authStore);
+  // const { listUser } = useSelector((state) => state.userStore);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -37,15 +38,7 @@ function TopMenu(props) {
             {isOpen && (
               <ul className="dropdownTopMenu-menu">
                 <li>list info</li>
-                <li className="logout ">
-                  <button
-                    type="button"
-                    className="btn "
-                    onClick={() => handleLogout()}
-                  >
-                    Logout
-                  </button>
-                </li>
+                <li onClick={() => handleLogout()}>Logout</li>
               </ul>
             )}
           </div>

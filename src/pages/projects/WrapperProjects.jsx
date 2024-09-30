@@ -1,11 +1,35 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProjectsByUser, getProjectsData } from '../../store/actions/projectAction';
 import AdminProjects from './AdminProjects';
-import UserProjects from './UserProjects';
 import ProjectCreateModal from './ProjectCreateModal';
+import UserProjects from './UserProjects';
+import Loading from '../../components/Loading';
 
 const WrapperProjects = () => {
-  const role = 1;
+  const { userInfo } = useSelector((state) => state.authStore);
+  const { isLoading } = useSelector((state) => state.appStore);
+  const dispatch = useDispatch();
+  const [checkRole, setCheckRole] = useState('');
+
+  const handleCheck = (role) => {
+    if (role == 1) {
+      setCheckRole('admin');
+    } else setCheckRole('user');
+  };
+
+  useEffect(() => {
+    dispatch(getProjectsData());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getProjectsByUser(userInfo?.email));
+  }, []);
+
+  if (isLoading) return <Loading />;
+
   return (
     <>
       <div className="container mt-2 mb-4">
@@ -15,13 +39,14 @@ const WrapperProjects = () => {
             className="btn btn-warning px-5 py-2 text-white"
             data-bs-toggle="modal"
             data-bs-target="#projectCreateModal"
+            onClick={() => handleCheck(userInfo?.role)}
           >
             <strong>Create Project</strong>
           </button>
         </div>
       </div>
-      {role == 1 ? <AdminProjects /> : <UserProjects />}
-      <ProjectCreateModal />
+      {Number(userInfo?.role) == 1 ? <AdminProjects /> : <UserProjects />}
+      <ProjectCreateModal checkRole={checkRole} email={userInfo?.email} />
     </>
   );
 };

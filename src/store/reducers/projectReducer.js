@@ -1,15 +1,21 @@
-import { GET_ADMIN_PROJECTS_DATA } from '../constants';
+import { GET_PROJECTS_BY_USER, GET_PROJECTS_DATA } from '../constants';
 
 const initialState = {
-  adminProjects: [],
+  projects: [],
+  projectsByUser: [],
 };
 
 const projectReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case GET_ADMIN_PROJECTS_DATA:
+    case GET_PROJECTS_DATA:
       return {
         ...state,
-        adminProjects: payload.data,
+        projects: payload,
+      };
+    case GET_PROJECTS_BY_USER:
+      return {
+        ...state,
+        projectsByUser: payload,
       };
     default:
       return state;

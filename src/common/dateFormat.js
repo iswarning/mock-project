@@ -1,55 +1,34 @@
-function cleanISODateString(isoDate) {
-  // Remove any characters after the 'Z' if present
-  const cleanedDate = isoDate?.split('Z')[0];
-  return cleanedDate;
-}
+// Convert Date to dd/MM/yyyy:
+export const convertDateToDMY = (dateString) => {
+  const date = new Date(dateString);
 
-export function formatISODateToYYYYMMDD(isoDate) {
-  // Clean the ISO date string
-  const cleanedDate = cleanISODateString(isoDate);
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const year = date.getUTCFullYear();
 
-  // Create a Date object from the cleaned ISO string
-  const date = new Date(cleanedDate);
+  return `${day}/${month}/${year}`;
+};
 
-  // Extract the year, month, and day
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-  const day = String(date.getDate()).padStart(2, '0');
+// Convert Date to yyyy-MM-dd:
+export const convertDateToYMD = (dateString) => {
+  const date = new Date(dateString);
 
-  // Format as yyyy-MM-dd
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const year = date.getUTCFullYear();
+
   return `${year}-${month}-${day}`;
-}
+};
 
-export function formatISODateToDDMMYYYY(isoDate) {
-  // Clean the ISO date string
-  const cleanedDate = cleanISODateString(isoDate);
-
-  // Create a Date object from the cleaned ISO string
-  const date = new Date(cleanedDate);
-
-  // Extract the year, month, and day
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-  const day = String(date.getDate()).padStart(2, '0');
-
-  // Format as yyyy-MM-dd
-  return `${day}-${month}-${year}`;
-}
-
-export function convertYYYYMMDDToISOWithCurrentTime(dateString) {
-  // Split the input string into year, month, and day
-  const [year, month, day] = dateString.split('-').map(Number);
-
-  // Get the current time
+// Convert Date + current time:
+export const convertDateWithCurrentTime = (dateString) => {
   const now = new Date();
-  const hours = now.getHours();
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
 
-  // Create a Date object using the provided date and the current time
-  // Note: Month is 0-based in JavaScript Date (0 = January)
-  const date = new Date(year, month - 1, day, hours, minutes, seconds);
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
 
-  // Return the ISO string
-  return date.toISOString();
-}
+  const timeString = `${hours}:${minutes}:${seconds}`;
+
+  return `${dateString} ${timeString}`;
+};

@@ -1,11 +1,11 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { convertYYYYMMDDToISOWithCurrentTime } from '../../common/dateFormat';
-import { createProject } from '../../store/actions/projectAction';
-import { v4 as uuidv4 } from 'uuid';
+import { createProject, createProjectByUser } from '../../store/actions/projectAction';
+import { convertDateWithCurrentTime } from '../../common/dateFormat';
 
-function ProjectCreateModal(props) {
+function ProjectCreateModal({ checkRole, email }) {
   const dispatch = useDispatch();
   const projectName_Ref = useRef();
   const note_Ref = useRef();
@@ -15,18 +15,20 @@ function ProjectCreateModal(props) {
   const priority_Ref = useRef();
 
   const handleCreateProject = () => {
-    const randomId = uuidv4();
     const project = {
-      id: randomId,
       name: projectName_Ref.current.value,
-      note: note_Ref.current.value,
       payment: payment_Ref.current.value,
-      priority: priority_Ref.current.value,
-      timeStart: convertYYYYMMDDToISOWithCurrentTime(timeStart_Ref.current.value),
-      timeEnd: convertYYYYMMDDToISOWithCurrentTime(timeEnd_Ref.current.value),
+      time_start: convertDateWithCurrentTime(timeStart_Ref.current.value),
+      time_end: convertDateWithCurrentTime(timeEnd_Ref.current.value),
+      note: note_Ref.current.value,
+      priority: Number(priority_Ref.current.value),
     };
-    console.log('🚀 ~ project:', project);
-    // dispatch(createProject(project));
+
+    if (checkRole == 'admin') {
+      dispatch(createProject(project));
+    } else if (checkRole == 'user') {
+      dispatch(createProjectByUser(project, email));
+    }
   };
   return (
     <>
@@ -122,13 +124,11 @@ function ProjectCreateModal(props) {
                       Priority:
                     </label>
                     <div className="col-8">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="priority"
-                        placeholder="1 or 2 or 3"
-                        ref={priority_Ref}
-                      />
+                      <select className="form-select" aria-label="Priority" ref={priority_Ref}>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                      </select>
                     </div>
                   </div>
                 </form>
