@@ -7,8 +7,7 @@ export const ROUTES = {
   home: '/',
   login: '/login',
   users: '/users',
-  products: 'products',
+  projects: 'projects',
   dashboard: 'dashboard',
   tasks: 'tasks',
-  projects: '/projects',
 };

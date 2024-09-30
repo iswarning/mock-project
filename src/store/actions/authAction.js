@@ -1,8 +1,9 @@
-import axios from 'axios';
-import { TOAST } from '../../common/constants';
-import { validateFormSignUp } from '../../common/validate';
-import { ToastCommon } from '../../components/ToastCommon';
-import { SET_SHOW_SIGNUP } from '../constants';
+import axios from "axios";
+import { TOAST } from "../../common/constants";
+import { validateFormSignUp } from "../../common/validate";
+import { ToastCommon } from "../../components/ToastCommon";
+import { SET_SHOW_SIGNUP } from "../constants";
+import { persistor } from "../store";
 
 export const signUp = (params) => {
   return async (dispatch, getState) => {
@@ -31,7 +32,8 @@ export const signUp = (params) => {
 
 export const logout = () => {
   return async (dispatch, getState) => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    persistor.purge();
   };
 };
