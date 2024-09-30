@@ -2,7 +2,7 @@ import { TOAST } from "../../common/constants";
 import { validateFormSignUp } from "../../common/validate";
 import { ToastCommon } from "../../components/ToastCommon";
 import axiosInstance from "../../config/axios-config";
-import { SET_LIST_USER } from "../constants";
+import { SET_CURRENT_PAGE, SET_LIST_USER, SET_USER_INFO } from "../constants";
 import { hideLoading, showLoading } from "./appAction";
 
 export const getListUser = () => {
@@ -27,13 +27,7 @@ export const getListUser = () => {
     }
   };
 };
-
-export const createUser = (
-  params,
-  onRequestCloseModal,
-  showSaving,
-  hideSaving
-) => {
+export const createUser = (params, showSaving, hideSaving) => {
   return async (dispatch, getState) => {
     try {
       showSaving();
@@ -45,7 +39,7 @@ export const createUser = (
       );
       if (resp) {
         hideSaving();
-        onRequestCloseModal();
+        document.getElementById("close-create-user-btn").click();
         ToastCommon(TOAST.SUCCESS, "Created user successfully");
         dispatch(getListUser());
       }
@@ -73,12 +67,7 @@ export const deleteUser = (params) => {
   };
 };
 
-export const updateUser = (
-  params,
-  onRequestCloseModal,
-  showSaving,
-  hideSaving
-) => {
+export const updateUser = (params, showSaving, hideSaving) => {
   return async (dispatch, getState) => {
     try {
       // Get userInfo from the Redux state
@@ -89,10 +78,9 @@ export const updateUser = (
         import.meta.env.VITE_BASE_URL + "/api/user",
         params
       );
-
       if (resp) {
         hideSaving();
-        onRequestCloseModal();
+        document.getElementById("close-edit-user-btn").click();
         ToastCommon(TOAST.SUCCESS, "Updated user successfully");
         dispatch(getListUser());
 
@@ -103,6 +91,7 @@ export const updateUser = (
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
+      hideSaving();
     }
   };
 };

@@ -1,42 +1,32 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { SET_USER_INFO } from "../store/constants";
-import { jwtDecode } from "jwt-decode";
 import Header from "../pages/theme/Header/Header";
 import LeftMenu from "../pages/theme/LeftMenu/LeftMenu";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_USER_INFO } from "../store/constants";
+import { jwtDecode } from "jwt-decode";
 
 function ProtectedRoute() {
   const accessToken = localStorage.getItem("access_token");
-  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.authStore);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const dispatch = useDispatch();
 
   if (accessToken) {
-    // Decode JWT and set user info in Redux store
-    dispatch({
-      type: SET_USER_INFO,
-      payload: jwtDecode(accessToken),
-    });
-
-    // Toggle the sidebar open/close
-    const toggleSidebar = () => {
-      setSidebarOpen((prev) => !prev);
-    };
+    if (!userInfo) {
+      dispatch({
+        type: SET_USER_INFO,
+        payload: jwtDecode(accessToken),
+      });
+    }
 
     return (
       <>
-        <Header
-          openSidebar={() => toggleSidebar()}
-          closeSidebar={() => setSidebarOpen(false)}
-        />
+        <Header openSidebar={() => setSidebarOpen(true)} />
         <div className="d-flex w-100">
           <LeftMenu
             sidebarOpen={sidebarOpen}
             closeSidebar={() => setSidebarOpen(false)}
-          />
-          <div
-            className={`overlay ${sidebarOpen ? "open" : ""}`}
-            onClick={() => setSidebarOpen(false)}
           />
           <div className="main-content">
             <Outlet />

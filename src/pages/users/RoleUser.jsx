@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./style.scss";
 import { updateUserByUser } from "../../store/actions/userAction";
-import { SET_USER_INFO } from "../../store/constants";
 
-function RoleUser(props) {
-  const { listUser } = useSelector((state) => state.userStore);
-  const { userInfo } = useSelector((state) => state.authStore);
+function RoleUser() {
   const dispatch = useDispatch();
 
   const [formState, setFormState] = useState({
@@ -23,15 +20,10 @@ function RoleUser(props) {
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     try {
       // Dispatch action to update user information
-      await dispatch(updateUserByUser(formState));
-
-      dispatch({
-        type: SET_USER_INFO,
-        payload: formState,
-      });
+      dispatch(updateUserByUser(formState));
     } catch (error) {
       console.error("Error updating user info:", error);
     }
