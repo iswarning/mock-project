@@ -37,6 +37,7 @@ export const logout = () => {
   return async (dispatch, getState) => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-    persistor.purge()
+    localStorage.removeItem("userName");
+    persistor.purge();
   };
 };

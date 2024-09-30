@@ -29,17 +29,11 @@ ul, li {
 
 .main-content {
   background-color: #E5E9ED;
-  width: 85vw;
+  width: 82vw;
   padding: 20px;
   height: 92vh;
 }
 
-@media (max-width: 767px) {
-  .main-content {
-    width: 100vw;
-    padding: 20px;
-  }
-}
 
 .my-truncate {
   display: inline-block;
@@ -126,3 +120,16 @@ ul, li {
     transform: rotate(360deg);
   }
 } 
+
+@media (max-width: 767px) {
+  .main-content {
+    width: 100vw;
+    padding: 10px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px){
+  .main-content {
+    width: 70vw;
+  }
+}

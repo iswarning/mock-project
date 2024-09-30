@@ -6,13 +6,14 @@ import "./index.scss";
 import { persistor, store } from "./store/store.js";
 import { PersistGate } from "redux-persist/integration/react";
 
+const queryClient = new QueryClient();
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-          <App />
-          <ToastCustom />
-      </PersistGate>
-    </Provider>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+      <ToastCustom />
+    </PersistGate>
+  </Provider>
   // </StrictMode>
 );

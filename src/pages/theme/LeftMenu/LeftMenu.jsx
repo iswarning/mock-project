@@ -27,6 +27,10 @@ function LeftMenu({ sidebarOpen, closeSidebar }) {
       ref={sidebarRef}
       className={`sidebar ${sidebarOpen ? "open" : ""} shadow`}
     >
+      <div className="sidebarHeader">
+        <h4>logo</h4>
+        <div className="line"></div>
+      </div>
       <ul className="m-0 p-0 pt-3">
         {userInfo?.role === 1 && (
           <li>
@@ -35,6 +39,7 @@ function LeftMenu({ sidebarOpen, closeSidebar }) {
               className={({ isActive }) =>
                 isActive ? "btn text-menu active" : "btn text-menu"
               }
+              onClick={closeSidebar}
             >
               <i className="fa-solid fa-house"></i>
               <span className="textMenuBig">Dashboard</span>
@@ -47,6 +52,7 @@ function LeftMenu({ sidebarOpen, closeSidebar }) {
             className={({ isActive }) =>
               isActive ? "btn text-menu active" : "btn text-menu"
             }
+            onClick={closeSidebar}
           >
             <i className="fa-solid fa-user"></i>
             <span className="textMenuBig">Users</span>
@@ -58,6 +64,7 @@ function LeftMenu({ sidebarOpen, closeSidebar }) {
             className={({ isActive }) =>
               isActive ? "btn text-menu active" : "btn text-menu"
             }
+            onClick={closeSidebar}
           >
             <i className="fa-solid fa-diagram-project"></i>
             <span className="textMenuBig">Project</span>
@@ -69,6 +76,7 @@ function LeftMenu({ sidebarOpen, closeSidebar }) {
             className={({ isActive }) =>
               isActive ? "btn text-menu active" : "btn text-menu"
             }
+            onClick={closeSidebar}
           >
             <i className="fa-solid fa-list-check"></i>
             <span className="textMenuBig">Tasks</span>

@@ -6,9 +6,11 @@ import { updateUserByUser } from "../../store/actions/userAction";
 function RoleUser() {
   const dispatch = useDispatch();
 
-  const { userInfo } = useSelector((state) => state.authStore)
-
-  const [formState, setFormState] = useState(userInfo);
+  const [formState, setFormState] = useState({
+    ...userInfo,
+    name: localStorage.getItem("userName") || userInfo.name,
+  });
+  console.log(listUser);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,6 +19,7 @@ function RoleUser() {
       [name]: value,
     }));
   };
+
   const handleSubmit = () => {
     try {
       // Dispatch action to update user information
@@ -55,9 +58,11 @@ function RoleUser() {
           </div>
         </div>
       </div>
-      <button className="btn btn-primary" onClick={handleSubmit}>
-        Submit
-      </button>
+      <div className="text-center">
+        <button className="btn btn-primary px-5 py-2" onClick={handleSubmit}>
+          Submit
+        </button>
+      </div>
     </div>
   );
 }
