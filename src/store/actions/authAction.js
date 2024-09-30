@@ -2,7 +2,7 @@ import axios from "axios";
 import { TOAST } from "../../common/constants";
 import { validateFormSignUp } from "../../common/validate";
 import { ToastCommon } from "../../components/ToastCommon";
-import { SET_SHOW_SIGNUP, SET_USER_INFO } from "../constants";
+import { SET_SHOW_SIGNUP } from "../constants";
 import { persistor } from "../store";
 
 export const signUp = (params) => {
@@ -11,17 +11,14 @@ export const signUp = (params) => {
       // validation
       validateFormSignUp(params);
 
-      const resp = await axios.post(
-        import.meta.env.VITE_BASE_URL + "/api/signup",
-        {
-          name: params.name,
-          email: params.email,
-          password: params.password,
-        }
-      );
+      const resp = await axios.post(import.meta.env.VITE_BASE_URL + '/api/signup', {
+        name: params.name,
+        email: params.email,
+        password: params.password,
+      });
 
       if (resp) {
-        ToastCommon(TOAST.SUCCESS, "Successfully registered");
+        ToastCommon(TOAST.SUCCESS, 'Successfully registered');
         dispatch({
           type: SET_SHOW_SIGNUP,
           payload: false,

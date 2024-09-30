@@ -10,3 +10,6 @@ export const SET_MODAL = "SET_MODAL";
 export const SET_LIST_USER = "SET_LIST_USER"
 
 export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
+
+export const GET_PROJECTS_DATA = 'GET_PROJECTS_DATA';
+export const GET_PROJECTS_BY_USER = 'GET_PROJECTS_BY_USER';

@@ -17,7 +17,7 @@ function Loading() {
     <div style={styleContainer}>
         <span className="loader"></span>
     </div>
-  )
+  );
 }
 
-export default Loading
+export default Loading;

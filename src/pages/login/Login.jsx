@@ -23,10 +23,7 @@ const Login = () => {
       };
       validateFormLogin(params);
 
-      const resp = await axios.post(
-        import.meta.env.VITE_BASE_URL + "/api/login",
-        params
-      );
+      const resp = await axios.post(import.meta.env.VITE_BASE_URL + '/api/login', params);
 
       if (resp) {
         localStorage.setItem("access_token", resp.data.access_token);
@@ -50,13 +47,7 @@ const Login = () => {
         <label className="labelLogin" htmlFor="chk" aria-hidden="true">
           Login
         </label>
-        <input
-          className="inputLogin"
-          type="email"
-          name="email"
-          placeholder="Email"
-          ref={email}
-        />
+        <input className="inputLogin" type="email" name="email" placeholder="Email" ref={email} />
         <input
           className="inputLogin"
           type="password"
@@ -64,11 +55,7 @@ const Login = () => {
           placeholder="Password"
           ref={password}
         />
-        <button
-          type="button"
-          className="btnLogin"
-          onClick={() => handleLogin()}
-        >
+        <button type="button" className="btnLogin" onClick={() => handleLogin()}>
           Login
         </button>
       </form>

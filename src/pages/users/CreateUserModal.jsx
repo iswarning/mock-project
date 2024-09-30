@@ -1,16 +1,15 @@
-import { useRef, useState } from "react"
-import { useDispatch } from "react-redux"
-import { createUser } from "../../store/actions/userAction"
+import { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createUser } from '../../store/actions/userAction';
 
-function CreateUserModal() {
+function CreateUserModal({ isShowModal, onRequestCloseModal }) {
+  const email = useRef(null);
+  const name = useRef(null);
+  const password = useRef(null);
+  const confirmPassword = useRef(null);
+  const [isSaving, setSaving] = useState(false);
 
-    const email = useRef(null)
-    const name = useRef(null)
-    const password = useRef(null)
-    const confirmPassword = useRef(null)
-    const [isSaving, setSaving] = useState(false)
- 
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
     const handleOnSubmit = () => {
         dispatch(
@@ -73,4 +72,4 @@ function CreateUserModal() {
   )
 }
 
-export default CreateUserModal
+export default CreateUserModal;
