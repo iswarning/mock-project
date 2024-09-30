@@ -1,29 +1,26 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ROUTES } from "./common/constants";
-import LeftMenu from "./components/LeftMenu";
 import ProtectedRoute from "./components/ProtectedRoute";
-import TopMenu from "./components/TopMenu";
+import Dashboard from "./pages/dashboard/Dashboard";
 import Home from "./pages/home/Home";
 import WrapperLogin from "./pages/login/WrapperLogin";
+import Tasks from "./pages/tasks/Tasks";
+import Users from "./pages/users/WrapperUsers";
+import Project from "./pages/project/Project";
 
 function App() {
-  // const dispatch = useDispatch();
-
   return (
     <BrowserRouter>
-      <TopMenu />
-      <div className="row m-0 p-0">
-        <LeftMenu />
-        <Routes>
-          <Route path={ROUTES.login} element={<WrapperLogin />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path={ROUTES.home} element={<Home />} />
-            {/* <Route path="/products" element={<Products />} />
-            <Route path="/reviews" element={<Reviews />} />
-            <Route path="/checkout" element={<Checkout />} /> */}
-          </Route>
-        </Routes>
-      </div>
+      <Routes>
+        <Route path={ROUTES.login} element={<WrapperLogin />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path={ROUTES.home} element={<Home />} />
+          <Route path={ROUTES.project} element={<Project />} />
+          <Route path={ROUTES.users} element={<Users />} />
+          <Route path={ROUTES.dashboard} element={<Dashboard />} />
+          <Route path={ROUTES.tasks} element={<Tasks />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }

@@ -1,34 +1,35 @@
-import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import { login, loginWithGoogle } from "../../store/actions/authAction";
+=======
+import { validateFormLogin } from "../../common/validate";
+import axios from "axios";
+import { ToastCommon } from "../../components/ToastCommon";
+import { TOAST } from "../../common/constants";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { SET_USER_INFO } from "../../store/constants";
+>>>>>>> bbf8d6e8b0ee5a62569d4e587291185b65cca4a4
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.authStore);
+  const email = useRef(null);
+  const password = useRef(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const email = useRef(null)
-  const password = useRef(null)
-
-  const handleLogin = () => {
-    dispatch(
-      login({
+  const handleLogin = async () => {
+    try {
+      // validation
+      let params = {
         email: email.current.value,
         password: password.current.value,
-      })
-    );
-  };
+      };
+      validateFormLogin(params);
 
   const handleLoginWithGoogle = async() => {
     dispatch(loginWithGoogle())
   };
-
-  useEffect(() => {
-    if (userInfo) {
-      navigate("/");
-    }
-  },[navigate, userInfo])
 
   return (
     <div className="login">

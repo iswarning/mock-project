@@ -1,7 +1,8 @@
-import { SET_SHOW_SIGNUP } from "../constants";
+import { SET_LOADING, SET_SHOW_SIGNUP } from "../constants";
 
 const initState = {
     isShowSignUp: false,
+    isLoading: false
 };
 
 const appReducer = (state = initState, { type, payload }) => {
@@ -10,6 +11,12 @@ const appReducer = (state = initState, { type, payload }) => {
         return {
           ...state,
           isShowSignUp: payload
+        };
+
+      case SET_LOADING:
+        return {
+          ...state,
+          isLoading: payload
         };
   
       default:

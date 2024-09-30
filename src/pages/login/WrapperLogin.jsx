@@ -5,16 +5,16 @@ import SignUp from "./SignUp";
 import "./style.scss";
 
 function WrapperLogin() {
-  const { isShowSignUp } = useSelector((state) => state.appStore)
+  // const []
+  const { isShowSignUp } = useSelector((state) => state.appStore);
   const dispatch = useDispatch();
 
   const handleShowSignUp = () => {
     dispatch({
       type: SET_SHOW_SIGNUP,
-      payload:!isShowSignUp,
-    })
-  }
-
+      payload: !isShowSignUp,
+    });
+  };
 
   return (
     <div className="containerLogin">

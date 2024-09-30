@@ -1,9 +1,13 @@
 export const TOAST = {
-    SUCCESS: "SUCCESS",
-    ERROR: "ERROR",
+  SUCCESS: "SUCCESS",
+  ERROR: "ERROR",
 };
 
 export const ROUTES = {
-    login: '/login',
-    home: '/'
-}
+  home: "/",
+  login: "/login",
+  users: "/users",
+  project: "project",
+  dashboard: "dashboard",
+  tasks: "tasks",
+};
