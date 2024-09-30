@@ -8,3 +8,5 @@ export const SET_LOADING = "SET_LOADING";
 export const SET_MODAL = "SET_MODAL";
 
 export const SET_LIST_USER = "SET_LIST_USER"
+
+export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'

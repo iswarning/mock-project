@@ -2,12 +2,24 @@ import { Navigate, Outlet } from "react-router-dom";
 import Header from "../pages/theme/Header/Header";
 import LeftMenu from "../pages/theme/LeftMenu/LeftMenu";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_USER_INFO } from "../store/constants";
+import { jwtDecode } from "jwt-decode";
 
 function ProtectedRoute() {
   const accessToken = localStorage.getItem("access_token");
+  const { userInfo } = useSelector((state) => state.authStore)
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const dispatch = useDispatch();
 
     if (accessToken) {
+
+      if (!userInfo) {
+        dispatch({
+          type: SET_USER_INFO,
+          payload: jwtDecode(accessToken)
+        })
+      }
 
       return (
         <>

@@ -1,26 +1,27 @@
 import { useDispatch, useSelector } from "react-redux";
 import { changeRole, deleteUser } from "../../store/actions/userAction";
 import usePagination from "../../hooks/usePagination";
-import { useState } from "react";
+import React, { useCallback, useState } from "react";
+import { debounce } from "lodash";
+import { SET_CURRENT_PAGE } from "../../store/constants";
 
 function ListUser({ setUserDetail }) {
 
-    const [currentPage, setCurrentPage] = useState(1)
     const [text, setText] = useState('')
 
     const dispatch = useDispatch();
     
-    const { listUser } = useSelector((state) => state.userStore)
+    const { currentPage, listUser } = useSelector((state) => state.userStore)
     const { totalPage, paginatedData } = usePagination(listUser, text)
    
     const handleChangeRole = (email, role) => {
         dispatch(
           changeRole({
             email,
-            role,
+            role
           })
         )
-    };
+    }
 
     const handleEditUser = (user) => {
         setUserDetail(user);
@@ -37,13 +38,21 @@ function ListUser({ setUserDetail }) {
     };
 
     const handleChangePage = (page) => {
-      setCurrentPage(page)
+      dispatch({
+        type: SET_CURRENT_PAGE,
+        payload: page
+      })
     }
 
-    const handleSetText = (value) => {
-      setCurrentPage(1)
-      setText(value)
-    }
+    const handleSetText = useCallback(
+      debounce((value) => {
+        setText(value)
+        dispatch({
+          type: SET_CURRENT_PAGE,
+          payload: 1
+        })
+      },[1000])
+    )
 
   return (
     <>

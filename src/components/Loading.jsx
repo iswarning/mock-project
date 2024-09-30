@@ -1,5 +1,3 @@
-import { Spinner } from "react-bootstrap"
-
 function Loading() {
 
     const styleContainer = {
@@ -9,7 +7,7 @@ function Loading() {
         width: '100%',
         height: '100%',
         backgroundColor: 'gray',
-        opacity: '0.8',
+        opacity: '0.5',
         zIndex: 1000,
         display: 'grid',
         placeItems: 'center',
@@ -17,7 +15,7 @@ function Loading() {
 
   return (
     <div style={styleContainer}>
-        <Spinner animation="grow" variant="warning" />
+        <span className="loader"></span>
     </div>
   )
 }
