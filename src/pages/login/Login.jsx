@@ -1,12 +1,7 @@
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { validateFormLogin } from "../../common/validate";
-import axios from "axios";
-import { ToastCommon } from "../../components/ToastCommon";
-import { TOAST } from "../../common/constants";
-import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
-import { SET_USER_INFO } from "../../store/constants";
+import { useNavigate } from "react-router-dom";
+import { login, loginWithGoogle } from "../../store/actions/authAction";
 
 const Login = () => {
   const email = useRef(null);
@@ -14,32 +9,25 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleLogin = async () => {
-    try {
-      // validation
-      let params = {
-        email: email.current.value,
-        password: password.current.value,
-      };
-      validateFormLogin(params);
-
-      const resp = await axios.post(import.meta.env.VITE_BASE_URL + '/api/login', params);
-
-      if (resp) {
-        localStorage.setItem("access_token", resp.data.access_token);
-        localStorage.setItem("refresh_token", resp.data.refresh_token);
-
-        dispatch({
-          type: SET_USER_INFO,
-          payload: jwtDecode(resp.data.access_token),
-        });
-
-        navigate("/");
-      }
-    } catch (error) {
-      ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
-    }
+  const handleLogin = () => {
+    dispatch(
+      login(
+        {
+          email: email.current.value,
+          password: password.current.value,
+        },
+        () => navigate("/")
+      )
+    );
   };
+
+  const handleLoginWithGoogle = () => {
+    dispatch(
+      loginWithGoogle(
+        () => navigate("/")
+      )
+    );
+  }
 
   return (
     <div className="login">
@@ -57,6 +45,9 @@ const Login = () => {
         />
         <button type="button" className="btnLogin" onClick={() => handleLogin()}>
           Login
+        </button>
+        <button type="button" className="btnLogin" onClick={() => handleLoginWithGoogle()}>
+          <i className="fa-brands fa-google"></i> Login with Google
         </button>
       </form>
     </div>
