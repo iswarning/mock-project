@@ -1,12 +1,9 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useRef } from "react";
-import { useDispatch } from "react-redux";
-import {
-  createProject,
-  createProjectByUser,
-} from "../../store/actions/projectAction";
-import { convertDateWithCurrentTime } from "../../common/dateFormat";
+import React, { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { convertDateWithCurrentTime } from '../../common/dateFormat';
+import { createProject } from '../../store/actions/projectAction';
 
 function ProjectCreateModal({ checkRole, email }) {
   const dispatch = useDispatch();
@@ -26,12 +23,7 @@ function ProjectCreateModal({ checkRole, email }) {
       note: note_Ref.current.value,
       priority: Number(priority_Ref.current.value),
     };
-
-    if (checkRole == "admin") {
-      dispatch(createProject(project));
-    } else if (checkRole == "user") {
-      dispatch(createProjectByUser(project, email));
-    }
+    dispatch(createProject(project));
   };
   return (
     <>
@@ -113,12 +105,7 @@ function ProjectCreateModal({ checkRole, email }) {
                       Time End:
                     </label>
                     <div className="col-8">
-                      <input
-                        type="date"
-                        className="form-control"
-                        id="timeEnd"
-                        ref={timeEnd_Ref}
-                      />
+                      <input type="date" className="form-control" id="timeEnd" ref={timeEnd_Ref} />
                     </div>
                   </div>
                   <div className="row mb-3">
@@ -126,11 +113,7 @@ function ProjectCreateModal({ checkRole, email }) {
                       Priority:
                     </label>
                     <div className="col-8">
-                      <select
-                        className="form-select"
-                        aria-label="Priority"
-                        ref={priority_Ref}
-                      >
+                      <select className="form-select" aria-label="Priority" ref={priority_Ref}>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -149,11 +132,7 @@ function ProjectCreateModal({ checkRole, email }) {
               >
                 Create
               </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                 Close
               </button>
             </div>
