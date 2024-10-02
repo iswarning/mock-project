@@ -4,6 +4,8 @@ function usePagination(data = [], result = [], itemPerPage = 5) {
 
     const filteredData = result.length > 0 ? result : data
 
+    const totalRow = filteredData.length;
+
   const totalPage = Math.ceil(totalRow / itemPerPage);
 
   const [paginatedData, setPaginatedData] = useState({});
@@ -18,7 +20,7 @@ function usePagination(data = [], result = [], itemPerPage = 5) {
       obj['page1'] = filteredData.slice(0, totalRow);
     }
     setPaginatedData(obj);
-  }, [text]);
+  }, [result]);
 
   return {
     totalPage,
