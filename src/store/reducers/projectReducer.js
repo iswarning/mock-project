@@ -10,7 +10,11 @@ const projectReducer = (state = initialState, { type, payload }) => {
     case GET_PROJECTS_DATA:
       return {
         ...state,
-        projects: payload,
+        projects: payload.sort((a, b) => {
+          if (a.name < b.name) return -1;
+          if (a.name > b.name) return 1;
+          return 0;
+        }),
       };
     case SET_CURRENT_PAGE:
       return {
