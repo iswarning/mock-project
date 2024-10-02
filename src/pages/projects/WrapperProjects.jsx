@@ -1,23 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getProjectsByUser, getProjectsData } from '../../store/actions/projectAction';
-import AdminProjects from './AdminProjects';
-import ProjectCreateModal from './ProjectCreateModal';
-import UserProjects from './UserProjects';
-import Loading from '../../components/Loading';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getProjectsByUser,
+  getProjectsData,
+} from "../../store/actions/projectAction";
+import AdminProjects from "./AdminProjects";
+import ProjectCreateModal from "./ProjectCreateModal";
+import UserProjects from "./UserProjects";
+import Loading from "../../components/Loading";
+import "./style.scss";
 
 const WrapperProjects = () => {
   const { userInfo } = useSelector((state) => state.authStore);
   const { isLoading } = useSelector((state) => state.appStore);
   const dispatch = useDispatch();
-  const [checkRole, setCheckRole] = useState('');
+  const [checkRole, setCheckRole] = useState("");
 
   const handleCheck = (role) => {
     if (role == 1) {
-      setCheckRole('admin');
-    } else setCheckRole('user');
+      setCheckRole("admin");
+    } else setCheckRole("user");
   };
 
   useEffect(() => {
@@ -32,11 +36,11 @@ const WrapperProjects = () => {
 
   return (
     <>
-      <div className="container mt-2 mb-4">
+      <div className="container mt-2 mb-4" id="project">
         <div className="btn-group" role="group">
           <button
             type="button"
-            className="btn btn-warning px-5 py-2 text-white"
+            className="btn bgPrimary px-5 py-2 text-white"
             data-bs-toggle="modal"
             data-bs-target="#projectCreateModal"
             onClick={() => handleCheck(userInfo?.role)}

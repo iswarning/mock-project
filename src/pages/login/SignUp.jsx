@@ -6,18 +6,18 @@ import { signUp } from "../../store/actions/authAction";
 function SignUp() {
   const dispatch = useDispatch();
 
-  const email = useRef(null)
-  const password = useRef(null)
-  const confirmPassword = useRef(null)
-  const name = useRef(null)
+  const email = useRef(null);
+  const password = useRef(null);
+  const confirmPassword = useRef(null);
+  const name = useRef(null);
 
-  const handleSignUp = async() => {
+  const handleSignUp = async () => {
     dispatch(
       signUp({
         name: name.current.value,
         email: email.current.value,
         password: password.current.value,
-        confirmPassword: confirmPassword.current.value
+        confirmPassword: confirmPassword.current.value,
       })
     );
   };
@@ -58,7 +58,7 @@ function SignUp() {
         />
         <button
           type="button"
-          className="btnLogin"
+          className="btnLogin btnLoginSubmit"
           onClick={() => handleSignUp()}
         >
           Sign up

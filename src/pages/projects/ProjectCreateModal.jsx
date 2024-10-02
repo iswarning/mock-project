@@ -1,9 +1,12 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { createProject, createProjectByUser } from '../../store/actions/projectAction';
-import { convertDateWithCurrentTime } from '../../common/dateFormat';
+import React, { useRef } from "react";
+import { useDispatch } from "react-redux";
+import {
+  createProject,
+  createProjectByUser,
+} from "../../store/actions/projectAction";
+import { convertDateWithCurrentTime } from "../../common/dateFormat";
 
 function ProjectCreateModal({ checkRole, email }) {
   const dispatch = useDispatch();
@@ -24,9 +27,9 @@ function ProjectCreateModal({ checkRole, email }) {
       priority: Number(priority_Ref.current.value),
     };
 
-    if (checkRole == 'admin') {
+    if (checkRole == "admin") {
       dispatch(createProject(project));
-    } else if (checkRole == 'user') {
+    } else if (checkRole == "user") {
       dispatch(createProjectByUser(project, email));
     }
   };
@@ -41,19 +44,13 @@ function ProjectCreateModal({ checkRole, email }) {
       >
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
-            <div className="modal-header bg-warning">
+            <div className="modal-header bgTittleModel">
               <h1 className="modal-title fs-5" id="projectCreateModalLabel">
                 Create Project
               </h1>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
             </div>
             <div className="modal-body">
-              <div className="container mt-5">
+              <div className="container mt-2">
                 <form>
                   <div className="row mb-3">
                     <label htmlFor="name" className="col-4 col-form-label">
@@ -116,7 +113,12 @@ function ProjectCreateModal({ checkRole, email }) {
                       Time End:
                     </label>
                     <div className="col-8">
-                      <input type="date" className="form-control" id="timeEnd" ref={timeEnd_Ref} />
+                      <input
+                        type="date"
+                        className="form-control"
+                        id="timeEnd"
+                        ref={timeEnd_Ref}
+                      />
                     </div>
                   </div>
                   <div className="row mb-3">
@@ -124,7 +126,11 @@ function ProjectCreateModal({ checkRole, email }) {
                       Priority:
                     </label>
                     <div className="col-8">
-                      <select className="form-select" aria-label="Priority" ref={priority_Ref}>
+                      <select
+                        className="form-select"
+                        aria-label="Priority"
+                        ref={priority_Ref}
+                      >
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -137,13 +143,17 @@ function ProjectCreateModal({ checkRole, email }) {
             <div className="modal-footer">
               <button
                 type="button"
-                className="btn btn-warning"
+                className="btn bgPrimary"
                 data-bs-dismiss="modal"
                 onClick={() => handleCreateProject()}
               >
                 Create
               </button>
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
                 Close
               </button>
             </div>
