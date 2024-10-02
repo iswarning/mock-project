@@ -4,13 +4,33 @@ import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { convertDateToDMY } from '../../common/dateFormat';
 import projectsPagination from '../../hooks/projectsPagination';
+import { deleteProject } from '../../store/actions/projectAction';
 import { SET_CURRENT_PAGE } from '../../store/constants';
+import ProjectUpdateModal from './ProjectUpdateModal';
 
-const UserProjects = () => {
+const ProjectsList = () => {
+  const [projectData, setProjectData] = useState({
+    name: '',
+    payment: '',
+    time_start: '',
+    time_end: '',
+    note: '',
+    priority: '',
+  });
   const [text, setText] = useState('');
   const { currentPage, projects } = useSelector((state) => state.projectStore);
   const { totalPage, paginatedData } = projectsPagination(projects, text);
+  const { userInfo } = useSelector((state) => state.authStore);
+
   const dispatch = useDispatch();
+
+  const handleDelete = (id) => {
+    if (confirm('Are you sure delete this project?')) dispatch(deleteProject({ id }));
+  };
+
+  const showProjectUpdateModal = (project) => {
+    setProjectData(project);
+  };
 
   const handleChangePage = (page) => {
     dispatch({
@@ -49,10 +69,9 @@ const UserProjects = () => {
               <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={project.id}>
                 <div className="card bg-light">
                   <div className="card-body">
-                    <h5 className="card-title mb-3 border-bottom pt-1 pb-2">
+                    <h5 className="card-title mb-3 border-bottom pt-1 pb-2 text-truncate">
                       <strong>{project.name}</strong>
                     </h5>
-
                     <p className="card-text text-truncate">
                       <strong>Note: </strong>
                       {project.note}
@@ -76,14 +95,20 @@ const UserProjects = () => {
                     <div className="mt-2">
                       <button
                         type="button"
-                        className="btn btn-primary mx-1"
+                        className="btn btn-primary mx-1 my-1"
                         data-bs-toggle="modal"
                         data-bs-target="#projectUpdateModal"
-                        disabled
+                        onClick={() => showProjectUpdateModal(project)}
+                        disabled={userInfo?.role != 1}
                       >
                         Update
                       </button>
-                      <button type="button" className="btn btn-danger mx-1" disabled>
+                      <button
+                        type="button"
+                        className="btn btn-danger mx-1 my-1"
+                        onClick={() => handleDelete(project.id)}
+                        disabled={userInfo?.role != 1}
+                      >
                         Delete
                       </button>
                     </div>
@@ -138,8 +163,9 @@ const UserProjects = () => {
           </nav>
         </div>
       )}
+      <ProjectUpdateModal projectData={projectData} />
     </>
   );
 };
 
-export default UserProjects;
+export default ProjectsList;
