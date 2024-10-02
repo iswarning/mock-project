@@ -1,12 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
-import { changeRole, deleteUser } from "../../store/actions/userAction";
-import usePagination from "../../hooks/usePagination";
-import React, { useCallback, useState } from "react";
-import { debounce } from "lodash";
-import { SET_CURRENT_PAGE } from "../../store/constants";
+import { useDispatch, useSelector } from 'react-redux';
+import { changeRole, deleteUser } from '../../store/actions/userAction';
+import usePagination from '../../hooks/usePagination';
+import React, { useCallback, useState } from 'react';
+import { debounce } from 'lodash';
+import { SET_CURRENT_PAGE } from '../../store/constants';
 
 function ListUser({ setUserDetail }) {
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
 
   const dispatch = useDispatch();
 
@@ -27,7 +27,7 @@ function ListUser({ setUserDetail }) {
   };
 
   const handleDeleteUser = (id) => {
-    if (confirm("Are you sure you want to delete")) {
+    if (confirm('Are you sure you want to delete')) {
       dispatch(
         deleteUser({
           id,
@@ -78,7 +78,7 @@ function ListUser({ setUserDetail }) {
           />
         </div>
       </div>
-      <div className="col-md-12" style={{ minHeight: "330px" }}>
+      <div className="col-md-12" style={{ minHeight: '330px' }}>
         <table className="table table-responsive">
           <thead>
             <tr>
@@ -89,26 +89,20 @@ function ListUser({ setUserDetail }) {
             </tr>
           </thead>
           <tbody>
-            {paginatedData["page" + currentPage] &&
-              paginatedData["page" + currentPage].map((user) => (
+            {paginatedData['page' + currentPage] &&
+              paginatedData['page' + currentPage].map((user) => (
                 <tr key={user.id}>
                   <td>
-                    <span className="my-truncate text-truncate">
-                      {user.name}
-                    </span>
+                    <span className="my-truncate text-truncate">{user.name}</span>
                   </td>
                   <td>
-                    <span className="my-truncate text-truncate">
-                      {user.email}
-                    </span>
+                    <span className="my-truncate text-truncate">{user.email}</span>
                   </td>
                   <td>
                     <select
                       className="form-control"
                       value={user.role}
-                      onChange={(e) =>
-                        handleChangeRole(user.email, e.target.value)
-                      }
+                      onChange={(e) => handleChangeRole(user.email, e.target.value)}
                     >
                       <option value={0}>User</option>
                       <option value={1}>Admin</option>
@@ -142,9 +136,7 @@ function ListUser({ setUserDetail }) {
         <div className="col-md-12">
           <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
-              <li
-                className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
-              >
+              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
                 <a
                   role="button"
                   className="page-link"
@@ -166,21 +158,13 @@ function ListUser({ setUserDetail }) {
                   </li>
                 ) : (
                   <li key={i} className="page-item">
-                    <a
-                      className="page-link"
-                      role="button"
-                      onClick={() => handleChangePage(i + 1)}
-                    >
+                    <a className="page-link" role="button" onClick={() => handleChangePage(i + 1)}>
                       {i + 1}
                     </a>
                   </li>
                 )
               )}
-              <li
-                className={`page-item ${
-                  currentPage === totalPage ? "disabled" : ""
-                }`}
-              >
+              <li className={`page-item ${currentPage === totalPage ? 'disabled' : ''}`}>
                 <a
                   role="button"
                   className="page-link"

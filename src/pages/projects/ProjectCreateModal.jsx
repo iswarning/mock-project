@@ -2,8 +2,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { createProject, createProjectByUser } from '../../store/actions/projectAction';
 import { convertDateWithCurrentTime } from '../../common/dateFormat';
+import { createProject } from '../../store/actions/projectAction';
 
 function ProjectCreateModal({ checkRole, email }) {
   const dispatch = useDispatch();
@@ -23,12 +23,7 @@ function ProjectCreateModal({ checkRole, email }) {
       note: note_Ref.current.value,
       priority: Number(priority_Ref.current.value),
     };
-
-    if (checkRole == 'admin') {
-      dispatch(createProject(project));
-    } else if (checkRole == 'user') {
-      dispatch(createProjectByUser(project, email));
-    }
+    dispatch(createProject(project));
   };
   return (
     <>
