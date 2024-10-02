@@ -22,12 +22,8 @@ const Login = () => {
   };
 
   const handleLoginWithGoogle = () => {
-    dispatch(
-      loginWithGoogle(
-        () => navigate("/")
-      )
-    );
-  }
+    dispatch(loginWithGoogle(() => navigate("/")));
+  };
 
   return (
     <div className="login">
@@ -35,7 +31,20 @@ const Login = () => {
         <label className="labelLogin" htmlFor="chk" aria-hidden="true">
           Login
         </label>
-        <input className="inputLogin" type="email" name="email" placeholder="Email" ref={email} />
+        <button
+          type="button"
+          className="btnLogin btnLoginByGG"
+          onClick={() => handleLoginWithGoogle()}
+        >
+          <i className="fa-brands fa-google"></i> Login with Google
+        </button>
+        <input
+          className="inputLogin"
+          type="email"
+          name="email"
+          placeholder="Email"
+          ref={email}
+        />
         <input
           className="inputLogin"
           type="password"
@@ -43,11 +52,12 @@ const Login = () => {
           placeholder="Password"
           ref={password}
         />
-        <button type="button" className="btnLogin" onClick={() => handleLogin()}>
+        <button
+          type="button"
+          className="btnLogin btnLoginSubmit"
+          onClick={() => handleLogin()}
+        >
           Login
-        </button>
-        <button type="button" className="btnLogin" onClick={() => handleLoginWithGoogle()}>
-          <i className="fa-brands fa-google"></i> Login with Google
         </button>
       </form>
     </div>

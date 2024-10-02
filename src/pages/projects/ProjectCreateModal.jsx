@@ -2,8 +2,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { createProject, createProjectByUser } from '../../store/actions/projectAction';
 import { convertDateWithCurrentTime } from '../../common/dateFormat';
+import { createProject } from '../../store/actions/projectAction';
 
 function ProjectCreateModal({ checkRole, email }) {
   const dispatch = useDispatch();
@@ -23,12 +23,7 @@ function ProjectCreateModal({ checkRole, email }) {
       note: note_Ref.current.value,
       priority: Number(priority_Ref.current.value),
     };
-
-    if (checkRole == 'admin') {
-      dispatch(createProject(project));
-    } else if (checkRole == 'user') {
-      dispatch(createProjectByUser(project, email));
-    }
+    dispatch(createProject(project));
   };
   return (
     <>
@@ -41,19 +36,13 @@ function ProjectCreateModal({ checkRole, email }) {
       >
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
-            <div className="modal-header bg-warning">
+            <div className="modal-header bgTittleModel">
               <h1 className="modal-title fs-5" id="projectCreateModalLabel">
                 Create Project
               </h1>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
             </div>
             <div className="modal-body">
-              <div className="container mt-5">
+              <div className="container mt-2">
                 <form>
                   <div className="row mb-3">
                     <label htmlFor="name" className="col-4 col-form-label">
@@ -137,7 +126,7 @@ function ProjectCreateModal({ checkRole, email }) {
             <div className="modal-footer">
               <button
                 type="button"
-                className="btn btn-warning"
+                className="btn bgPrimary"
                 data-bs-dismiss="modal"
                 onClick={() => handleCreateProject()}
               >
