@@ -1,21 +1,12 @@
 import { useEffect, useState } from 'react';
 
-function usePagination(data = [], text = '', itemPerPage = 5) {
-  const filteredData =
-    text.length > 0
-      ? data.filter(
-          (item) =>
-            item.name.toLowerCase().includes(text.toLowerCase()) ||
-            item.email.toLowerCase().includes(text.toLowerCase())
-        )
-      : data;
+function usePagination(data = [], result = [], itemPerPage = 5) {
 
-  const totalRow = filteredData.length;
+    const filteredData = result.length > 0 ? result : data
 
   const totalPage = Math.ceil(totalRow / itemPerPage);
 
   const [paginatedData, setPaginatedData] = useState({});
-  console.log(123);
 
   useEffect(() => {
     let obj = {};

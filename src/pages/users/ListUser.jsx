@@ -1,17 +1,19 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { changeRole, deleteUser } from '../../store/actions/userAction';
-import usePagination from '../../hooks/usePagination';
-import React, { useCallback, useState } from 'react';
-import { debounce } from 'lodash';
-import { SET_CURRENT_PAGE } from '../../store/constants';
+import { debounce } from "lodash";
+import React, { useCallback, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { downloadCSV } from "../../common/downloadCSV";
+import usePagination from "../../hooks/usePagination";
+import { changeRole, deleteUser } from "../../store/actions/userAction";
+import { SET_CURRENT_PAGE } from "../../store/constants";
 
 function ListUser({ setUserDetail }) {
-  const [text, setText] = useState('');
-
+  
+  const [result, setResult] = useState([])
   const dispatch = useDispatch();
 
   const { currentPage, listUser } = useSelector((state) => state.userStore);
-  const { totalPage, paginatedData } = usePagination(listUser, text);
+
+  const { totalPage, paginatedData } = usePagination(listUser, result);
 
   const handleChangeRole = (email, role) => {
     dispatch(
@@ -43,18 +45,37 @@ function ListUser({ setUserDetail }) {
     });
   };
 
-  const handleSetText = useCallback(
+  const handleSearch = useCallback(
     debounce(
-      (value) => {
-        setText(value);
+      (keyWord) => {
+        setResult(listUser.filter((user) => 
+          user.email.toLowerCase().includes(keyWord.toLowerCase()) ||
+          user.name.toLowerCase().includes(keyWord.toLowerCase()))
+        )
         dispatch({
           type: SET_CURRENT_PAGE,
           payload: 1,
         });
       },
       [1000]
-    )
+    ), []
   );
+
+  const handleExportCSV = () => {
+    let data = []
+    Object.values(paginatedData).forEach((items) => {
+      items.forEach((item) => {
+        data.push({
+          ...item,
+          role: item.role === 1 ? "Admin" : "User",
+        })
+      })
+    })
+
+    if (data.length > 0) {
+      downloadCSV(data)
+    }
+  }
 
   return (
     <>
@@ -62,20 +83,23 @@ function ListUser({ setUserDetail }) {
         <div>
           <button
             className="btn btn-success"
-            onClick={() => setOpenCreateUserModal(!openCreateUserModal)}
             data-bs-toggle="modal"
             data-bs-target="#modalCreateUser"
+            title="Create User"
           >
             <i className="fa-solid fa-plus"></i>
           </button>
         </div>
-        <div>
+        <div className="d-flex align-items-center">
           <input
             type="text"
-            className="form-control"
+            className="form-control me-2"
             placeholder="Search..."
-            onChange={(e) => handleSetText(e.target.value)}
-          />
+            onChange={(e) => handleSearch(e.target.value)}
+          /> &nbsp;
+          <button title="Export data as CSV file" className="btn btn-success" onClick={handleExportCSV}>
+            <i className="fa-solid fa-file-csv"></i>
+          </button>
         </div>
       </div>
       <div className="col-md-12" style={{ minHeight: '330px' }}>
@@ -114,6 +138,7 @@ function ListUser({ setUserDetail }) {
                       onClick={() => handleEditUser(user)}
                       data-bs-toggle="modal"
                       data-bs-target="#modalEditUser"
+                      title="Edit this user"
                     >
                       <i className="fa-solid fa-pen-to-square"></i>
                     </button>
@@ -122,6 +147,7 @@ function ListUser({ setUserDetail }) {
                       disabled={user.role === 1}
                       className="btn btn-danger"
                       onClick={() => handleDeleteUser(user.id)}
+                      title="Delete this user"
                     >
                       <i className="fa-solid fa-trash"></i>
                     </button>

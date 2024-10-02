@@ -91,10 +91,13 @@ export const loginWithGoogle = (onRequestNavigate) => {
 
         dispatch({
           type: SET_USER_INFO,
-          payload: jwtDecode(response.data.access_token),
-        });
-
-        onRequestNavigate();
+          payload: {
+            ...jwtDecode(response.data.access_token),
+            photoURL: result.user.photoURL
+          },
+        })
+        
+        onRequestNavigate()
       }
     } catch (error) {
       console.error("Error during Google login:", error);
