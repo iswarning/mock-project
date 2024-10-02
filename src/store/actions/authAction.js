@@ -2,7 +2,7 @@ import axios from "axios";
 import { TOAST } from "../../common/constants";
 import { validateFormSignUp } from "../../common/validate";
 import { ToastCommon } from "../../components/ToastCommon";
-import { SET_SHOW_SIGNUP, SET_USER_INFO } from "../constants";
+import { SET_SHOW_SIGNUP } from "../constants";
 import { persistor } from "../store";
 
 export const signUp = (params) => {
