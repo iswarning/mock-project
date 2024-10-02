@@ -2,7 +2,7 @@ import { TOAST } from "../../common/constants";
 import { validateFormSignUp } from "../../common/validate";
 import { ToastCommon } from "../../components/ToastCommon";
 import axiosInstance from "../../config/axios-config";
-import { SET_CURRENT_PAGE, SET_LIST_USER, SET_USER_INFO } from "../constants";
+import { SET_LIST_USER, SET_USER_INFO } from "../constants";
 import { hideLoading, showLoading } from "./appAction";
 
 export const getListUser = () => {
@@ -67,7 +67,7 @@ export const deleteUser = (params) => {
   };
 };
 
-export const updateUser = (params, showSaving, hideSaving) => {
+export const updateUser = (params, userInfo, showSaving, hideSaving) => {
   return async (dispatch, getState) => {
     try {
       showSaving();
@@ -80,6 +80,16 @@ export const updateUser = (params, showSaving, hideSaving) => {
         document.getElementById("close-edit-user-btn").click();
         ToastCommon(TOAST.SUCCESS, "Updated user successfully");
         dispatch(getListUser());
+
+        if (userInfo.email === params.email) {
+          dispatch({
+            type: SET_USER_INFO,
+            payload: {
+              ...userInfo,
+              name: params.name,
+            }
+          })
+        }
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);

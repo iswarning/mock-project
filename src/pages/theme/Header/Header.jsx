@@ -41,7 +41,7 @@ function Header({ openSidebar }) {
                 onClick={() => toggleDropdown()}
               >
                 <span className="smallScreenSpan">{userInfo.name}</span>
-                <img src={imageAVT} alt="User Avatar" />
+                <img src={userInfo?.photoURL ?? imageAVT} alt="User Avatar" />
               </button>
               {isOpen && (
                 <ul className="dropdownHeader-menu">

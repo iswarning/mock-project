@@ -8,7 +8,10 @@ import { getListUser } from "../../store/actions/userAction";
 import { SET_CURRENT_PAGE } from "../../store/constants";
 
 function RoleAdmin() {
-  const [userDetail, setUserDetail] = useState(null);
+  const [userDetail, setUserDetail] = useState({
+    email: '',
+    name: ''
+  });
 
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.appStore);
