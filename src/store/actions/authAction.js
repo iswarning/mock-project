@@ -1,26 +1,23 @@
-import axios from "axios";
-import { TOAST } from "../../common/constants";
-import { validateFormLogin, validateFormSignUp } from "../../common/validate";
-import { ToastCommon } from "../../components/ToastCommon";
-import { SET_SHOW_SIGNUP } from "../constants";
-import { persistor } from "../store";
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../../firebase";
-import { jwtDecode } from "jwt-decode";
+import axios from 'axios';
+import { TOAST } from '../../common/constants';
+import { validateFormLogin, validateFormSignUp } from '../../common/validate';
+import { ToastCommon } from '../../components/ToastCommon';
+import { SET_SHOW_SIGNUP, SET_USER_INFO } from '../constants';
+import { persistor } from '../store';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../../../firebase';
+import { jwtDecode } from 'jwt-decode';
 
 export const login = (params, onRequestNavigate) => {
   return async (dispatch, getState) => {
     try {
       validateFormLogin(params);
 
-      const resp = await axios.post(
-        import.meta.env.VITE_BASE_URL + "/api/login",
-        params
-      );
+      const resp = await axios.post(import.meta.env.VITE_BASE_URL + '/api/login', params);
 
       if (resp) {
-        localStorage.setItem("access_token", resp.data.access_token);
-        localStorage.setItem("refresh_token", resp.data.refresh_token);
+        localStorage.setItem('access_token', resp.data.access_token);
+        localStorage.setItem('refresh_token', resp.data.refresh_token);
 
         dispatch({
           type: SET_USER_INFO,
@@ -41,17 +38,14 @@ export const signUp = (params) => {
       // validation
       validateFormSignUp(params);
 
-      const resp = await axios.post(
-        import.meta.env.VITE_BASE_URL + "/api/signup",
-        {
-          name: params.name,
-          email: params.email,
-          password: params.password,
-        }
-      );
+      const resp = await axios.post(import.meta.env.VITE_BASE_URL + '/api/signup', {
+        name: params.name,
+        email: params.email,
+        password: params.password,
+      });
 
       if (resp) {
-        ToastCommon(TOAST.SUCCESS, "Successfully registered");
+        ToastCommon(TOAST.SUCCESS, 'Successfully registered');
         dispatch({
           type: SET_SHOW_SIGNUP,
           payload: false,
@@ -65,8 +59,8 @@ export const signUp = (params) => {
 
 export const logout = () => {
   return async (dispatch, getState) => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
     persistor.purge();
   };
 };
@@ -80,14 +74,13 @@ export const loginWithGoogle = (onRequestNavigate) => {
       const token = await result.user.getIdToken(); // Lấy ID token từ Firebase
 
       // Gửi ID token đến server API
-      const response = await axios.post(
-        import.meta.env.VITE_BASE_URL + "/api/login/google",
-        { token }
-      );
+      const response = await axios.post(import.meta.env.VITE_BASE_URL + '/api/login/google', {
+        token,
+      });
 
       if (response.status === 200) {
-        localStorage.setItem("access_token", response.data.access_token);
-        localStorage.setItem("refresh_token", response.data.refresh_Token);
+        localStorage.setItem('access_token', response.data.access_token);
+        localStorage.setItem('refresh_token', response.data.refresh_Token);
 
         dispatch({
           type: SET_USER_INFO,
@@ -97,11 +90,8 @@ export const loginWithGoogle = (onRequestNavigate) => {
         onRequestNavigate();
       }
     } catch (error) {
-      console.error("Error during Google login:", error);
-      ToastCommon(
-        TOAST.ERROR,
-        "Error during login. Check console for details."
-      );
+      console.error('Error during Google login:', error);
+      ToastCommon(TOAST.ERROR, 'Error during login. Check console for details.');
     }
   };
 };

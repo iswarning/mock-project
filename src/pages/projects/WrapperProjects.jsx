@@ -4,9 +4,9 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/Loading';
 import { getProjectsData } from '../../store/actions/projectAction';
-import AdminProjects from './AdminProjects';
 import ProjectCreateModal from './ProjectCreateModal';
-import UserProjects from './UserProjects';
+import RoleAdmin from './RoleAdmin';
+import RoleUser from './RoleUser';
 
 const WrapperProjects = () => {
   const { userInfo } = useSelector((state) => state.authStore);
@@ -29,13 +29,13 @@ const WrapperProjects = () => {
             className="btn bgPrimary px-5 py-2 text-white"
             data-bs-toggle="modal"
             data-bs-target="#projectCreateModal"
-            disabled={userInfo?.role !== 1}
+            disabled={userInfo?.role != 1}
           >
             <strong>Create Project</strong>
           </button>
         </div>
       </div>
-      {Number(userInfo?.role) == 1 ? <AdminProjects /> : <UserProjects />}
+      {Number(userInfo?.role) == 1 ? <RoleAdmin /> : <RoleUser />}
       <ProjectCreateModal />
     </>
   );
