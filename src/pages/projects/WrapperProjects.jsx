@@ -22,11 +22,11 @@ const WrapperProjects = () => {
 
   return (
     <>
-      <div className="container mt-2 mb-4">
+      <div className="container mt-2 mb-4" id="project">
         <div className="btn-group" role="group">
           <button
             type="button"
-            className="btn btn-warning px-5 py-2 text-white"
+            className="btn bgPrimary px-5 py-2 text-white"
             data-bs-toggle="modal"
             data-bs-target="#projectCreateModal"
             disabled={userInfo?.role !== 1}
