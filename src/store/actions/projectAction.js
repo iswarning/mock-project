@@ -27,7 +27,6 @@ export const getProjectsData = (params) => {
 export const createProject = (project) => {
   return async (dispatch, getState) => {
     const res = await axiosInstance.post(import.meta.env.VITE_BASE_URL + '/api/project', project);
-    console.log('🚀 ~ res:', res.data);
 
     try {
       if (res.status === 200) {

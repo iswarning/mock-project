@@ -1,11 +1,12 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
+import { useSelector } from 'react-redux';
 import ProjectsList from './ProjectsList';
 
 const RoleAdmin = () => {
+  const { projects } = useSelector((state) => state.projectStore);
   return (
     <>
-      <ProjectsList />
+      <ProjectsList projects={projects} />
     </>
   );
 };
