@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { debounce } from 'lodash';
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,9 +5,10 @@ import { convertDateToDMY } from '../../common/dateFormat';
 import projectsPagination from '../../hooks/projectsPagination';
 import { deleteProject } from '../../store/actions/projectAction';
 import { SET_CURRENT_PAGE } from '../../store/constants';
+import ProjectCreateModal from './ProjectCreateModal';
 import ProjectUpdateModal from './ProjectUpdateModal';
 
-const ProjectsList = () => {
+const ProjectsList = ({ projects }) => {
   const [projectData, setProjectData] = useState({
     name: '',
     payment: '',
@@ -18,11 +18,10 @@ const ProjectsList = () => {
     priority: '',
   });
   const [text, setText] = useState('');
-  const { currentPage, projects } = useSelector((state) => state.projectStore);
-  const { totalPage, paginatedData } = projectsPagination(projects, text);
+  const { currentPage } = useSelector((state) => state.projectStore);
   const { userInfo } = useSelector((state) => state.authStore);
-
   const dispatch = useDispatch();
+  const { totalPage, paginatedData } = projectsPagination(projects, text);
 
   const handleDelete = (id) => {
     if (confirm('Are you sure delete this project?')) dispatch(deleteProject({ id }));
@@ -54,13 +53,29 @@ const ProjectsList = () => {
 
   return (
     <>
-      <div className="container">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search..."
-          onChange={(e) => handleSetText(e.target.value)}
-        />
+      <div
+        className="container mt-2 mb-4 d-flex justify-content-between align-items-center"
+        id="project"
+      >
+        <div className="btn-group" role="group">
+          <button
+            type="button"
+            className="btn bgPrimary px-5 py-2 text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#projectCreateModal"
+            disabled={userInfo?.role != 1}
+          >
+            <strong>Create Project</strong>
+          </button>
+        </div>
+        <div>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search..."
+            onChange={(e) => handleSetText(e.target.value)}
+          />
+        </div>
       </div>
       <div className="container my-4">
         <div className="row">
@@ -163,6 +178,7 @@ const ProjectsList = () => {
           </nav>
         </div>
       )}
+      <ProjectCreateModal />
       <ProjectUpdateModal projectData={projectData} />
     </>
   );

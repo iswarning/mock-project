@@ -3,7 +3,6 @@ import { convertDateToYMD, convertDateWithCurrentTime } from '../../common/dateF
 import { useDispatch } from 'react-redux';
 import { updateProject } from '../../store/actions/projectAction';
 
-/* eslint-disable react/prop-types */
 function ProjectUpdateModal({ projectData }) {
   const [project, setProject] = useState(projectData);
   const dispatch = useDispatch();

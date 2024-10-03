@@ -1,11 +1,9 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { convertDateWithCurrentTime } from '../../common/dateFormat';
 import { createProject } from '../../store/actions/projectAction';
 
-function ProjectCreateModal({ checkRole, email }) {
+function ProjectCreateModal() {
   const dispatch = useDispatch();
   const projectName_Ref = useRef();
   const note_Ref = useRef();
