@@ -36,11 +36,11 @@ const WrapperProjects = () => {
 
   return (
     <>
-      <div className="container mt-2 mb-4" id="project">
+      <div className="container mt-2">
         <div className="btn-group" role="group">
           <button
             type="button"
-            className="btn bgPrimary px-5 py-2 text-white"
+            className="btn bgCreate px-5 py-2 text-white"
             data-bs-toggle="modal"
             data-bs-target="#projectCreateModal"
             onClick={() => handleCheck(userInfo?.role)}

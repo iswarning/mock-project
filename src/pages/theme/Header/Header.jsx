@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import imageAVT from "../../../assets/avatarUser.png";
@@ -7,13 +7,34 @@ import { logout } from "../../../store/actions/authAction";
 import "./style.scss";
 
 function Header({ openSidebar }) {
+  const { userInfo } = useSelector((state) => state.authStore);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-
-  const { userInfo } = useSelector((state) => state.authStore);
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
+
+  const handleClickOutside = (event) => {
+    // Kiểm tra nếu click bên ngoài dropdown thì đóng nó
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    // Lắng nghe sự kiện click toàn trang khi dropdown mở
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      // Gỡ bỏ sự kiện khi component bị hủy
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -34,11 +55,11 @@ function Header({ openSidebar }) {
             </div>
           </div>
           <div className="col-4 text-end">
-            <div className="dropdownHeader">
+            <div className="dropdownHeader" ref={dropdownRef}>
               <button
                 type="button"
                 className="dropdownHeader-toggle"
-                onClick={() => toggleDropdown()}
+                onClick={toggleDropdown}
               >
                 <span className="smallScreenSpan">{userInfo.name}</span>
                 <img src={imageAVT} alt="User Avatar" />
@@ -46,7 +67,7 @@ function Header({ openSidebar }) {
               {isOpen && (
                 <ul className="dropdownHeader-menu">
                   <li>Setting</li>
-                  <li onClick={() => handleLogout()}>Logout</li>
+                  <li onClick={handleLogout}>Logout</li>
                 </ul>
               )}
             </div>

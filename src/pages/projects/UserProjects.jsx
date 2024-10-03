@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { convertDateToDMY } from '../../common/dateFormat';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { convertDateToDMY } from "../../common/dateFormat";
 
 const UserProjects = () => {
   const { projectsByUser } = useSelector((state) => state.projectStore);
@@ -13,10 +13,15 @@ const UserProjects = () => {
         <div className="row">
           {projectsByUser &&
             projectsByUser.map((project) => (
-              <div className="col-lg-6 col-md-6 col-sm-12 mb-4" key={project.id}>
+              <div
+                className="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4"
+                key={project.id}
+              >
                 <div className="card bg-light">
                   <div className="card-body">
-                    <h5 className="card-title mb-3 border-bottom pt-1 pb-2">Project</h5>
+                    <h5 className="card-title mb-3 border-bottom pt-1 pb-2">
+                      Project
+                    </h5>
                     <p className="card-text text-truncate">
                       <strong>Project Name: </strong>
                       {project.name}
@@ -51,7 +56,11 @@ const UserProjects = () => {
                       >
                         Update
                       </button>
-                      <button type="button" className="btn btn-danger mx-1" disabled>
+                      <button
+                        type="button"
+                        className="btn btn-danger mx-1"
+                        disabled
+                      >
                         Delete
                       </button>
                     </div>

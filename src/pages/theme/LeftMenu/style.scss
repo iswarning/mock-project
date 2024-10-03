@@ -1,31 +1,32 @@
 
 .text-menu {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin: 0 15px 5px;
     display: flex;
+    padding: 10px;
     align-items: center;
     color: #dedede;
     border: none;
     transition: all 0.2s ease-in;
   
     &:hover{
-        color: var(--lightBlue);
+        background: var(--lightBlue);
         transition: all 0.2s ease-in;
     }
   }
   
-  .active {
+  .text-menu.active {
     font-weight: bold;
-    color: var(--lightBlue);
+    background: var(--lightBlue);
   }
 
 .sidebar {
-  background: linear-gradient(to bottom, var(--darkBlue), var(--lightBlue));
-  height: 92vh;
-  width: 18vw;
-  color: #fff;
-  margin: 0;
+    background: linear-gradient(to bottom, var(--darkBlue), var(--lightBlue));
+    height: 92vh;
+    width: 18vw;
+    color: #fff;
+    margin: 0;
     transition: transform 0.3s ease;
     transform: translateX(-110%);
     overflow-y: auto;
@@ -33,10 +34,6 @@
 
     .sidebarHeader {
       display: none;
-    }
-    ul li{
-      padding: 10px 0 10px 20px;
-
     }
 
     &.open {
@@ -59,7 +56,7 @@
     &.open {
       position: fixed;
       left: 0;
-      width: 50vw;
+      width: 40vw;
       display: block;
       top:0;
       height: 100vh;
@@ -118,7 +115,6 @@
   .sidebar {
   padding: 10px 0 10px 10px;
   width: 30vw;
-
   }
   
 }

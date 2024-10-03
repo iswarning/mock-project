@@ -78,14 +78,17 @@ function ListUser({ setUserDetail }) {
           />
         </div>
       </div>
-      <div className="col-md-12" style={{ minHeight: "330px" }}>
-        <table className="table table-responsive">
+      <div className="col-md-12 " style={{ minHeight: "330px" }}>
+        <table
+          className="table table-responsive"
+          style={{ tableLayout: "fixed" }}
+        >
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Actions</th>
+              <th style={{ width: "35%" }}>Name</th>
+              <th style={{ width: "35%" }}>Email</th>
+              <th style={{ width: "15%" }}>Role</th>
+              <th style={{ width: "15%" }}>Actions</th>
             </tr>
           </thead>
           <tbody>

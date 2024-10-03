@@ -1,17 +1,18 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { convertDateToDMY } from '../../common/dateFormat';
-import { deleteProject } from '../../store/actions/projectAction';
-import ProjectUpdateModal from './ProjectUpdateModal';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { convertDateToDMY } from "../../common/dateFormat";
+import { deleteProject } from "../../store/actions/projectAction";
+import ProjectUpdateModal from "./ProjectUpdateModal";
 
 const AdminProjects = () => {
   const { projects } = useSelector((state) => state.projectStore);
-  const [project, setProject] = useState('');
+  const [project, setProject] = useState("");
   const dispatch = useDispatch();
 
   const handleDelete = (id) => {
-    if (confirm('Are you sure delete this project?')) dispatch(deleteProject({ id }));
+    if (confirm("Are you sure delete this project?"))
+      dispatch(deleteProject({ id }));
   };
 
   const showProjectUpdateModal = (project) => {
@@ -26,7 +27,10 @@ const AdminProjects = () => {
         <div className="row">
           {projects &&
             projects.map((project) => (
-              <div className="col-lg-6 col-md-6 col-sm-12 mb-4" key={project.id}>
+              <div
+                className="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4"
+                key={project.id}
+              >
                 <div className="card bg-light">
                   <div className="card-body">
                     <h5 className="card-title mb-3 border-bottom pt-1 pb-2">
@@ -52,7 +56,7 @@ const AdminProjects = () => {
                       <strong>Priority: </strong>
                       {project.priority}
                     </p>
-                    <div className="mt-2">
+                    <div className="mt-2 text-center">
                       <button
                         type="button"
                         className="btn btn-primary mx-1"
