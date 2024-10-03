@@ -82,7 +82,7 @@ function ListUser({ setUserDetail }) {
 
   return (
     <>
-      <div className="d-flex justify-content-between m-2">
+      <div className="d-flex justify-content-between m-2 ">
         <div>
           <button
             className="btn btn-success"

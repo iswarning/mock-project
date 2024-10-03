@@ -43,7 +43,7 @@ function Header({ openSidebar }) {
   };
 
   return (
-    <div className="bg-white shadow container-fruit">
+    <div className="shadow-lg bg-white container-fruit">
       <div id="header">
         <div className="row w-100">
           <div className="col-8 d-flex ">

@@ -86,7 +86,15 @@ const ProjectsList = ({ projects }) => {
                 className="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4"
                 key={project.id}
               >
-                <div className="card bg-light">
+                <div
+                  className={`card bg-light shadow-sm border border-3 ${
+                    project.priority === 1
+                      ? "border-danger"
+                      : project.priority === 2
+                      ? "border-warning"
+                      : ""
+                  }`}
+                >
                   <div className="card-body">
                     <h5 className="card-title mb-3 border-bottom pt-1 pb-2 text-truncate">
                       <strong>{project.name}</strong>
@@ -111,7 +119,7 @@ const ProjectsList = ({ projects }) => {
                       <strong>Priority: </strong>
                       {project.priority}
                     </p>
-                    <div className="mt-2">
+                    <div className="mt-2 text-center">
                       <button
                         type="button"
                         className="btn btn-primary mx-1 my-1"
