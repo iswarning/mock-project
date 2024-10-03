@@ -3,14 +3,9 @@ import { convertDateToYMD, convertDateWithCurrentTime } from '../../common/dateF
 import { useDispatch } from 'react-redux';
 import { updateProject } from '../../store/actions/projectAction';
 
-/* eslint-disable react/prop-types */
 function ProjectUpdateModal({ projectData }) {
   const [project, setProject] = useState(projectData);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    setProject(projectData);
-  }, [projectData]);
 
   const handleProjectNameChange = (e) => {
     setProject({ ...project, name: e.target.value });
@@ -40,6 +35,10 @@ function ProjectUpdateModal({ projectData }) {
       dispatch(updateProject(project));
     }
   };
+
+  useEffect(() => {
+    setProject(projectData);
+  }, [projectData]);
 
   return (
     <>
