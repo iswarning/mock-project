@@ -7,8 +7,7 @@ import { changeRole, deleteUser } from "../../store/actions/userAction";
 import { SET_CURRENT_PAGE } from "../../store/constants";
 
 function ListUser({ setUserDetail }) {
-  
-  const [result, setResult] = useState([])
+  const [result, setResult] = useState([]);
   const dispatch = useDispatch();
 
   const { currentPage, listUser } = useSelector((state) => state.userStore);
@@ -29,7 +28,7 @@ function ListUser({ setUserDetail }) {
   };
 
   const handleDeleteUser = (id) => {
-    if (confirm('Are you sure you want to delete')) {
+    if (confirm("Are you sure you want to delete")) {
       dispatch(
         deleteUser({
           id,
@@ -48,34 +47,38 @@ function ListUser({ setUserDetail }) {
   const handleSearch = useCallback(
     debounce(
       (keyWord) => {
-        setResult(listUser.filter((user) => 
-          user.email.toLowerCase().includes(keyWord.toLowerCase()) ||
-          user.name.toLowerCase().includes(keyWord.toLowerCase()))
-        )
+        setResult(
+          listUser.filter(
+            (user) =>
+              user.email.toLowerCase().includes(keyWord.toLowerCase()) ||
+              user.name.toLowerCase().includes(keyWord.toLowerCase())
+          )
+        );
         dispatch({
           type: SET_CURRENT_PAGE,
           payload: 1,
         });
       },
       [1000]
-    ), []
+    ),
+    []
   );
 
   const handleExportCSV = () => {
-    let data = []
+    let data = [];
     Object.values(paginatedData).forEach((items) => {
       items.forEach((item) => {
         data.push({
           ...item,
           role: item.role === 1 ? "Admin" : "User",
-        })
-      })
-    })
+        });
+      });
+    });
 
     if (data.length > 0) {
-      downloadCSV(data)
+      downloadCSV(data);
     }
-  }
+  };
 
   return (
     <>
@@ -96,37 +99,51 @@ function ListUser({ setUserDetail }) {
             className="form-control me-2"
             placeholder="Search..."
             onChange={(e) => handleSearch(e.target.value)}
-          /> &nbsp;
-          <button title="Export data as CSV file" className="btn btn-success" onClick={handleExportCSV}>
+          />{" "}
+          &nbsp;
+          <button
+            title="Export data as CSV file"
+            className="btn btn-success"
+            onClick={handleExportCSV}
+          >
             <i className="fa-solid fa-file-csv"></i>
           </button>
         </div>
       </div>
-      <div className="col-md-12" style={{ minHeight: '330px' }}>
-        <table className="table table-responsive">
+      <div className="col-md-12 " style={{ minHeight: "330px" }}>
+        <table
+          className="table table-responsive"
+          style={{ tableLayout: "fixed" }}
+        >
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Actions</th>
+              <th style={{ width: "35%" }}>Name</th>
+              <th style={{ width: "35%" }}>Email</th>
+              <th style={{ width: "15%" }}>Role</th>
+              <th style={{ width: "15%" }}>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {paginatedData['page' + currentPage] &&
-              paginatedData['page' + currentPage].map((user) => (
+            {paginatedData["page" + currentPage] &&
+              paginatedData["page" + currentPage].map((user) => (
                 <tr key={user.id}>
                   <td>
-                    <span className="my-truncate text-truncate">{user.name}</span>
+                    <span className="my-truncate text-truncate">
+                      {user.name}
+                    </span>
                   </td>
                   <td>
-                    <span className="my-truncate text-truncate">{user.email}</span>
+                    <span className="my-truncate text-truncate">
+                      {user.email}
+                    </span>
                   </td>
                   <td>
                     <select
                       className="form-control"
                       value={user.role}
-                      onChange={(e) => handleChangeRole(user.email, e.target.value)}
+                      onChange={(e) =>
+                        handleChangeRole(user.email, e.target.value)
+                      }
                     >
                       <option value={0}>User</option>
                       <option value={1}>Admin</option>
@@ -162,7 +179,9 @@ function ListUser({ setUserDetail }) {
         <div className="col-md-12">
           <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
-              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <li
+                className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
+              >
                 <a
                   role="button"
                   className="page-link"
@@ -184,13 +203,21 @@ function ListUser({ setUserDetail }) {
                   </li>
                 ) : (
                   <li key={i} className="page-item">
-                    <a className="page-link" role="button" onClick={() => handleChangePage(i + 1)}>
+                    <a
+                      className="page-link"
+                      role="button"
+                      onClick={() => handleChangePage(i + 1)}
+                    >
                       {i + 1}
                     </a>
                   </li>
                 )
               )}
-              <li className={`page-item ${currentPage === totalPage ? 'disabled' : ''}`}>
+              <li
+                className={`page-item ${
+                  currentPage === totalPage ? "disabled" : ""
+                }`}
+              >
                 <a
                   role="button"
                   className="page-link"

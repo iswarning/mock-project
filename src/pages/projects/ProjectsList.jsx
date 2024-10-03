@@ -1,30 +1,31 @@
-import { debounce } from 'lodash';
-import React, { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { convertDateToDMY } from '../../common/dateFormat';
-import projectsPagination from '../../hooks/projectsPagination';
-import { deleteProject } from '../../store/actions/projectAction';
-import { SET_CURRENT_PAGE } from '../../store/constants';
-import ProjectCreateModal from './ProjectCreateModal';
-import ProjectUpdateModal from './ProjectUpdateModal';
+import { debounce } from "lodash";
+import React, { useCallback, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { convertDateToDMY } from "../../common/dateFormat";
+import projectsPagination from "../../hooks/projectsPagination";
+import { deleteProject } from "../../store/actions/projectAction";
+import { SET_CURRENT_PAGE } from "../../store/constants";
+import ProjectCreateModal from "./ProjectCreateModal";
+import ProjectUpdateModal from "./ProjectUpdateModal";
 
 const ProjectsList = ({ projects }) => {
   const [projectData, setProjectData] = useState({
-    name: '',
-    payment: '',
-    time_start: '',
-    time_end: '',
-    note: '',
-    priority: '',
+    name: "",
+    payment: "",
+    time_start: "",
+    time_end: "",
+    note: "",
+    priority: "",
   });
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const { currentPage } = useSelector((state) => state.projectStore);
   const { userInfo } = useSelector((state) => state.authStore);
   const dispatch = useDispatch();
   const { totalPage, paginatedData } = projectsPagination(projects, text);
 
   const handleDelete = (id) => {
-    if (confirm('Are you sure delete this project?')) dispatch(deleteProject({ id }));
+    if (confirm("Are you sure delete this project?"))
+      dispatch(deleteProject({ id }));
   };
 
   const showProjectUpdateModal = (project) => {
@@ -60,7 +61,7 @@ const ProjectsList = ({ projects }) => {
         <div className="btn-group" role="group">
           <button
             type="button"
-            className="btn bgPrimary px-5 py-2 text-white"
+            className="btn bgCreate px-5 py-2 text-white"
             data-bs-toggle="modal"
             data-bs-target="#projectCreateModal"
             disabled={userInfo?.role != 1}
@@ -79,9 +80,12 @@ const ProjectsList = ({ projects }) => {
       </div>
       <div className="container my-4">
         <div className="row">
-          {paginatedData['page' + currentPage] &&
-            paginatedData['page' + currentPage].map((project) => (
-              <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={project.id}>
+          {paginatedData["page" + currentPage] &&
+            paginatedData["page" + currentPage].map((project) => (
+              <div
+                className="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4"
+                key={project.id}
+              >
                 <div className="card bg-light">
                   <div className="card-body">
                     <h5 className="card-title mb-3 border-bottom pt-1 pb-2 text-truncate">
@@ -137,7 +141,9 @@ const ProjectsList = ({ projects }) => {
         <div className="col-md-12">
           <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
-              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <li
+                className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
+              >
                 <a
                   role="button"
                   className="page-link"
@@ -159,13 +165,21 @@ const ProjectsList = ({ projects }) => {
                   </li>
                 ) : (
                   <li key={i} className="page-item">
-                    <a className="page-link" role="button" onClick={() => handleChangePage(i + 1)}>
+                    <a
+                      className="page-link"
+                      role="button"
+                      onClick={() => handleChangePage(i + 1)}
+                    >
                       {i + 1}
                     </a>
                   </li>
                 )
               )}
-              <li className={`page-item ${currentPage === totalPage ? 'disabled' : ''}`}>
+              <li
+                className={`page-item ${
+                  currentPage === totalPage ? "disabled" : ""
+                }`}
+              >
                 <a
                   role="button"
                   className="page-link"

@@ -32,13 +32,16 @@ ul, li {
   width: 82vw;
   padding: 20px;
   height: 92vh;
+  overflow-y: auto;
+
 }
 
 
 .my-truncate {
   display: inline-block;
-  max-width: 15rem;
+  max-width: 90%;
 }
+
 
 .loader {
   color: #2EFFFF;
