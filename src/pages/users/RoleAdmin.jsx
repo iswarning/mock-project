@@ -9,8 +9,8 @@ import { SET_CURRENT_PAGE } from "../../store/constants";
 
 function RoleAdmin() {
   const [userDetail, setUserDetail] = useState({
-    email: '',
-    name: ''
+    email: "",
+    name: "",
   });
 
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ function RoleAdmin() {
 
   return (
     <>
-      <div className="row" style={style}>
+      <div className="row shadow-sm" style={style}>
         <ListUser setUserDetail={(user) => handleSetUserDetail(user)} />
       </div>
 
