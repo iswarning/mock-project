@@ -61,12 +61,19 @@ const ProjectsList = ({ projects }) => {
         <div className="btn-group" role="group">
           <button
             type="button"
-            className="btn bgCreate px-5 py-2 text-white"
+            className="btn bgCreate px-4 py-2 text-white"
             data-bs-toggle="modal"
             data-bs-target="#projectCreateModal"
             disabled={userInfo?.role != 1}
           >
-            <strong>Create Project</strong>
+            <strong>
+              <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
+                Create Project
+              </span>
+              <span className="d-block d-sm-none d-md-none d-lg-none d-xl-none">
+                <i className="fa-solid fa-plus"></i>
+              </span>
+            </strong>
           </button>
         </div>
         <div>
@@ -83,7 +90,7 @@ const ProjectsList = ({ projects }) => {
           {paginatedData["page" + currentPage] &&
             paginatedData["page" + currentPage].map((project) => (
               <div
-                className="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4"
+                className="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-4"
                 key={project.id}
               >
                 <div
