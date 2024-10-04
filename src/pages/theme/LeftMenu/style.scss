@@ -12,13 +12,19 @@
   
     &:hover{
         background: var(--lightBlue);
-        transition: all 0.2s ease-in;
+        color: #dedede;
+        transition: all 0.2s ease-in; 
     }
   }
   
   .text-menu.active {
     font-weight: bold;
-    background: var(--lightBlue);
+    color: var(--lightPrimary);
+
+    &:hover{
+      color: #dedede;
+      transition: all 0.2s ease-in; 
+  }
   }
 
 .sidebar {
