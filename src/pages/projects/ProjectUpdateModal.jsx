@@ -6,6 +6,7 @@ import { updateProject } from '../../store/actions/projectAction';
 function ProjectUpdateModal({ projectData }) {
   const [project, setProject] = useState(projectData);
   const dispatch = useDispatch();
+console.log(projectData);
 
   const handleProjectNameChange = (e) => {
     setProject({ ...project, name: e.target.value });

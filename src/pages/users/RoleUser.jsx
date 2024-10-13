@@ -6,7 +6,6 @@ import { updateUserByUser } from "../../store/actions/userAction";
 function RoleUser() {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.authStore);
-  console.log(userInfo);
 
   const [formState, setFormState] = useState(userInfo);
 
