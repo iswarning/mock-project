@@ -118,7 +118,7 @@ export const updateUser = (params, showSaving, hideSaving) => {
 
       if (params?.avarta) {
         const formData = new FormData()
-        formData.append("images", params.avarta)
+        formData.append("image", params.avarta)
         formData.append("email", params.email)
 
         const [resUser, resUpload] = await Promise.all([
