@@ -86,8 +86,8 @@ export const loginWithGoogle = (onRequestNavigate) => {
           type: SET_USER_INFO,
           payload: {
             ...jwtDecode(response.data.access_token),
-            photoURL: result.user.photoURL
-          },
+            photoURL: result.user.photoURL,
+          }
         })
         
         onRequestNavigate()

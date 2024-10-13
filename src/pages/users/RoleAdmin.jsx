@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Loading from "../../components/Loading";
 import CreateUserModal from "./CreateUserModal";
 import EditUserModal from "./EditUserModal";
 import ListUser from "./ListUser";
-import { useDispatch, useSelector } from "react-redux";
-import { getListUser } from "../../store/actions/userAction";
-import { SET_CURRENT_PAGE } from "../../store/constants";
+import { useState } from "react";
 
 function RoleAdmin() {
-  const [userDetail, setUserDetail] = useState({
-    email: "",
-    name: "",
-  });
 
-  const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.appStore);
+  const [userEdit, setUserEdit] = useState({
+    name: '',
+    email: '',
+    password: '',
+    avarta: null
+  })
 
   const style = {
     backgroundColor: "white",
@@ -23,27 +22,15 @@ function RoleAdmin() {
     paddingRight: "10px",
   };
 
-  const handleSetUserDetail = (user) => {
-    setUserDetail(user);
-  };
-
-  useEffect(() => {
-    dispatch(getListUser());
-    dispatch({
-      type: SET_CURRENT_PAGE,
-      payload: 1,
-    });
-  }, []);
-
   if (isLoading) return <Loading />;
 
   return (
     <>
       <div className="row shadow-sm" style={style}>
-        <ListUser setUserDetail={(user) => handleSetUserDetail(user)} />
+        <ListUser setUserEdit={setUserEdit} />
       </div>
 
-      <EditUserModal userDetail={userDetail} />
+      <EditUserModal userEdit={userEdit} setUserEdit={setUserEdit} />
       <CreateUserModal />
     </>
   );

@@ -1,33 +1,92 @@
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { updateUser } from "../../store/actions/userAction"
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import avatarDefault from "../../assets/avatarUser.png";
+import { REQUIRE_NAME } from "../../common/messageError";
+import { updateUser } from "../../store/actions/userAction";
+import './style.scss';
+import { ToastCommon } from "../../components/ToastCommon";
+import { TOAST } from "../../common/constants";
 
-function EditUserModal({ userDetail }) {
+function EditUserModal({ userEdit, setUserEdit }) {
 
     const dispatch = useDispatch()
-    const { userInfo } = useSelector((state) => state.authStore)
-
-    const [email, setEmail] = useState(userDetail.email)
-    const [name, setName] = useState(userDetail.name)
- 
+    const { listUser } = useSelector((state) => state.userStore)
     const [isSaving, setSaving] = useState(false)
+    const [errorMessages, setErrorMessages] = useState({
+        name: ''
+    })
 
     const handleOnSubmit = () => {
+        if (userEdit.name.length === 0) {
+            setErrorMessages({ name: REQUIRE_NAME })
+            return
+        }
+
         dispatch(
-            updateUser({
-                email,
-                name
-            },
-            userInfo,
-            () => setSaving(true),
-            () => setSaving(false))
+            updateUser(
+                userEdit,
+                () => setSaving(true),
+                () => setSaving(false)
+            )
         )
     }
 
-    useEffect(() => {
-        setEmail(userDetail.email)
-        setName(userDetail.name)
-    },[userDetail])
+    const handleSetName = (value) => {
+        setUserEdit({
+            ...userEdit,
+            name: value
+        })
+    }
+
+    const handleChangeAvatar = (e) => {
+        const file = e.target.files[0]
+        if (file) {
+          if (!['image/jpg','image/png','image/jpeg'].includes(file.type)) {
+              ToastCommon(TOAST.ERROR, 'File type invalid')
+              return
+          }
+        }
+        setUserEdit({
+            ...userEdit,
+            avarta: file
+        })
+    }
+
+
+    const handleSetPassword = (value) => {
+        setUserEdit({
+            ...userEdit,
+            password: value
+        })
+    }
+
+    const handleAttachFile = () => {
+        document.getElementById('input-upload').click()
+    }
+
+    const handleRemoveFile = () => {
+        const userByEmail = listUser.find((user) => userEdit.email === user.email )
+        if (userByEmail.avarta && userByEmail.avarta.length > 0) {
+            ToastCommon(TOAST.ERROR, 'Cannot set avatar as default after updating avatar')
+            return
+        }
+        setUserEdit({
+            ...userEdit,
+            avarta: null
+        })
+    }
+
+    const getAvatarUrl = () => {
+        if (userEdit.avarta) {
+            if (typeof userEdit.avarta === 'string') {
+                return userEdit.avarta
+            } else {
+                return URL.createObjectURL(userEdit.avarta)
+            }
+        } else {
+            return avatarDefault
+        }
+    }
 
     return (
         <div className="modal fade" id="modalEditUser">
@@ -42,22 +101,46 @@ function EditUserModal({ userDetail }) {
                 <div className="modal-body">
                     <form>
                         <div className="mb-3">
+                        <div className="d-flex justify-content-center mb-3">
+                            <img 
+                            id="selectedAvatar" 
+                            src={getAvatarUrl()}
+                            className="rounded-circle" 
+                            alt="example placeholder" />
+                            <input accept="image/*" type='file' onChange={(e) => handleChangeAvatar(e)} id="input-upload" className="d-none" />
+                        </div>
+                        <div className="d-flex justify-content-center">
+                            <div className="btn-rounded btn btn-light" onClick={handleAttachFile}><i className="fa-solid fa-paperclip"></i></div>
+                            &nbsp;
+                            <div className="btn-rounded btn btn-light" onClick={handleRemoveFile}><i className="fa-solid fa-xmark"></i></div>
+                        </div>
+                        </div>
+                        <div className="mb-3">
                             <label className="form-label">Email</label>
                             <input 
                                 disabled 
                                 type="text" 
                                 className="form-control" 
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                value={userEdit.email}
                             />
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Name</label>
                             <input 
                                 type="text" 
-                                className="form-control" 
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                className={`form-control ${errorMessages.name?.length > 0 && 'is-invalid'}`}
+                                value={userEdit.name}
+                                onChange={(e) => handleSetName(e.target.value)}
+                            />
+                            <span className="invalid-feedback">{errorMessages.name}</span>
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">New Password</label>
+                            <input 
+                                type="password" 
+                                className='form-control'
+                                value={userEdit.password}
+                                onChange={(e) => handleSetPassword(e.target.value)}
                             />
                         </div>
                     </form>

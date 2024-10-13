@@ -1,89 +1,110 @@
 import { debounce } from "lodash";
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { downloadCSV } from "../../common/downloadCSV";
-import usePagination from "../../hooks/usePagination";
+import imageAVT from "../../assets/avatarUser.png";
+import { CHANGEROLE, DELETE } from "../../common/messageConfirm";
 import { changeRole, deleteUser } from "../../store/actions/userAction";
-import { SET_CURRENT_PAGE } from "../../store/constants";
 
-function ListUser({ setUserDetail }) {
-  const [result, setResult] = useState([]);
+function ListUser({ setUserEdit }) {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const [role, setRole] = useState('default')
+
+  const { listUser } = useSelector((state) => state.userStore);
   const dispatch = useDispatch();
 
-  const { currentPage, listUser } = useSelector((state) => state.userStore);
+  const itemsPerPage = 5
 
-  const { totalPage, paginatedData } = usePagination(listUser, result);
+  const indexOfFirstItem = (currentPage - 1) * itemsPerPage
 
-  const handleChangeRole = (email, role) => {
-    dispatch(
-      changeRole({
-        email,
-        role,
-      })
-    );
-  };
+  const indexOfLastItem = currentPage * itemsPerPage
 
-  const handleEditUser = (user) => {
-    setUserDetail(user);
-  };
+  const filteredData = () => {
+    if (searchTerm.length > 0 ) {
 
-  const handleDeleteUser = (id) => {
-    if (confirm("Are you sure you want to delete")) {
-      dispatch(
-        deleteUser({
-          id,
-        })
-      );
+      let result = listUser.filter((user) => 
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+
+      return filterByRole(result)
+
+    } else {
+      return filterByRole(listUser)
     }
-  };
+  }
+
+  const filterByRole = (data) => {
+    switch(role) {
+      case '1':
+        return data.filter((user) => user.role === 1)
+      case '0':
+        return data.filter((user) => user.role === 0)
+      default:
+        return data
+    }
+  }
+
+  const totalPage = Math.ceil(filteredData().length / itemsPerPage)
+
+  const currentItems = filteredData().slice(indexOfFirstItem, indexOfLastItem)
 
   const handleChangePage = (page) => {
-    dispatch({
-      type: SET_CURRENT_PAGE,
-      payload: page,
-    });
+    setCurrentPage(page)
   };
 
   const handleSearch = useCallback(
     debounce(
       (keyWord) => {
-        setResult(
-          listUser.filter(
-            (user) =>
-              user.email.toLowerCase().includes(keyWord.toLowerCase()) ||
-              user.name.toLowerCase().includes(keyWord.toLowerCase())
-          )
-        );
-        dispatch({
-          type: SET_CURRENT_PAGE,
-          payload: 1,
-        });
+        setSearchTerm(keyWord)
+        setCurrentPage(1)
       },
       [1000]
     ),
     []
   );
 
-  const handleExportCSV = () => {
-    let data = [];
-    Object.values(paginatedData).forEach((items) => {
-      items.forEach((item) => {
-        data.push({
-          ...item,
-          role: item.role === 1 ? "Admin" : "User",
-        });
-      });
-    });
+  const handleFilterRole = (value) => {
+    setRole(value)
+    setCurrentPage(1)
+  }
 
-    if (data.length > 0) {
-      downloadCSV(data);
+  const handleChangeRole = (email, role) => {
+    if (confirm(CHANGEROLE)) {
+        dispatch(
+            changeRole({
+                email,
+                role,
+            })
+        );
     }
-  };
+};
+
+const handleEditUser = (user) => {
+  setUserEdit({
+    ...user,
+    password: '',
+    avarta: user.avarta || null
+  })
+};
+
+const handleDeleteUser = (id) => {
+    if (confirm(DELETE.user)) {
+        dispatch(
+            deleteUser({
+                id,
+            })
+        );
+    }
+};
+
+
 
   return (
     <>
       <div className="d-flex justify-content-between m-2 ">
-        <div>
+        
+        <div> 
           <button
             className="btn btn-success"
             data-bs-toggle="modal"
@@ -93,22 +114,27 @@ function ListUser({ setUserDetail }) {
             <i className="fa-solid fa-plus"></i>
           </button>
         </div>
+        
         <div className="d-flex align-items-center">
           <input
-            type="text"
+            type="search"
             className="form-control me-2"
             placeholder="Search..."
             onChange={(e) => handleSearch(e.target.value)}
           />{" "}
           &nbsp;
-          <button
-            title="Export data as CSV file"
-            className="btn btn-success"
-            onClick={handleExportCSV}
+          <select 
+            style={{ width: '40%'}} 
+            className="form-control" 
+            onChange={(e) => handleFilterRole(e.target.value)} 
+            value={role}
           >
-            <i className="fa-solid fa-file-csv"></i>
-          </button>
+            <option value="default">All</option>
+            <option value='1'>Admin</option>
+            <option value='0'>User</option>
+          </select>
         </div>
+
       </div>
       <div className="col-md-12 " style={{ minHeight: "330px" }}>
         <table
@@ -117,59 +143,63 @@ function ListUser({ setUserDetail }) {
         >
           <thead>
             <tr>
-              <th style={{ width: "35%" }}>Name</th>
+              <th style={{ width: "10%" }}>Avatar</th>
+              <th style={{ width: "25%" }}>Name</th>
               <th style={{ width: "35%" }}>Email</th>
               <th style={{ width: "15%" }}>Role</th>
               <th style={{ width: "15%" }}>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {paginatedData["page" + currentPage] &&
-              paginatedData["page" + currentPage].map((user) => (
+            {currentItems &&
+              currentItems.map((user) => (
                 <tr key={user.id}>
                   <td>
-                    <span className="my-truncate text-truncate">
-                      {user.name}
-                    </span>
+                    <img className="avatar" src={user?.avarta || imageAVT} alt="User Avatar" />
                   </td>
                   <td>
-                    <span className="my-truncate text-truncate">
-                      {user.email}
-                    </span>
+                      <span className="my-truncate text-truncate">
+                          {user.name}
+                      </span>
                   </td>
                   <td>
-                    <select
-                      className="form-control"
-                      value={user.role}
-                      onChange={(e) =>
-                        handleChangeRole(user.email, e.target.value)
-                      }
-                    >
-                      <option value={0}>User</option>
-                      <option value={1}>Admin</option>
-                    </select>
+                      <span className="my-truncate text-truncate">
+                          {user.email}
+                      </span>
                   </td>
                   <td>
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => handleEditUser(user)}
-                      data-bs-toggle="modal"
-                      data-bs-target="#modalEditUser"
-                      title="Edit this user"
-                    >
-                      <i className="fa-solid fa-pen-to-square"></i>
-                    </button>
-                    &nbsp;
-                    <button
-                      disabled={user.role === 1}
-                      className="btn btn-danger"
-                      onClick={() => handleDeleteUser(user.id)}
-                      title="Delete this user"
-                    >
-                      <i className="fa-solid fa-trash"></i>
-                    </button>
+                      <select
+                          className="form-control"
+                          value={user.role}
+                          onChange={(e) =>
+                              handleChangeRole(user.email, e.target.value)
+                          }
+                      >
+                          <option value={0}>User</option>
+                          <option value={1}>Admin</option>
+                      </select>
                   </td>
-                </tr>
+                  <td>
+                      <button
+                          className="btn btn-primary"
+                          onClick={() => handleEditUser(user)}
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalEditUser"
+                          title="Edit this user"
+                      >
+                          <i className="fa-solid fa-pen-to-square"></i>
+                      </button>
+                      &nbsp;
+                      <button
+                          disabled={user.role === 1}
+                          className="btn btn-danger"
+                          onClick={() => handleDeleteUser(user.id)}
+                          title="Delete this user"
+                      >
+                          <i className="fa-solid fa-trash"></i>
+                      </button>
+                  </td>
+              </tr>
               ))}
           </tbody>
         </table>

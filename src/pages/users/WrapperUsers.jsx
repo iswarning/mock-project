@@ -1,14 +1,9 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Loading from "../../components/Loading";
-import { getListUser } from "../../store/actions/userAction";
+import { useSelector } from "react-redux";
 import RoleAdmin from "./RoleAdmin";
 import RoleUser from "./RoleUser";
 
 function WrapperUsers() {
   const { userInfo } = useSelector((state) => state.authStore);
-  const { listUser } = useSelector((state) => state.userStore);
-  console.log(listUser);
 
   return (
     <div className="container">

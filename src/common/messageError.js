@@ -1,0 +1,5 @@
+export const REQUIRE_NAME = 'Name is required'
+export const REQUIRE_EMAIL = 'Email is required'
+export const INVALID_EMAIL = 'Invalid email address'
+export const REQUIRE_PASSWORD = 'Password is required'
+export const PASSWORD_NOT_MATCH = 'Confirm password not match'

@@ -1,17 +1,54 @@
 import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createUser } from '../../store/actions/userAction';
+import { validateEmail } from '../../common/validate';
+import { INVALID_EMAIL, PASSWORD_NOT_MATCH, REQUIRE_EMAIL, REQUIRE_NAME, REQUIRE_PASSWORD } from '../../common/messageError';
 
-function CreateUserModal({ isShowModal, onRequestCloseModal }) {
+const initErrorMessages = {
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+}
+
+function CreateUserModal() {
   const email = useRef(null);
   const name = useRef(null);
   const password = useRef(null);
   const confirmPassword = useRef(null);
   const [isSaving, setSaving] = useState(false);
 
+  const [errorMessages, setErrorMessages] = useState(initErrorMessages)
+
   const dispatch = useDispatch();
 
     const handleOnSubmit = () => {
+
+        if (!name.current.value || name.current.value.length === 0) {
+            setErrorMessages({ name: REQUIRE_NAME });
+            return;
+        }
+
+        if (!email.current.value || email.current.value.length === 0) {
+            setErrorMessages({ email: REQUIRE_EMAIL });
+            return;
+        }
+
+        if (!validateEmail(email.current.value)) {
+            setErrorMessages({ email: INVALID_EMAIL });
+            return;
+        }
+
+        if (!password.current.value || password.current.value.length === 0) {
+            setErrorMessages({ password: REQUIRE_PASSWORD });
+            return;
+        }
+
+        if (confirmPassword.current.value !== password.current.value) {
+            setErrorMessages({ confirmPassword: PASSWORD_NOT_MATCH });
+            return;
+        }
+
         dispatch(
             createUser({
                 name: name.current.value,
@@ -23,6 +60,8 @@ function CreateUserModal({ isShowModal, onRequestCloseModal }) {
             () => setSaving(true),
             () => setSaving(false))
         )
+
+        setErrorMessages(initErrorMessages);
     }
 
   return (
@@ -38,20 +77,26 @@ function CreateUserModal({ isShowModal, onRequestCloseModal }) {
                 <div className="modal-body">
                     <form>
                         <div className="mb-3">
-                            <label className="form-label">Email</label>
-                            <input type="text" className="form-control" ref={email}/>
+                            <label className="form-label">Name</label>
+                            <input type="text" className={`form-control ${errorMessages.name?.length > 0 && 'is-invalid'}`} ref={name}/>
+                            <div className="invalid-feedback">
+                                {errorMessages.name}
+                            </div>
                         </div>
                         <div className="mb-3">
-                            <label className="form-label">Name</label>
-                            <input type="text" className="form-control" ref={name}/>
+                            <label className="form-label">Email</label>
+                            <input type="text" className={`form-control ${errorMessages.email?.length > 0 && 'is-invalid'}`} ref={email}/>
+                            <span className='invalid-feedback'>{errorMessages.email}</span>
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Password</label>
-                            <input type="password" className="form-control" ref={password} />
+                            <input type="password" className={`form-control ${errorMessages.password?.length > 0 && 'is-invalid'}`} ref={password} />
+                            <span className='invalid-feedback'>{errorMessages.password}</span>
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Confirm Password</label>
-                            <input type="password" className="form-control" ref={confirmPassword} />
+                            <input type="password" className={`form-control ${errorMessages.confirmPassword?.length > 0 && 'is-invalid'}`} ref={confirmPassword} />
+                            <span className='invalid-feedback'>{errorMessages.confirmPassword}</span>
                         </div>
                     </form>
                 </div>
