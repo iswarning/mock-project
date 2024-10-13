@@ -84,7 +84,7 @@ const handleEditUser = (user) => {
   setUserEdit({
     ...user,
     password: '',
-    avarta: null
+    avarta: user.avarta || null
   })
 };
 

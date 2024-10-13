@@ -4,12 +4,13 @@ import avatarDefault from "../../assets/avatarUser.png";
 import { REQUIRE_NAME } from "../../common/messageError";
 import { updateUser } from "../../store/actions/userAction";
 import './style.scss';
+import { ToastCommon } from "../../components/ToastCommon";
+import { TOAST } from "../../common/constants";
 
 function EditUserModal({ userEdit, setUserEdit }) {
 
     const dispatch = useDispatch()
-    const { userDetail } = useSelector((state) => state.userStore)
- 
+    const { listUser } = useSelector((state) => state.userStore)
     const [isSaving, setSaving] = useState(false)
     const [errorMessages, setErrorMessages] = useState({
         name: ''
@@ -64,10 +65,27 @@ function EditUserModal({ userEdit, setUserEdit }) {
     }
 
     const handleRemoveFile = () => {
+        const userByEmail = listUser.find((user) => userEdit.email === user.email )
+        if (userByEmail.avarta && userByEmail.avarta.length > 0) {
+            ToastCommon(TOAST.ERROR, 'Cannot set avatar as default after updating avatar')
+            return
+        }
         setUserEdit({
             ...userEdit,
             avarta: null
         })
+    }
+
+    const getAvatarUrl = () => {
+        if (userEdit.avarta) {
+            if (typeof userEdit.avarta === 'string') {
+                return userEdit.avarta
+            } else {
+                return URL.createObjectURL(userEdit.avarta)
+            }
+        } else {
+            return avatarDefault
+        }
     }
 
     return (
@@ -86,7 +104,7 @@ function EditUserModal({ userEdit, setUserEdit }) {
                         <div className="d-flex justify-content-center mb-3">
                             <img 
                             id="selectedAvatar" 
-                            src={ userEdit.avarta ? URL.createObjectURL(userEdit.avarta) : avatarDefault }
+                            src={getAvatarUrl()}
                             className="rounded-circle" 
                             alt="example placeholder" />
                             <input accept="image/*" type='file' onChange={(e) => handleChangeAvatar(e)} id="input-upload" className="d-none" />
