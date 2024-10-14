@@ -161,6 +161,8 @@ export const updateUser = (params, showSaving, hideSaving) => {
 };
 
 export const updateUserByUser = (params) => {
+  console.log(params);
+
   return async (dispatch, getState) => {
     try {
       let request = {
@@ -174,13 +176,41 @@ export const updateUserByUser = (params) => {
           password: params.password,
         };
       }
-      const resp = await axiosInstance.put(
-        import.meta.env.VITE_BASE_URL + "/api/user",
-        request
-      );
 
-      if (resp) {
+      let success = false;
+
+      if (params?.avarta) {
+        const formData = new FormData();
+        formData.append("image", params.avarta);
+        formData.append("email", params.email);
+
+        const [resUser, resUpload] = await Promise.all([
+          axiosInstance.put(
+            import.meta.env.VITE_BASE_URL + "/api/user",
+            request
+          ),
+          axiosInstance.post(
+            import.meta.env.VITE_BASE_URL + "/api/upload/avarta",
+            formData
+          ),
+        ]);
+
+        if (resUser.status === 200 && resUpload.status === 200) {
+          success = true;
+        }
+      } else {
+        const resUser = await axiosInstance.put(
+          import.meta.env.VITE_BASE_URL + "/api/user",
+          request
+        );
+        if (resUser.status === 200) {
+          success = true;
+        }
+      }
+
+      if (success) {
         ToastCommon(TOAST.SUCCESS, "Updated user successfully");
+        dispatch(getListUser());
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
