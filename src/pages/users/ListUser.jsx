@@ -1,5 +1,5 @@
 import { debounce } from "lodash";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import imageAVT from "../../assets/avatarUser.png";
 import { CHANGEROLE, DELETE } from "../../common/messageConfirm";
@@ -12,42 +12,25 @@ function ListUser({ setUserEdit }) {
 
   const { listUser } = useSelector((state) => state.userStore);
   const dispatch = useDispatch();
+  const itemsPerPage = 5;
 
-  const itemsPerPage = 5
-
-  const indexOfFirstItem = (currentPage - 1) * itemsPerPage
-
-  const indexOfLastItem = currentPage * itemsPerPage
-
-  const filteredData = () => {
-    if (searchTerm.length > 0 ) {
-
-      let result = listUser.filter((user) => 
+  const filteredData = useMemo(() => {
+    let result = listUser;
+    if (searchTerm.length > 0) {
+      result = result.filter((user) => 
         user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-
-      return filterByRole(result)
-
-    } else {
-      return filterByRole(listUser)
+      );
     }
-  }
-
-  const filterByRole = (data) => {
-    switch(role) {
-      case '1':
-        return data.filter((user) => user.role === 1)
-      case '0':
-        return data.filter((user) => user.role === 0)
-      default:
-        return data
+    if (role !== 'default') {
+      result = result.filter((user) => user.role === Number(role));
     }
-  }
+    return result;
+  }, [searchTerm, role, listUser]);
 
-  const totalPage = Math.ceil(filteredData().length / itemsPerPage)
-
-  const currentItems = filteredData().slice(indexOfFirstItem, indexOfLastItem)
+  const totalPage = Math.ceil(filteredData.length / itemsPerPage);
+  const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfFirstItem + itemsPerPage);
 
   const handleChangePage = (page) => {
     setCurrentPage(page)
@@ -78,7 +61,7 @@ function ListUser({ setUserEdit }) {
             })
         );
     }
-};
+  };
 
 const handleEditUser = (user) => {
   setUserEdit({
