@@ -16,13 +16,6 @@ function RoleAdmin() {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.appStore);
 
-  const style = {
-    backgroundColor: "white",
-    borderRadius: "10px",
-    paddingTop: "10px",
-    paddingRight: "10px",
-  };
-
   const handleSetUserDetail = (user) => {
     setUserDetail(user);
   };
@@ -39,7 +32,7 @@ function RoleAdmin() {
 
   return (
     <>
-      <div className="row shadow-sm" style={style}>
+      <div className="row shadow-sm containerListUser">
         <ListUser setUserDetail={(user) => handleSetUserDetail(user)} />
       </div>
 

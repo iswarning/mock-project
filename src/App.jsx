@@ -7,6 +7,7 @@ import WrapperLogin from "./pages/login/WrapperLogin";
 import Tasks from "./pages/tasks/Tasks";
 import Users from "./pages/users/WrapperUsers";
 import WrapperProjects from "./pages/projects/WrapperProjects";
+import SettingUser from "./pages/setting/SettingUser";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path={ROUTES.dashboard} element={<Dashboard />} />
           <Route path={ROUTES.tasks} element={<Tasks />} />
           <Route path={ROUTES.projects} element={<WrapperProjects />} />
+          <Route path={ROUTES.setting} element={<SettingUser />} />
         </Route>
       </Routes>
     </BrowserRouter>

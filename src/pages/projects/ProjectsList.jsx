@@ -129,7 +129,7 @@ const ProjectsList = ({ projects }) => {
                     <div className="mt-2 text-center">
                       <button
                         type="button"
-                        className="btn btn-primary mx-1 my-1"
+                        className="btn bgCreate mx-1 my-1"
                         data-bs-toggle="modal"
                         data-bs-target="#projectUpdateModal"
                         onClick={() => showProjectUpdateModal(project)}
