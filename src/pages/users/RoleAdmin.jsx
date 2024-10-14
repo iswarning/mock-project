@@ -14,15 +14,13 @@ function RoleAdmin() {
     avarta: null,
   });
 
-  if (isLoading) return <Loading />;
-
   return (
     <>
       <div className="row shadow-sm containerListUser">
         <ListUser setUserEdit={setUserEdit} />
       </div>
 
-      <EditUserModal userEdit={userEdit} setUserEdit={setUserEdit} />
+      <EditUserModal userEdit={userEdit} />
       <CreateUserModal />
     </>
   );
