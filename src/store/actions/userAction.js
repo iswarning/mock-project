@@ -18,12 +18,14 @@ export const getListUser = () => {
           payload: resp.data,
         });
 
-        const userByEmail = resp.data.find((user) => user.email === getState().authStore.userInfo.email)
+        const userByEmail = resp.data.find(
+          (user) => user.email === getState().authStore.userInfo.email
+        );
 
         dispatch({
           type: SET_USER_INFO,
           payload: userByEmail,
-        })
+        });
 
         dispatch(hideLoading());
       }
@@ -51,13 +53,13 @@ export const uploadAvatar = (params) => {
       );
       if (resp) {
         ToastCommon(TOAST.SUCCESS, "Uploaded avatar successfully");
-        dispatch(getListUser())
+        dispatch(getListUser());
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
     }
   };
-}
+};
 
 export const createUser = (params, showSaving, hideSaving) => {
   return async (dispatch, getState) => {
@@ -105,51 +107,52 @@ export const updateUser = (params, showSaving, hideSaving) => {
       let request = {
         email: params.email,
         name: params.name,
-      }
+      };
 
       if (params.password && params.password.length > 0) {
         request = {
-         ...request,
+          ...request,
           password: params.password,
         };
       }
 
-      let success = false
+      let success = false;
 
       if (params?.avarta) {
-        const formData = new FormData()
-        formData.append("image", params.avarta)
-        formData.append("email", params.email)
+        const formData = new FormData();
+        formData.append("image", params.avarta);
+        formData.append("email", params.email);
 
         const [resUser, resUpload] = await Promise.all([
           axiosInstance.put(
-          import.meta.env.VITE_BASE_URL + "/api/user",
-          request
-        ), axiosInstance.post(
-          import.meta.env.VITE_BASE_URL + "/api/upload/avarta",
-          formData
-        )])
+            import.meta.env.VITE_BASE_URL + "/api/user",
+            request
+          ),
+          axiosInstance.post(
+            import.meta.env.VITE_BASE_URL + "/api/upload/avarta",
+            formData
+          ),
+        ]);
 
         if (resUser.status === 200 && resUpload.status === 200) {
-          success = true
+          success = true;
         }
       } else {
         const resUser = await axiosInstance.put(
           import.meta.env.VITE_BASE_URL + "/api/user",
           request
-        )
+        );
         if (resUser.status === 200) {
-          success = true
+          success = true;
         }
       }
 
       if (success) {
         hideSaving();
-        document.getElementById("close-edit-user-btn").click()
-        ToastCommon(TOAST.SUCCESS, "Updated user successfully")
-        dispatch(getListUser())
+        document.getElementById("close-edit-user-btn").click();
+        ToastCommon(TOAST.SUCCESS, "Updated user successfully");
+        dispatch(getListUser());
       }
-
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
       hideSaving();
@@ -160,9 +163,20 @@ export const updateUser = (params, showSaving, hideSaving) => {
 export const updateUserByUser = (params) => {
   return async (dispatch, getState) => {
     try {
+      let request = {
+        email: params.email,
+        name: params.name,
+      };
+
+      if (params.password && params.password.length > 0) {
+        request = {
+          ...request,
+          password: params.password,
+        };
+      }
       const resp = await axiosInstance.put(
         import.meta.env.VITE_BASE_URL + "/api/user",
-        params
+        request
       );
 
       if (resp) {

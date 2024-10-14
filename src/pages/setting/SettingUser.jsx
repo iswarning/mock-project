@@ -24,11 +24,7 @@ function SettingUser() {
   };
 
   const handleSubmit = () => {
-    if (
-      formState.password !== confirmPassword ||
-      !formState.password ||
-      !confirmPassword
-    ) {
+    if (formState.password !== confirmPassword) {
       setPasswordError(true);
       return;
     } else {
