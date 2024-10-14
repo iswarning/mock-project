@@ -1,5 +1,4 @@
 import { TOAST } from "../../common/constants";
-import { validateFormSignUp } from "../../common/validate";
 import { ToastCommon } from "../../components/ToastCommon";
 import axiosInstance from "../../config/axios-config";
 import { SET_LIST_USER, SET_USER_INFO } from "../constants";
@@ -19,6 +18,13 @@ export const getListUser = () => {
           payload: resp.data,
         });
 
+        const userByEmail = resp.data.find((user) => user.email === getState().authStore.userInfo.email)
+
+        dispatch({
+          type: SET_USER_INFO,
+          payload: userByEmail,
+        })
+
         dispatch(hideLoading());
       }
     } catch (error) {
@@ -27,11 +33,36 @@ export const getListUser = () => {
     }
   };
 };
+
+export const uploadAvatar = (params) => {
+  return async (dispatch, getState) => {
+    try {
+      const formData = new FormData();
+      formData.append("image", params.avarta);
+      formData.append("email", params.email);
+      const resp = await axiosInstance.post(
+        import.meta.env.VITE_BASE_URL + "/api/upload/avarta",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (resp) {
+        ToastCommon(TOAST.SUCCESS, "Uploaded avatar successfully");
+        dispatch(getListUser())
+      }
+    } catch (error) {
+      ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
+    }
+  };
+}
+
 export const createUser = (params, showSaving, hideSaving) => {
   return async (dispatch, getState) => {
     try {
       showSaving();
-      validateFormSignUp(params);
 
       const resp = await axiosInstance.post(
         import.meta.env.VITE_BASE_URL + "/api/user",
@@ -67,30 +98,58 @@ export const deleteUser = (params) => {
   };
 };
 
-export const updateUser = (params, userInfo, showSaving, hideSaving) => {
+export const updateUser = (params, showSaving, hideSaving) => {
   return async (dispatch, getState) => {
     try {
       showSaving();
-      const resp = await axiosInstance.put(
-        import.meta.env.VITE_BASE_URL + "/api/user",
-        params
-      );
-      if (resp) {
-        hideSaving();
-        document.getElementById("close-edit-user-btn").click();
-        ToastCommon(TOAST.SUCCESS, "Updated user successfully");
-        dispatch(getListUser());
+      let request = {
+        email: params.email,
+        name: params.name,
+      }
 
-        if (userInfo.email === params.email) {
-          dispatch({
-            type: SET_USER_INFO,
-            payload: {
-              ...userInfo,
-              name: params.name,
-            }
-          })
+      if (params.password && params.password.length > 0) {
+        request = {
+         ...request,
+          password: params.password,
+        };
+      }
+
+      let success = false
+
+      if (params?.avarta) {
+        const formData = new FormData()
+        formData.append("image", params.avarta)
+        formData.append("email", params.email)
+
+        const [resUser, resUpload] = await Promise.all([
+          axiosInstance.put(
+          import.meta.env.VITE_BASE_URL + "/api/user",
+          request
+        ), axiosInstance.post(
+          import.meta.env.VITE_BASE_URL + "/api/upload/avarta",
+          formData
+        )])
+
+        if (resUser.status === 200 && resUpload.status === 200) {
+          success = true
+        }
+      } else {
+        const resUser = await axiosInstance.put(
+          import.meta.env.VITE_BASE_URL + "/api/user",
+          request
+        )
+        if (resUser.status === 200) {
+          success = true
         }
       }
+
+      if (success) {
+        hideSaving();
+        document.getElementById("close-edit-user-btn").click()
+        ToastCommon(TOAST.SUCCESS, "Updated user successfully")
+        dispatch(getListUser())
+      }
+
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
       hideSaving();
@@ -108,10 +167,6 @@ export const updateUserByUser = (params) => {
 
       if (resp) {
         ToastCommon(TOAST.SUCCESS, "Updated user successfully");
-        dispatch({
-          type: SET_USER_INFO,
-          payload: JSON.parse(resp.config.data),
-        });
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);

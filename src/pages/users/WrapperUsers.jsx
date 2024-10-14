@@ -3,8 +3,6 @@ import RoleAdmin from "./RoleAdmin";
 
 function WrapperUsers() {
   const { userInfo } = useSelector((state) => state.authStore);
-  const { listUser } = useSelector((state) => state.userStore);
-  console.log(listUser);
 
   return (
     <div className="container">

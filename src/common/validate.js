@@ -23,11 +23,11 @@ export const validatePassword = (password) => {
 export const validateFormLogin = (params) => {
   const { email, password } = params
 
-  if (!email || email.length === 0) {
+  if (!validateEmpty(email)) {
       throw new Error('Email is required')
   }
 
-  if (!password || password.length === 0) {
+  if (!validateEmpty(password)) {
       throw new Error('Password is required')
   }
 }
@@ -35,11 +35,11 @@ export const validateFormLogin = (params) => {
 export const validateFormSignUp = (params) => {
   const { email, password, confirmPassword, name } = params
 
-  if (!name || name.length === 0) {
+  if (!validateEmpty(name)) {
       throw new Error('Name is required')
   }
 
-  if (!email || email.length === 0) {
+  if (!validateEmpty(email)) {
       throw new Error('Email is required')
   }
 
@@ -47,15 +47,13 @@ export const validateFormSignUp = (params) => {
       throw new Error('Invalid email')
   }
 
-  if (password.length < 8) {
-      throw new Error('Password at least 8 characters')
+  if (!validateEmpty(password)) {
+    throw new Error('Invalid email')
   }
-
-  // if (!validatePassword(password)) {
-  //     throw new Error('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character')
-  // }
 
   if (confirmPassword !== password) {
       throw new Error('Confirm Password not match')
   }
 }
+
+export const validateEmpty = (value) => value && value.trim().length > 0
