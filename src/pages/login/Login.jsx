@@ -1,7 +1,7 @@
-import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { login, loginWithGoogle } from '../../store/actions/authAction';
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login, loginWithGoogle } from "../../store/actions/authAction";
 
 const Login = () => {
   const email = useRef(null);
@@ -16,13 +16,13 @@ const Login = () => {
           email: email.current.value,
           password: password.current.value,
         },
-        () => navigate('/')
+        () => navigate("/")
       )
     );
   };
 
   const handleLoginWithGoogle = () => {
-    dispatch(loginWithGoogle(() => navigate('/')));
+    dispatch(loginWithGoogle(() => navigate("/")));
   };
 
   return (
@@ -31,14 +31,13 @@ const Login = () => {
         <label className="labelLogin" htmlFor="chk" aria-hidden="true">
           Login
         </label>
-        <button
-          type="button"
-          className="btnLogin btnLoginByGG"
-          onClick={() => handleLoginWithGoogle()}
-        >
-          <i className="fa-brands fa-google"></i> Login with Google
-        </button>
-        <input className="inputLogin" type="email" name="email" placeholder="Email" ref={email} />
+        <input
+          className="inputLogin"
+          type="email"
+          name="email"
+          placeholder="Email"
+          ref={email}
+        />
         <input
           className="inputLogin"
           type="password"
@@ -46,8 +45,20 @@ const Login = () => {
           placeholder="Password"
           ref={password}
         />
-        <button type="button" className="btnLogin btnLoginSubmit" onClick={() => handleLogin()}>
+        <button
+          type="button"
+          className="btnLogin btnLoginSubmit"
+          onClick={() => handleLogin()}
+        >
           Login
+        </button>
+        <div className="auth-divider text-center text-white fs-6 my-4">Or</div>
+        <button
+          type="button"
+          className="btnLogin btnLightHover"
+          onClick={() => handleLoginWithGoogle()}
+        >
+          <i className="fa-brands fa-google"></i> Login with Google
         </button>
       </form>
     </div>

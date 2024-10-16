@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { convertDateToDMY } from '../../common/dateFormat';
 import { deleteProject } from '../../store/actions/projectAction';
+import AddTaskModal from '../tasks/AddTaskModal';
 import ProjectCreateModal from './ProjectCreateModal';
 import ProjectUpdateModal from './ProjectUpdateModal';
 
@@ -15,6 +16,17 @@ const ProjectsList = ({ projects }) => {
     note: '',
     priority: '',
   });
+  const [taskData, setTaskData] = useState({
+    user_mail: '',
+    project_id: '',
+    time_start: '',
+    time_end: '',
+    status: '',
+    task_name: '',
+    note: '',
+  });
+  const [text, setText] = useState('');
+  const { currentPage } = useSelector((state) => state.projectStore);
   const { userInfo } = useSelector((state) => state.authStore);
   const dispatch = useDispatch();
 
@@ -74,7 +86,7 @@ const ProjectsList = ({ projects }) => {
                   }`}
                 >
                   <div className="card-body">
-                    <h5 className="card-title mb-3 border-bottom pt-1 pb-2 text-truncate">
+                    <h5 className="card-title mb-3 border-bottom pt-1 pb-2 text-truncate ">
                       <strong>{project.name}</strong>
                     </h5>
                     <p className="card-text text-truncate">
@@ -100,7 +112,7 @@ const ProjectsList = ({ projects }) => {
                     <div className="mt-2 text-center">
                       <button
                         type="button"
-                        className="btn btn-primary mx-1 my-1"
+                        className="btn bgCreate mx-1 my-1"
                         data-bs-toggle="modal"
                         data-bs-target="#projectUpdateModal"
                         onClick={() => showProjectUpdateModal(project)}
@@ -117,6 +129,19 @@ const ProjectsList = ({ projects }) => {
                         Delete
                       </button>
                     </div>
+                    <hr />
+                    <div className="text-center mt-3">
+                      <button
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addTaskModal"
+                        className="btn bgPrimary"
+                        onClick={() => handleAddTask(project.id, project.name)}
+                        disabled={userInfo?.role != 1}
+                      >
+                        <i className="fa-solid fa-plus"></i> add task
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -124,6 +149,7 @@ const ProjectsList = ({ projects }) => {
         </div>
       </div>
       <ProjectCreateModal />
+      <AddTaskModal taskNewData={taskData} />
       <ProjectUpdateModal projectData={projectData} />
     </>
   );
