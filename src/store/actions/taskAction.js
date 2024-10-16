@@ -1,22 +1,14 @@
-import { TOAST } from "../../common/constants";
-import { ToastCommon } from "../../components/ToastCommon";
-import axiosInstance from "../../config/axios-config";
-import { SET_TASK_BY_USER } from "../constants";
-import { hideLoading, showLoading } from "./appAction";
-
-import { TOAST } from "../../common/constants";
-import { ToastCommon } from "../../components/ToastCommon";
-import axiosInstance from "../../config/axios-config";
-import { SET_LIST_TASK } from "../constants";
-import { hideLoading, showLoading } from "./appAction";
+import { TOAST } from '../../common/constants';
+import { ToastCommon } from '../../components/ToastCommon';
+import axiosInstance from '../../config/axios-config';
+import { SET_LIST_TASK } from '../constants';
+import { hideLoading, showLoading } from './appAction';
 
 export const getListTask = () => {
   return async (dispatch, getState) => {
     try {
       dispatch(showLoading());
-      const resp = await axiosInstance.get(
-        import.meta.env.VITE_BASE_URL + "/api/task"
-      );
+      const resp = await axiosInstance.get(import.meta.env.VITE_BASE_URL + '/api/task');
 
       if (resp) {
         dispatch({
@@ -36,14 +28,11 @@ export const getListTask = () => {
 export const createTask = (params) => {
   return async (dispatch, getState) => {
     try {
-      const res = await axiosInstance.post(
-        import.meta.env.VITE_BASE_URL + "/api/task",
-        params
-      );
+      const res = await axiosInstance.post(import.meta.env.VITE_BASE_URL + '/api/task', params);
 
       if (res) {
         dispatch(getListTask());
-        ToastCommon(TOAST.SUCCESS, "Created task new successfully");
+        ToastCommon(TOAST.SUCCESS, 'Created task new successfully');
       }
     } catch (error) {
       console.log(error.response?.data?.message);
@@ -54,14 +43,11 @@ export const createTask = (params) => {
 export const updateTask = (params) => {
   return async (dispatch, getState) => {
     try {
-      const res = await axiosInstance.put(
-        import.meta.env.VITE_BASE_URL + "/api/task",
-        params
-      );
+      const res = await axiosInstance.put(import.meta.env.VITE_BASE_URL + '/api/task', params);
 
       if (res) {
-        ToastCommon(TOAST.SUCCESS, "Task saved successfully");
-        document.getElementById("close-edit-task-btn").click();
+        ToastCommon(TOAST.SUCCESS, 'Task saved successfully');
+        document.getElementById('close-edit-task-btn').click();
         dispatch(getListTask());
       }
     } catch (error) {
@@ -73,10 +59,7 @@ export const updateTask = (params) => {
 export const changeStatus = (params) => {
   return async (dispatch, getState) => {
     try {
-      const res = await axiosInstance.put(
-        import.meta.env.VITE_BASE_URL + "/api/task",
-        params
-      );
+      const res = await axiosInstance.put(import.meta.env.VITE_BASE_URL + '/api/task', params);
 
       if (res) {
         dispatch(getListTask());
@@ -90,12 +73,9 @@ export const changeStatus = (params) => {
 export const deleteTask = (params) => {
   return async (dispatch, getState) => {
     try {
-      const res = await axiosInstance.delete(
-        import.meta.env.VITE_BASE_URL + "/api/task",
-        {
-          data: params,
-        }
-      );
+      const res = await axiosInstance.delete(import.meta.env.VITE_BASE_URL + '/api/task', {
+        data: params,
+      });
 
       if (res) {
         dispatch(getListTask());
