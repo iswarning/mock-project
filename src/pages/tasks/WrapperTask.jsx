@@ -8,9 +8,9 @@ import Loading from "../../components/Loading"
 import { getProjectsData } from "../../store/actions/projectAction"
 
 function WrapperTask() {
-    const dispatch = useDispatch()
-    const {userInfo} = useSelector((state) => state.authStore)
-    const {isLoading} = useSelector((state) => state.appStore)
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.authStore);
+  const { isLoading } = useSelector((state) => state.appStore);
 
     useEffect(() => {
         if (Number(userInfo.role) === 1) {
@@ -21,7 +21,7 @@ function WrapperTask() {
         }
     },[])
 
-    if (isLoading) return <Loading />
+  if (isLoading) return <Loading />;
 
   return (
     <>
@@ -32,4 +32,4 @@ function WrapperTask() {
   )
 }
 
-export default WrapperTask
+export default WrapperTask;

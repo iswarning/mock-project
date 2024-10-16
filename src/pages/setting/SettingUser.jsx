@@ -12,7 +12,11 @@ function SettingUser() {
   const { userInfo } = useSelector((state) => state.authStore);
   const { listUser } = useSelector((state) => state.userStore);
   const [passwordError, setPasswordError] = useState(false);
-  const [formState, setFormState] = useState({ ...userInfo, password: "" });
+  const [formState, setFormState] = useState({
+    ...userInfo,
+    password: "",
+    confirmPassword: "",
+  });
   const [toggleUpdatePassword, setToggleUpdatePassword] = useState(false);
 
   const handleChange = (e) => {
@@ -29,16 +33,26 @@ function SettingUser() {
 
   const handleSubmit = () => {
     if (toggleUpdatePassword && formState.password.length === 0) {
-      console.log(444);
-
       setErrorMessages({ password: REQUIRE_PASSWORD });
+      return;
+    }
+
+    // Kiểm tra nếu toggleUpdatePassword được bật và confirmPassword không khớp với password
+    if (
+      toggleUpdatePassword &&
+      formState.password !== formState.confirmPassword
+    ) {
+      setErrorMessages({ confirmPassword: "Passwords do not match" });
       return;
     }
 
     try {
       if (confirm("Are you sure you want to update")) {
         // Loại bỏ trường confirmPassword, chỉ submit formState
-        dispatch(updateUserByUser(formState));
+        const { confirmPassword, ...updatedFormState } = formState;
+
+        // Chỉ submit updatedFormState mà không có confirmPassword
+        dispatch(updateUserByUser(updatedFormState));
       }
     } catch (error) {
       console.error("Error updating user info:", error);
@@ -125,18 +139,18 @@ function SettingUser() {
               <i className="fa-solid fa-xmark"></i> &nbsp; Delete picture
             </button>
           </div>
-          <h2 className="mt-5">General</h2>
-          <div className="row mt-4">
-            <div className="col-3">Name</div>
-            <div className="col-9">
-              <input
-                type="text"
-                className="form-control widthInput py-1"
-                name="name"
-                value={formState.name}
-                onChange={handleChange}
-              />
-            </div>
+        </div>
+        <h2 className="mt-5">General</h2>
+        <div className="row mt-4">
+          <div className="col-3">Name</div>
+          <div className="col-9">
+            <input
+              type="text"
+              className="form-control widthInput py-1"
+              name="name"
+              value={formState.name}
+              onChange={handleChange}
+            />
           </div>
         </div>
         <div className="row mt-3">
@@ -168,20 +182,33 @@ function SettingUser() {
             />
           </div>
         </h2>
-        <div className="row mt-4">
+        <div className=" mt-4">
           {toggleUpdatePassword && (
             <>
-              <div className="col-3">Password</div>
-              <div className="col-9">
-                <input
-                  type="password"
-                  className={`form-control widthInput py-1 ${
-                    passwordError ? "border-danger" : ""
-                  }`}
-                  name="password"
-                  value={formState.password}
-                  onChange={handleChange}
-                />
+              <div className="row">
+                <div className="col-3">Password</div>
+                <div className="col-9">
+                  <input
+                    type="password"
+                    className={`form-control widthInput py-1 ${
+                      passwordError ? "border-danger" : ""
+                    }`}
+                    name="password"
+                    value={formState.password}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="row mt-3">
+                <div className="col-3">Confirm Password</div>
+                <div className="col-9">
+                  <input
+                    type="text"
+                    className="form-control widthInput py-1"
+                    name="confirmPassword"
+                    value={formState.confirmPassword}
+                  />
+                </div>
               </div>
             </>
           )}

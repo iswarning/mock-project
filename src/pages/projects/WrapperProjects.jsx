@@ -2,13 +2,14 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../components/Loading";
 import { getProjectsData } from "../../store/actions/projectAction";
-import RoleAdmin from "./RoleAdmin";
-import RoleUser from "./RoleUser";
 import "./style.scss";
+import ProjectsList from "./ProjectsList";
 
 const WrapperProjects = () => {
   const { userInfo } = useSelector((state) => state.authStore);
   const { isLoading } = useSelector((state) => state.appStore);
+  const { projects } = useSelector((state) => state.projectStore);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -17,7 +18,7 @@ const WrapperProjects = () => {
 
   if (isLoading) return <Loading />;
 
-  return <>{Number(userInfo?.role) == 1 ? <RoleAdmin /> : <RoleUser />}</>;
+  return <ProjectsList projects={projects} />;
 };
 
 export default WrapperProjects;
