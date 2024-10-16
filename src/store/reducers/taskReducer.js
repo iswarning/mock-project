@@ -1,15 +1,15 @@
-import { SET_TASK_BY_USER } from "../constants";
+import { SET_LIST_TASK } from "../constants";
 
 const initState = {
-  taskByUser: [],
+  listTask: [],
 };
 
 const taskReducer = (state = initState, { type, payload }) => {
   switch (type) {
-    case SET_TASK_BY_USER:
+    case SET_LIST_TASK:
       return {
         ...state,
-        taskByUser: payload,
+        listTask: payload,
       };
 
     default:

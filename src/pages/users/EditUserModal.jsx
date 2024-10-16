@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import avatarDefault from "../../assets/avatarUser.png";
-import { REQUIRE_NAME, REQUIRE_PASSWORD } from "../../common/messageError";
+import { REQUIRE_NAME } from "../../common/messageError";
 import { updateUser } from "../../store/actions/userAction";
 import "./style.scss";
 import { ToastCommon } from "../../components/ToastCommon";
 import { TOAST } from "../../common/constants";
+import avatarDefault from '../../assets/avatarUser.png'
 
 const initErrorMessages = {
   name: "",

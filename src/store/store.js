@@ -5,9 +5,9 @@ import persistStore from "redux-persist/es/persistStore";
 import appReducer from "./reducers/appReducer";
 import authReducer from "./reducers/authReducer";
 import userReducer from "./reducers/userReducer";
+import taskReducer from "./reducers/taskReducer";
 import projectReducer from "./reducers/projectReducer";
 import customStorage from "./customStorage";
-import taskReducer from "./reducers/taskReducer";
 
 const customizedMiddleware = {
   serializableCheck: false,
