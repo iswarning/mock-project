@@ -1,3 +1,4 @@
+import { TOAST } from "../../common/constants";
 import { ToastCommon } from "../../components/ToastCommon";
 import axiosInstance from "../../config/axios-config";
 import { SET_LIST_TASK } from "../constants";
@@ -9,6 +10,29 @@ export const getListTask = () => {
       dispatch(showLoading());
       const resp = await axiosInstance.get(
         import.meta.env.VITE_BASE_URL + "/api/task"
+      );
+
+      if (resp) {
+        dispatch({
+          type: SET_LIST_TASK,
+          payload: resp.data,
+        });
+
+        dispatch(hideLoading());
+      }
+    } catch (error) {
+      console.log(error.response?.data?.message);
+      dispatch(hideLoading());
+    }
+  };
+};
+
+export const getListTaskByUserId = (params) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(showLoading());
+      const resp = await axiosInstance.get(
+        import.meta.env.VITE_BASE_URL + "/api/gettaskbyuser/" + params.userId
       );
 
       if (resp) {
@@ -63,7 +87,7 @@ export const updateTask = (params) => {
   };
 };
 
-export const changeStatus = (params) => {
+export const changeStatus = (params, userId) => {
   return async (dispatch, getState) => {
     try {
       const res = await axiosInstance.put(
@@ -72,7 +96,7 @@ export const changeStatus = (params) => {
       );
 
       if (res) {
-        dispatch(getListTask());
+        dispatch(getListTaskByUserId({ userId: getState().authStore.userInfo.id }));
       }
     } catch (error) {
       console.log(error.response?.data?.message);

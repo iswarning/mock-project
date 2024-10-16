@@ -3,7 +3,7 @@ import { ToastCommon } from "../../components/ToastCommon";
 import axiosInstance from "../../config/axios-config";
 import { SET_LIST_USER, SET_USER_INFO } from "../constants";
 import { hideLoading, showLoading } from "./appAction";
-
+import { logout } from './authAction'
 export const getListUser = () => {
   return async (dispatch, getState) => {
     try {
@@ -104,50 +104,12 @@ export const updateUser = (params, showSaving, hideSaving) => {
   return async (dispatch, getState) => {
     try {
       showSaving();
-      let request = {
-        email: params.email,
-        name: params.name,
-      };
+      const res = await axiosInstance.put(
+        import.meta.env.VITE_BASE_URL + "/api/user",
+        params
+      );
 
-      if (params.password && params.password.length > 0) {
-        request = {
-          ...request,
-          password: params.password,
-        };
-      }
-
-      let success = false;
-
-      if (params?.avarta) {
-        const formData = new FormData();
-        formData.append("image", params.avarta);
-        formData.append("email", params.email);
-
-        const [resUser, resUpload] = await Promise.all([
-          axiosInstance.put(
-            import.meta.env.VITE_BASE_URL + "/api/user",
-            request
-          ),
-          axiosInstance.post(
-            import.meta.env.VITE_BASE_URL + "/api/upload/avarta",
-            formData
-          ),
-        ]);
-
-        if (resUser.status === 200 && resUpload.status === 200) {
-          success = true;
-        }
-      } else {
-        const resUser = await axiosInstance.put(
-          import.meta.env.VITE_BASE_URL + "/api/user",
-          request
-        );
-        if (resUser.status === 200) {
-          success = true;
-        }
-      }
-
-      if (success) {
+      if (res) {
         hideSaving();
         document.getElementById("close-edit-user-btn").click();
         ToastCommon(TOAST.SUCCESS, "Updated user successfully");
@@ -218,7 +180,7 @@ export const updateUserByUser = (params) => {
   };
 };
 
-export const changeRole = (params) => {
+export const changeRole = (params, navigate) => {
   return async (dispatch, getState) => {
     try {
       const resp = await axiosInstance.put(
@@ -232,6 +194,10 @@ export const changeRole = (params) => {
       if (resp) {
         ToastCommon(TOAST.SUCCESS, "Role has been changed successfully.");
         dispatch(getListUser());
+        if (getState().authStore.userInfo.email === params.email) {
+          dispatch(logout())
+          navigate();
+        }
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
