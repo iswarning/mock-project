@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatus } from "../../store/actions/taskAction";
@@ -39,9 +39,14 @@ function TasksRoleUser() {
     }
   };
 
-  const getTasks = (status) => listTask
-  .filter((task) => task.user_mail === userInfo.email)
-  .filter((task) => task.status == status)
+  const filteredTasks = useMemo(() => {
+    const tasksByStatus = {};
+    Object.keys(statusMapping).forEach(status => {
+      tasksByStatus[status] = listTask
+      .filter((task) => task.status == status)
+    });
+    return tasksByStatus;
+  }, [listTask]);
 
   return (
     <div className='app'>
@@ -55,14 +60,14 @@ function TasksRoleUser() {
                     <div className='project-column-heading'>
                       <h2 className='project-column-heading__title'>{statusMapping[status].toUpperCase()}</h2>
                     </div>
-                    { getTasks(status).map((task, index) => {
+                    { filteredTasks[status] && filteredTasks[status].map((task, index) => {
                         const user = listUser.find((user) => user.email === task.user_mail);
                         if (!user) return              
                         return (
                           <Draggable key={task.id} draggableId={task.id} index={index}>
                             {(provided) => (
                               <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                <TaskElementRoleUser task={task} user={user} />
+                                <TaskElementRoleUser task={task} user={user} status={status} />
                               </div>
                             )}
                           </Draggable>

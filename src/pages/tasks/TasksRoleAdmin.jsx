@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTask } from '../../store/actions/taskAction';
 import EditTaskModal from './EditTaskModal';
@@ -25,39 +25,48 @@ function TasksRoleAdmin() {
             dispatch(deleteTask({ id }))
         }
     }
+console.log(listTask);
 
-    const getTasks = (status) => listTask.filter((task) => task.status == status)
-
-  return (
-    <div className='app'>
+    const filteredTasks = useMemo(() => {
+      const tasksByStatus = {};
+      Object.keys(statusMapping).forEach(status => {
+        tasksByStatus[status] = listTask.filter(task => task.status === parseInt(status));
+      });
+      return tasksByStatus;
+    }, [listTask]);
+  
+    return (
+      <div className='app'>
         <main className='project'>
           <div className='project-tasks'>
             {Object.keys(statusMapping).map((status) => (
-                <div className='project-column' key={status}>
-                    <div className='project-column-heading'>
-                    <h2 className='project-column-heading__title'>{statusMapping[status].toUpperCase()}</h2>
-                    </div>
-                    { getTasks(status).map((task) => {
-                        const user = listUser.find((user) => user.email === task.user_mail);
-        
-                        if (!user) return              
-        
-                        return <TaskElementRoleAdmin 
-                            key={task.id}
-                            task={task} 
-                            user={user} 
-                            status={status} 
-                            handleEdit={handleEdit} 
-                            handleDelete={handleDelete} 
-                        />
-                    })}
+              <div className='project-column' key={status}>
+                <div className='project-column-heading'>
+                  <h2 className='project-column-heading__title'>{statusMapping[status].toUpperCase()}</h2>
                 </div>
+                {filteredTasks[status] && filteredTasks[status].map((task) => {
+                  const user = listUser.find(user => user.email === task.user_mail);
+  
+                  if (!user) return null;
+  
+                  return (
+                    <TaskElementRoleAdmin 
+                      key={task.id}
+                      task={task} 
+                      user={user} 
+                      status={status} 
+                      handleEdit={handleEdit} 
+                      handleDelete={handleDelete} 
+                    />
+                  );
+                })}
+              </div>
             ))}
           </div>
         </main>
-      <EditTaskModal taskEdit={taskDetail} />
-    </div>
-  );
+        <EditTaskModal taskEdit={taskDetail} />
+      </div>
+    );
 }
 
 export default TasksRoleAdmin;

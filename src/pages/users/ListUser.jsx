@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import imageAVT from "../../assets/avatarUser.png";
 import { CHANGEROLE, DELETE } from "../../common/messageConfirm";
 import { changeRole, deleteUser } from "../../store/actions/userAction";
+import { useNavigate } from "react-router-dom";
 
 function ListUser({ setUserEdit }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [role, setRole] = useState('default')
+  const navigate = useNavigate()
 
   const { listUser } = useSelector((state) => state.userStore);
   const dispatch = useDispatch();
@@ -58,7 +60,9 @@ function ListUser({ setUserEdit }) {
             changeRole({
                 email,
                 role,
-            })
+            },
+            () => navigate('/login')
+          )
         );
     }
   };

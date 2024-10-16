@@ -6,9 +6,12 @@ const tagMapping = {
     3: 'illustration'
 }
 
-const TaskElementRoleAdmin = ({ task, user, status, handleEdit, handleDelete, }) => {
+const TaskElementRoleAdmin = ({ task, user, status, handleEdit, handleDelete }) => {
 
-    const convertDateTime = (dt) => new Date(dt).toISOString().split('T')[0]
+    const convertDateTime = (dt) => {
+        const date = new Date(dt);
+        return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    }
 
     return (
         <div className='task'>

@@ -1,21 +1,42 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { REQUIRE_NOTE, REQUIRE_TIME_END, TIME_START_LESS_TIME_END } from "../../common/messageError";
+import { REQUIRE_NAME, REQUIRE_NOTE, REQUIRE_TIME_END, TIME_START_LESS_TIME_END } from "../../common/messageError";
 import { updateTask } from "../../store/actions/taskAction";
 import './style.scss';
+import { useSelector } from "react-redux";
 
 const initErrorMessages = {
     time_end: '',
     note: ''
 }
 
+const initTask = {
+    task_name: '',
+    note: '',
+    time_start: '',
+    time_end: '',
+    user_name: '',
+    user_mail: '',
+    project_id: '',
+    project_name: '',
+    project_start: '',
+    project_end: ''
+}
+
 function EditTaskModal({ taskEdit }) {
 
     const dispatch = useDispatch()
-    const [taskDetail, setTaskDetail] = useState(taskEdit)
+    const [taskDetail, setTaskDetail] = useState(taskEdit || initTask)
     const [errorMessages, setErrorMessages] = useState(initErrorMessages)
+    const { listUser } = useSelector((state) => state.userStore)
+    const { projects } = useSelector((state) => state.projectStore)
 
     const handleOnSubmit = () => {
+        if (taskDetail.task_name.length === 0) {
+            setErrorMessages({ task_name: REQUIRE_NAME })
+            return
+        }
+
         if (taskDetail.note.length === 0) {
             setErrorMessages({ note: REQUIRE_NOTE })
             return
@@ -52,11 +73,36 @@ function EditTaskModal({ taskEdit }) {
         })
     }
 
+    const handleSetTaskName = (value) => {
+        setTaskDetail({
+            ...taskDetail,
+            task_name: value
+        })
+    }
+
     const convertDateTime = (value) => {
-        if (!value) {
-            return ''
-        }
+        if (!value) return ''
         return new Date(value).toISOString().split('T')[0]
+    }
+
+    const handleChangeUser = (email) => {
+        const user = listUser.find(u => u.email === email)
+        setTaskDetail({
+           ...taskDetail,
+            user_mail: user.email,
+            user_name: user.name,
+        })
+    }
+
+    const handleChangeProject = (projectId) => {
+        const project = projects.find(u => u.id === projectId)
+        setTaskDetail({
+           ...taskDetail,
+            project_id: project.id,
+            project_name: project.name,
+            project_start: project.time_start,
+            project_end: project.time_end
+        })
     }
 
     useEffect(() => {
@@ -77,14 +123,51 @@ function EditTaskModal({ taskEdit }) {
                 <div className="modal-body">
                     <form>
                         <div className="mb-3">
+                            <label className="form-label">Name</label>
+                            <input 
+                                type="text" 
+                                className={`form-control ${errorMessages.task_name?.length > 0 && 'is-invalid'}`}
+                                value={taskDetail?.task_name} 
+                                onChange={(e) => handleSetTaskName(e.target.value)}
+                            />
+                            <span className="invalid-feedback">{errorMessages.task_name}</span>
+                        </div>
+                        <div className="mb-3">
                             <label className="form-label">Note</label>
-                            <textarea 
-                            rows={3} 
-                            className={`form-control ${errorMessages.note?.length > 0 && 'is-invalid'}`} 
-                            value={taskDetail?.note}
-                            onChange={(e) => handleSetNote(e.target.value)}></textarea>
+                            <input 
+                                className={`form-control ${errorMessages.note?.length > 0 && 'is-invalid'}`} 
+                                value={taskDetail?.note}
+                                onChange={(e) => handleSetNote(e.target.value)}
+                            />
                             <span className="invalid-feedback">{errorMessages.note}</span>
-
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Select User</label>
+                            <select className="form-control" value={taskDetail?.user_mail} onChange={(e) => handleChangeUser(e.target.value)}>
+                                {
+                                    listUser.map((user) => (
+                                        <option 
+                                            key={user.id} 
+                                            value={user.email}
+                                        > {user.email}</option>
+                                    ))
+                                }
+                            </select>
+                            <span className="invalid-feedback">{errorMessages.note}</span>
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Select Project</label>
+                            <select className="form-control" value={taskDetail?.project_id} onChange={(e) => handleChangeProject(e.target.value)}>
+                                {
+                                    projects.map((pro) => (
+                                        <option 
+                                            key={pro.id} 
+                                            value={pro.id}
+                                        > {pro.name}</option>
+                                    ))
+                                }
+                            </select>
+                            <span className="invalid-feedback">{errorMessages.note}</span>
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Time Start</label>
