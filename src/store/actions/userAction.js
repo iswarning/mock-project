@@ -104,14 +104,6 @@ export const updateUser = (params, showSaving, hideSaving) => {
   return async (dispatch, getState) => {
     try {
       showSaving();
-<<<<<<< HEAD
-      const resUser = await axiosInstance.put(
-        import.meta.env.VITE_BASE_URL + "/api/user",
-        params
-      )
-
-      if (resUser.status === 200) {
-=======
       let request = {
         email: params.email,
         name: params.name,
@@ -156,7 +148,6 @@ export const updateUser = (params, showSaving, hideSaving) => {
       }
 
       if (success) {
->>>>>>> 550cf418a9d1cf60f1e893f491ab876c7a770588
         hideSaving();
         document.getElementById("close-edit-user-btn").click();
         ToastCommon(TOAST.SUCCESS, "Updated user successfully");
