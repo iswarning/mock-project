@@ -5,6 +5,7 @@ import { updateUser } from "../../store/actions/userAction";
 import "./style.scss";
 import { ToastCommon } from "../../components/ToastCommon";
 import { TOAST } from "../../common/constants";
+import avatarDefault from '../../assets/avatarUser.png'
 
 const initErrorMessages = {
   name: "",
