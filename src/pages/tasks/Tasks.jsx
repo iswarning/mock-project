@@ -1,9 +1,10 @@
 import React from "react";
+import RoleUser from "./RoleUser";
 
 function Tasks(props) {
   return (
     <div>
-      <h2>Tasks Page</h2>
+      <RoleUser />
     </div>
   );
 }

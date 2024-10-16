@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { convertDateWithCurrentTime } from '../../common/dateFormat';
-import { createProject } from '../../store/actions/projectAction';
+import React, { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { convertDateWithCurrentTime } from "../../common/dateFormat";
+import { createProject } from "../../store/actions/projectAction";
 
 function ProjectCreateModal() {
   const dispatch = useDispatch();
@@ -84,7 +84,6 @@ function ProjectCreateModal() {
                       />
                     </div>
                   </div>
-
                   <div className="row mb-3">
                     <label htmlFor="timeStart" className="col-4 col-form-label">
                       Time Start:
@@ -103,7 +102,12 @@ function ProjectCreateModal() {
                       Time End:
                     </label>
                     <div className="col-8">
-                      <input type="date" className="form-control" id="timeEnd" ref={timeEnd_Ref} />
+                      <input
+                        type="date"
+                        className="form-control"
+                        id="timeEnd"
+                        ref={timeEnd_Ref}
+                      />
                     </div>
                   </div>
                   <div className="row mb-3">
@@ -111,7 +115,11 @@ function ProjectCreateModal() {
                       Priority:
                     </label>
                     <div className="col-8">
-                      <select className="form-select" aria-label="Priority" ref={priority_Ref}>
+                      <select
+                        className="form-select"
+                        aria-label="Priority"
+                        ref={priority_Ref}
+                      >
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -130,7 +138,11 @@ function ProjectCreateModal() {
               >
                 Create
               </button>
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
                 Close
               </button>
             </div>

@@ -1,0 +1,27 @@
+.bgTittleModelCreateTask {
+    background: linear-gradient(to top left, var(--lightPrimary), var(--primary));
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bgPrimary {
+    background: linear-gradient(to bottom right, var(--lightPrimary), var(--primary));
+    transition: transform 0.3s ease;
+
+    color: #fff;
+
+    &:hover{
+        background: var(--hoverPrimary);
+        color: #fff;
+        transition: transform 0.3s ease;
+
+    }
+}
+
+.select-custom {
+    cursor: pointer;
+}
+
+.selectEmail {
+    cursor: pointer;
+}
