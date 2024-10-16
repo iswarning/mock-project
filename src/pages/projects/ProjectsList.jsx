@@ -7,6 +7,7 @@ import { deleteProject } from "../../store/actions/projectAction";
 import { SET_CURRENT_PAGE } from "../../store/constants";
 import ProjectCreateModal from "./ProjectCreateModal";
 import ProjectUpdateModal from "./ProjectUpdateModal";
+import AddTaskModal from "../tasks/AddTaskModal";
 
 const ProjectsList = ({ projects }) => {
   const [projectData, setProjectData] = useState({
@@ -16,6 +17,15 @@ const ProjectsList = ({ projects }) => {
     time_end: "",
     note: "",
     priority: "",
+  });
+  const [taskData, setTaskData] = useState({
+    user_mail: "",
+    project_id: "",
+    time_start: "",
+    time_end: "",
+    status: "",
+    task_name: "",
+    note: "",
   });
   const [text, setText] = useState("");
   const { currentPage } = useSelector((state) => state.projectStore);
@@ -51,6 +61,14 @@ const ProjectsList = ({ projects }) => {
       [1000]
     )
   );
+
+  const handleAddTask = (projectId, projectName) => {
+    setTaskData({
+      ...taskData,
+      project_id: projectId,
+      project_name: projectName,
+    });
+  };
 
   return (
     <>
@@ -103,7 +121,7 @@ const ProjectsList = ({ projects }) => {
                   }`}
                 >
                   <div className="card-body">
-                    <h5 className="card-title mb-3 border-bottom pt-1 pb-2 text-truncate">
+                    <h5 className="card-title mb-3 border-bottom pt-1 pb-2 text-truncate ">
                       <strong>{project.name}</strong>
                     </h5>
                     <p className="card-text text-truncate">
@@ -144,6 +162,19 @@ const ProjectsList = ({ projects }) => {
                         disabled={userInfo?.role != 1}
                       >
                         Delete
+                      </button>
+                    </div>
+                    <hr />
+                    <div className="text-center mt-3">
+                      <button
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addTaskModal"
+                        className="btn bgPrimary"
+                        onClick={() => handleAddTask(project.id, project.name)}
+                        disabled={userInfo?.role != 1}
+                      >
+                        <i className="fa-solid fa-plus"></i> add task
                       </button>
                     </div>
                   </div>
@@ -208,6 +239,7 @@ const ProjectsList = ({ projects }) => {
         </div>
       )}
       <ProjectCreateModal />
+      <AddTaskModal taskNewData={taskData} />
       <ProjectUpdateModal projectData={projectData} />
     </>
   );

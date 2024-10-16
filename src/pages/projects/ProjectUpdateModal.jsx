@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
-import { convertDateToYMD, convertDateWithCurrentTime } from '../../common/dateFormat';
-import { useDispatch } from 'react-redux';
-import { updateProject } from '../../store/actions/projectAction';
+import { useEffect, useState } from "react";
+import {
+  convertDateToYMD,
+  convertDateWithCurrentTime,
+} from "../../common/dateFormat";
+import { useDispatch } from "react-redux";
+import { updateProject } from "../../store/actions/projectAction";
 
 function ProjectUpdateModal({ projectData }) {
   const [project, setProject] = useState(projectData);
   const dispatch = useDispatch();
-console.log(projectData);
 
   const handleProjectNameChange = (e) => {
     setProject({ ...project, name: e.target.value });
@@ -21,10 +23,16 @@ console.log(projectData);
   };
 
   const handleTimeStartChange = (e) => {
-    setProject({ ...project, time_start: convertDateWithCurrentTime(e.target.value) });
+    setProject({
+      ...project,
+      time_start: convertDateWithCurrentTime(e.target.value),
+    });
   };
   const handleTimeEndChange = (e) => {
-    setProject({ ...project, time_end: convertDateWithCurrentTime(e.target.value) });
+    setProject({
+      ...project,
+      time_end: convertDateWithCurrentTime(e.target.value),
+    });
   };
 
   const handlePriorityChange = (e) => {
@@ -169,7 +177,11 @@ console.log(projectData);
               >
                 Update
               </button>
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
                 Close
               </button>
             </div>

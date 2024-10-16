@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { getListUser } from "../../store/actions/userAction";
 
 const Home = () => {
-
   const dispatch = useDispatch();
 
   useEffect(() => {

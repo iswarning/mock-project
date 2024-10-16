@@ -5,16 +5,16 @@ const initState = {
 };
 
 const taskReducer = (state = initState, { type, payload }) => {
-    switch (type) {
-      case SET_LIST_TASK:
-        return {
-          ...state,
-          listTask: payload
-        };
-  
-      default:
-        return state;
-    }
+  switch (type) {
+    case SET_LIST_TASK:
+      return {
+        ...state,
+        listTask: payload,
+      };
+
+    default:
+      return state;
+  }
 };
 
 export default taskReducer;

@@ -4,6 +4,8 @@ import "./style.scss";
 import { updateUserByUser } from "../../store/actions/userAction";
 import { REQUIRE_PASSWORD } from "../../common/messageError";
 import avatarDefault from "../../assets/avatarUser.png";
+import { ToastCommon } from "../../components/ToastCommon";
+import { TOAST } from "../../common/constants";
 
 function SettingUser() {
   const dispatch = useDispatch();
@@ -75,16 +77,15 @@ function SettingUser() {
   };
 
   const handleRemoveFile = () => {
-    const userByEmail = listUser.find((user) => userInfo.email === user.email);
-    if (userByEmail.avarta && userByEmail.avarta.length > 0) {
+    if (userInfo.avarta && userInfo.avarta.length > 0) {
       ToastCommon(
         TOAST.ERROR,
         "Cannot set avatar as default after updating avatar"
       );
       return;
     }
-    setUserDetail({
-      ...userDetail,
+    setFormState({
+      ...formState,
       avarta: null,
     });
   };
