@@ -138,7 +138,7 @@ const handleDeleteUser = (id) => {
               currentItems.map((user) => (
                 <tr key={user.id}>
                   <td>
-                    <img className="avatar" src={user?.avarta || imageAVT} alt="User Avatar" />
+                    <img loading="lazy" className="avatar" src={user?.avarta || imageAVT} alt="User Avatar" />
                   </td>
                   <td>
                       <span className="my-truncate text-truncate">
