@@ -5,6 +5,7 @@ import persistStore from 'redux-persist/es/persistStore';
 import appReducer from './reducers/appReducer';
 import authReducer from './reducers/authReducer';
 import userReducer from './reducers/userReducer';
+import taskReducer from './reducers/taskReducer';
 import projectReducer from './reducers/projectReducer';
 import customStorage from './customStorage';
 
@@ -17,6 +18,7 @@ const allReducer = combineReducers({
   appStore: appReducer,
   projectStore: projectReducer,
   userStore: userReducer,
+  taskStore: taskReducer,
 });
 
 const persistConfig = {
