@@ -9,9 +9,7 @@ function WrapperUsers() {
   return (
     <div className="container">
       {Number(userInfo?.role) === 1 ? <RoleAdmin /> : null}
-      {
-        isLoading && <Loading />
-      }
+      {isLoading && <Loading />}
     </div>
   );
 }
