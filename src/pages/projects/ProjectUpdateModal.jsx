@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
-import {
-  convertDateToYMD,
-  convertDateWithCurrentTime,
-} from "../../common/dateFormat";
-import { useDispatch } from "react-redux";
-import { updateProject } from "../../store/actions/projectAction";
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { convertDateToYMD, convertDateWithCurrentTime } from '../../common/dateFormat';
+import { FORM_ERRORS, UPDATE } from '../../common/messageConfirm';
+import { updateProject } from '../../store/actions/projectAction';
 
 function ProjectUpdateModal({ projectData }) {
   const [project, setProject] = useState(projectData);
   const dispatch = useDispatch();
+  const [errors, setErrors] = useState({});
 
   const handleProjectNameChange = (e) => {
     setProject({ ...project, name: e.target.value });
@@ -40,8 +39,21 @@ function ProjectUpdateModal({ projectData }) {
   };
 
   const handleUpdateProject = () => {
-    if (project) {
-      dispatch(updateProject(project));
+    const newErrors = {};
+    if (new Date(project.time_start) >= new Date(project.time_end))
+      newErrors.time_end = FORM_ERRORS.time_end;
+    setErrors(newErrors);
+
+    if (confirm(UPDATE.project)) {
+      if (Object.keys(newErrors).length === 0) {
+        dispatch(updateProject(project));
+        // Close the modal if there are no errors:
+        const modalElement = document.getElementById('projectUpdateModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) {
+          modalInstance.hide(); // Close Modal
+        }
+      }
     }
   };
 
@@ -130,6 +142,7 @@ function ProjectUpdateModal({ projectData }) {
                         className="form-control"
                         id="timeStart"
                         value={convertDateToYMD(project?.time_start)}
+                        disabled
                         onChange={(e) => handleTimeStartChange(e)}
                       />
                     </div>
@@ -145,7 +158,15 @@ function ProjectUpdateModal({ projectData }) {
                         id="timeEnd"
                         value={convertDateToYMD(project?.time_end)}
                         onChange={(e) => handleTimeEndChange(e)}
+                        style={{ borderColor: errors.time_end ? 'red' : '' }}
                       />
+                      {errors.time_end && (
+                        <div className="row mb-3">
+                          <div className="col-12 text-end">
+                            <span style={{ color: 'red' }}>{FORM_ERRORS.time_end}</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="row mb-3">
@@ -172,16 +193,11 @@ function ProjectUpdateModal({ projectData }) {
               <button
                 type="button"
                 className="btn btn-primary"
-                data-bs-dismiss="modal"
                 onClick={() => handleUpdateProject()}
               >
                 Update
               </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                 Close
               </button>
             </div>
