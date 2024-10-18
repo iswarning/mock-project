@@ -12,6 +12,8 @@ export const getListTask = () => {
         import.meta.env.VITE_BASE_URL + "/api/task"
       );
 
+      console.log("getListTask", resp);
+
       if (resp) {
         dispatch({
           type: SET_LIST_TASK,
