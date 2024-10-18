@@ -3,33 +3,29 @@ import avatarDefault from "../../assets/avatarUser.png";
 import { badgeColorMapping, tagMapping } from "../../common/constants";
 import { useMemo } from "react";
 
-const TaskElementRoleAdmin = ({
-  task,
-  status,
-  handleEdit,
-  handleDelete,
-}) => {
+const TaskElementRoleAdmin = ({ task, status, handleEdit, handleDelete }) => {
+  const { projects } = useSelector((state) => state.projectStore);
+  const { listUser } = useSelector((state) => state.userStore);
 
-    const { projects } = useSelector((state) => state.projectStore)
-    const { listUser } = useSelector((state) => state.userStore)
+  // only re-run this funtion if task change
+  const filteredData = useMemo(() => {
+    const data = {};
+    data.project = projects.find((p) => p.id === task.project_id);
+    data.user = listUser.find((user) => user.email === task.user_mail);
+    return data;
+  }, [task]);
 
-    // only re-run this funtion if task change
-    const filteredData = useMemo(() => {
-      const data = {}
-      data.project = projects.find((p) => p.id === task.project_id)
-      data.user = listUser.find((user) => user.email === task.user_mail)
-      return data
-    },[task])
-
-    const convertDateTime = (value) => {
-      if (!value) return ''
-      return new Date(value).toISOString().split('T')[0]
-    };
+  const convertDateTime = (value) => {
+    if (!value) return "";
+    return new Date(value).toISOString().split("T")[0];
+  };
 
   return (
     <div className="task">
       <div className="task__tags d-flex justify-content-between">
-        <div className={`my-truncate text-truncate task__tag task__tag--${tagMapping[status]}`}>
+        <div
+          className={`my-truncate text-truncate task__tag task__tag--${tagMapping[status]}`}
+        >
           {task.task_name}
         </div>
         <div className="dropdown">
@@ -66,7 +62,11 @@ const TaskElementRoleAdmin = ({
         </div>
       </div>
       <p
-        className={`${task.note ? "my-truncate text-truncate" : "my-truncate text-truncate empty"}`}
+        className={`${
+          task.note
+            ? "my-truncate text-truncate"
+            : "my-truncate text-truncate empty"
+        }`}
       >
         {task.note}
       </p>
@@ -80,9 +80,13 @@ const TaskElementRoleAdmin = ({
           <span className="ps-2">{convertDateTime(task.time_end)}</span>
         </div>
       </div>
-      <div className="d-flex justify-content-between">   
+      <div className="d-flex justify-content-between">
         <div>
-          <span className={`badge bg-${badgeColorMapping[filteredData?.project?.priority]}`}>
+          <span
+            className={`badge bg-${
+              badgeColorMapping[filteredData?.project?.priority]
+            }`}
+          >
             {task.project_name}
           </span>
         </div>

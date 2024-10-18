@@ -1,30 +1,30 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { convertDateToDMY } from '../../common/dateFormat';
-import { DELETE } from '../../common/messageConfirm';
-import { deleteProject } from '../../store/actions/projectAction';
-import AddTaskModal from '../tasks/AddTaskModal';
-import ProjectCreateModal from './ProjectCreateModal';
-import ProjectUpdateModal from './ProjectUpdateModal';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { convertDateToDMY } from "../../common/dateFormat";
+import { DELETE } from "../../common/messageConfirm";
+import { deleteProject } from "../../store/actions/projectAction";
+import AddTaskModal from "../tasks/AddTaskModal";
+import ProjectCreateModal from "./ProjectCreateModal";
+import ProjectUpdateModal from "./ProjectUpdateModal";
 
 const ProjectsList = ({ projects }) => {
-  console.log('🚀 ~ projects:', projects);
+  console.log("🚀 ~ projects:", projects);
   const [projectData, setProjectData] = useState({
-    name: '',
-    payment: '',
-    time_start: '',
-    time_end: '',
-    note: '',
-    priority: '',
+    name: "",
+    payment: "",
+    time_start: "",
+    time_end: "",
+    note: "",
+    priority: "",
   });
   const [taskData, setTaskData] = useState({
-    user_mail: '',
-    project_id: '',
-    time_start: '',
-    time_end: '',
-    status: '',
-    task_name: '',
-    note: '',
+    user_mail: "",
+    project_id: "",
+    time_start: "",
+    time_end: "",
+    status: "1",
+    task_name: "",
+    note: "",
   });
 
   const { userInfo } = useSelector((state) => state.authStore);
@@ -75,14 +75,17 @@ const ProjectsList = ({ projects }) => {
         <div className="row">
           {projects &&
             projects.map((project) => (
-              <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-4" key={project.id}>
+              <div
+                className="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-4"
+                key={project.id}
+              >
                 <div
                   className={`card bg-light shadow-sm border border-3 ${
                     project.priority === 1
-                      ? 'border-danger'
+                      ? "border-danger"
                       : project.priority === 2
-                      ? 'border-warning'
-                      : ''
+                      ? "border-warning"
+                      : ""
                   }`}
                 >
                   <div className="card-body">
