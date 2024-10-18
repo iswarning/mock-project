@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { convertDateToDMY } from '../../common/dateFormat';
+import { DELETE } from '../../common/messageConfirm';
 import { deleteProject } from '../../store/actions/projectAction';
 import AddTaskModal from '../tasks/AddTaskModal';
 import ProjectCreateModal from './ProjectCreateModal';
@@ -25,13 +26,12 @@ const ProjectsList = ({ projects }) => {
     task_name: '',
     note: '',
   });
-  const [text, setText] = useState('');
-  const { currentPage } = useSelector((state) => state.projectStore);
+
   const { userInfo } = useSelector((state) => state.authStore);
   const dispatch = useDispatch();
 
   const handleDelete = (id) => {
-    if (confirm('Are you sure delete this project?')) dispatch(deleteProject({ id }));
+    if (confirm(DELETE.project)) dispatch(deleteProject({ id }));
   };
 
   const showProjectUpdateModal = (project) => {

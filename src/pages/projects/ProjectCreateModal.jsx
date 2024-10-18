@@ -1,28 +1,60 @@
-import React, { useRef } from "react";
-import { useDispatch } from "react-redux";
-import { convertDateWithCurrentTime } from "../../common/dateFormat";
-import { createProject } from "../../store/actions/projectAction";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { convertDateWithCurrentTime } from '../../common/dateFormat';
+import { CREATE, FORM_ERRORS } from '../../common/messageConfirm';
+import { createProject } from '../../store/actions/projectAction';
 
 function ProjectCreateModal() {
   const dispatch = useDispatch();
-  const projectName_Ref = useRef();
-  const note_Ref = useRef();
-  const payment_Ref = useRef();
-  const timeStart_Ref = useRef();
-  const timeEnd_Ref = useRef();
-  const priority_Ref = useRef();
+  const priority = [1, 2, 3];
+  const [formData, setFormData] = useState({
+    name: '',
+    payment: '',
+    time_start: new Date().toISOString().split('T')[0],
+    time_end: '',
+    note: '',
+    priority: '',
+  });
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
   const handleCreateProject = () => {
     const project = {
-      name: projectName_Ref.current.value,
-      payment: payment_Ref.current.value,
-      time_start: convertDateWithCurrentTime(timeStart_Ref.current.value),
-      time_end: convertDateWithCurrentTime(timeEnd_Ref.current.value),
-      note: note_Ref.current.value,
-      priority: Number(priority_Ref.current.value),
+      name: formData.name,
+      payment: formData.payment,
+      time_start: convertDateWithCurrentTime(formData.time_start),
+      time_end: convertDateWithCurrentTime(formData.time_end),
+      note: formData.note,
+      priority: Number(formData.priority),
     };
-    dispatch(createProject(project));
+
+    const newErrors = {};
+    if (!formData.name) newErrors.name = FORM_ERRORS.name;
+    if (!formData.payment) newErrors.payment = FORM_ERRORS.payment;
+    if (!formData.time_end || new Date(formData.time_start) >= new Date(formData.time_end))
+      newErrors.time_end = FORM_ERRORS.time_end;
+    setErrors(newErrors);
+
+    if (confirm(CREATE.project)) {
+      if (Object.keys(newErrors).length === 0) {
+        dispatch(createProject(project));
+        // Close the modal if there are no errors:
+        const modalElement = document.getElementById('projectCreateModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) {
+          modalInstance.hide(); // Close Modal
+        }
+      }
+    }
   };
+
   return (
     <>
       <div
@@ -51,9 +83,18 @@ function ProjectCreateModal() {
                         type="text"
                         className="form-control"
                         id="name"
+                        name="name"
                         placeholder="Project Name"
-                        ref={projectName_Ref}
+                        value={formData.name}
+                        onChange={handleChange}
                       />
+                      {errors.name && (
+                        <div className="row mb-3">
+                          <div className="col-12 text-end">
+                            <span style={{ color: 'red' }}>{FORM_ERRORS.name}</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="row mb-3">
@@ -65,8 +106,10 @@ function ProjectCreateModal() {
                         type="text"
                         className="form-control"
                         id="note"
+                        name="note"
                         placeholder="Note..."
-                        ref={note_Ref}
+                        value={formData.note}
+                        onChange={handleChange}
                       />
                     </div>
                   </div>
@@ -79,37 +122,58 @@ function ProjectCreateModal() {
                         type="text"
                         className="form-control"
                         id="payment"
+                        name="payment"
                         placeholder="Payment"
-                        ref={payment_Ref}
+                        value={formData.payment}
+                        onChange={handleChange}
                       />
+                      {errors.payment && (
+                        <div className="row mb-3">
+                          <div className="col-12 text-end">
+                            <span style={{ color: 'red' }}>{FORM_ERRORS.payment}</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="row mb-3">
-                    <label htmlFor="timeStart" className="col-4 col-form-label">
+                    <label htmlFor="time_start" className="col-4 col-form-label">
                       Time Start:
                     </label>
                     <div className="col-8">
                       <input
                         type="date"
                         className="form-control"
-                        id="timeStart"
-                        ref={timeStart_Ref}
+                        id="time_start"
+                        name="time_start"
+                        value={formData.time_start}
+                        onChange={handleChange}
                       />
                     </div>
                   </div>
                   <div className="row mb-3">
-                    <label htmlFor="timeEnd" className="col-4 col-form-label">
+                    <label htmlFor="time_end" className="col-4 col-form-label">
                       Time End:
                     </label>
                     <div className="col-8">
                       <input
                         type="date"
                         className="form-control"
-                        id="timeEnd"
-                        ref={timeEnd_Ref}
+                        id="time_end"
+                        name="time_end"
+                        value={formData.time_end}
+                        onChange={handleChange}
+                        style={{ borderColor: errors.time_end ? 'red' : '' }}
                       />
                     </div>
                   </div>
+                  {errors.time_end && (
+                    <div className="row mb-3">
+                      <div className="col-12 text-end">
+                        <span style={{ color: 'red' }}>{FORM_ERRORS.time_end}</span>
+                      </div>
+                    </div>
+                  )}
                   <div className="row mb-3">
                     <label htmlFor="priority" className="col-4 col-form-label">
                       Priority:
@@ -117,12 +181,17 @@ function ProjectCreateModal() {
                     <div className="col-8">
                       <select
                         className="form-select"
+                        name="priority"
                         aria-label="Priority"
-                        ref={priority_Ref}
+                        value={formData.priority}
+                        onChange={handleChange}
                       >
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
+                        {priority &&
+                          priority.map((item, index) => (
+                            <option value={item} key={index}>
+                              {item}
+                            </option>
+                          ))}
                       </select>
                     </div>
                   </div>
@@ -130,19 +199,10 @@ function ProjectCreateModal() {
               </div>
             </div>
             <div className="modal-footer">
-              <button
-                type="button"
-                className="btn bgPrimary"
-                data-bs-dismiss="modal"
-                onClick={() => handleCreateProject()}
-              >
+              <button type="button" className="btn bgPrimary" onClick={() => handleCreateProject()}>
                 Create
               </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                 Close
               </button>
             </div>

@@ -7,7 +7,6 @@ import Select from "react-select";
 function AddTaskModal({ taskNewData }) {
   const { listUser } = useSelector((state) => state.userStore);
   const dispatch = useDispatch();
-  const userEmails = listUser?.map((user) => user.email) || [];
   const { project_name, ...taskData } = taskNewData;
 
   const [formData, setFormData] = useState({ ...taskData });
@@ -135,7 +134,7 @@ function AddTaskModal({ taskNewData }) {
                         type="date"
                         className="form-control"
                         name="time_start"
-                        value={formData.time_start}
+                        value={formData?.time_start}
                         onChange={handleInputChange}
                         style={{ borderColor: dateError ? "red" : "" }}
                       />
@@ -148,7 +147,7 @@ function AddTaskModal({ taskNewData }) {
                         type="date"
                         className="form-control"
                         name="time_end"
-                        value={formData.time_end}
+                        value={formData?.time_end}
                         onChange={handleInputChange}
                         style={{ borderColor: dateError ? "red" : "" }}
                       />

@@ -10,6 +10,31 @@ export const getListTask = () => {
       dispatch(showLoading());
       const resp = await axiosInstance.get(import.meta.env.VITE_BASE_URL + '/api/task');
 
+      console.log('getListTask', resp);
+
+      if (resp) {
+        dispatch({
+          type: SET_LIST_TASK,
+          payload: resp.data,
+        });
+
+        dispatch(hideLoading());
+      }
+    } catch (error) {
+      console.log(error.response?.data?.message);
+      dispatch(hideLoading());
+    }
+  };
+};
+
+export const getListTaskByUserId = (params) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(showLoading());
+      const resp = await axiosInstance.get(
+        import.meta.env.VITE_BASE_URL + '/api/gettaskbyuser/' + params.userId
+      );
+
       if (resp) {
         dispatch({
           type: SET_LIST_TASK,
@@ -56,13 +81,13 @@ export const updateTask = (params) => {
   };
 };
 
-export const changeStatus = (params) => {
+export const changeStatus = (params, userId) => {
   return async (dispatch, getState) => {
     try {
       const res = await axiosInstance.put(import.meta.env.VITE_BASE_URL + '/api/task', params);
 
       if (res) {
-        dispatch(getListTask());
+        dispatch(getListTaskByUserId({ userId: getState().authStore.userInfo.id }));
       }
     } catch (error) {
       console.log(error.response?.data?.message);
