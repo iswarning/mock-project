@@ -15,10 +15,10 @@ function WrapperTask() {
     useEffect(() => {
         if (Number(userInfo.role) === 1) {
           dispatch(getListTask())
-          dispatch(getProjectsData())
         } else {
           dispatch(getListTaskByUserId({ userId: userInfo.id }))
         }
+        dispatch(getProjectsData())
     },[])
 
   if (isLoading) return <Loading />;

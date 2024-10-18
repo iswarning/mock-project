@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { REQUIRE_NAME, REQUIRE_NOTE, REQUIRE_TIME_END, TIME_START_LESS_TIME_END } from "../../common/messageError";
+import { REQUIRE_NAME, REQUIRE_NOTE, REQUIRE_TIME_END, REQUIRE_TIME_START, TIME_START_LESS_TIME_END } from "../../common/messageError";
 import { updateTask } from "../../store/actions/taskAction";
 import './style.scss';
 import { useSelector } from "react-redux";
 
 const initErrorMessages = {
     time_end: '',
-    note: ''
+    note: '',
+    time_start: '',
+    task_name: '',
 }
 
 const initTask = {
@@ -42,6 +44,16 @@ function EditTaskModal({ taskEdit }) {
             return
         }
 
+        if (taskDetail.time_start.length === 0) {
+            setErrorMessages({ time_start: REQUIRE_TIME_START })
+            return
+        }
+
+        if (Date.parse(taskDetail.time_start) < Date.parse(new Date())) {
+            setErrorMessages({ time_start: "Start time must be greater than current time" })
+            return
+        }
+
         if (taskDetail.time_end.length === 0) {
             setErrorMessages({ time_end: REQUIRE_TIME_END })
             return
@@ -63,6 +75,13 @@ function EditTaskModal({ taskEdit }) {
         setTaskDetail({
             ...taskDetail,
             time_end: value
+        })
+    }
+
+    const handleSetTimeStart = (value) => {
+        setTaskDetail({
+            ...taskDetail,
+            time_start: value
         })
     }
 
@@ -170,21 +189,24 @@ function EditTaskModal({ taskEdit }) {
                             <span className="invalid-feedback">{errorMessages.note}</span>
                         </div>
                         <div className="mb-3">
-                            <label className="form-label">Time Start</label>
+                            <label className="form-label">Start time</label>
                             <input 
-                                disabled 
                                 type="date" 
-                                className='form-control'
+                                className={`form-control ${errorMessages.time_start?.length > 0 && 'is-invalid'}`}
                                 value={convertDateTime(taskDetail?.time_start)}
+                                onChange={(e) => handleSetTimeStart(e.target.value)}
+                                min={new Date().toISOString().split("T")[0]}
                             />
+                            <span className="invalid-feedback">{errorMessages.time_start}</span>
                         </div>
                         <div className="mb-3">
-                            <label className="form-label">Time End</label>
+                            <label className="form-label">End time</label>
                             <input 
                                 type="date" 
                                 className={`form-control ${errorMessages.time_end?.length > 0 && 'is-invalid'}`}
                                 value={convertDateTime(taskDetail?.time_end)}
                                 onChange={(e) => handleSetTimeEnd(e.target.value)}
+                                min={new Date().toISOString().split("T")[0]}
                             />
                             <span className="invalid-feedback">{errorMessages.time_end}</span>
                         </div>
