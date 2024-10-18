@@ -1,8 +1,7 @@
-import { GET_PROJECTS_DATA, SET_CURRENT_PAGE } from '../constants';
+import { GET_PROJECTS_DATA } from '../constants';
 
 const initialState = {
   projects: [],
-  currentPage: 1,
 };
 
 const projectReducer = (state = initialState, { type, payload }) => {
@@ -15,11 +14,6 @@ const projectReducer = (state = initialState, { type, payload }) => {
           if (a.name > b.name) return 1;
           return 0;
         }),
-      };
-    case SET_CURRENT_PAGE:
-      return {
-        ...state,
-        currentPage: payload,
       };
 
     default:

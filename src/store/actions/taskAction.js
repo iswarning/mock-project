@@ -12,8 +12,6 @@ export const getListTask = () => {
         import.meta.env.VITE_BASE_URL + "/api/task"
       );
 
-      console.log("getListTask", resp);
-
       if (resp) {
         dispatch({
           type: SET_LIST_TASK,
@@ -81,9 +79,14 @@ export const createTask = (params) => {
 export const updateTask = (params) => {
   return async (dispatch, getState) => {
     try {
+      const time = "T17:00:00.000Z"
       const res = await axiosInstance.put(
         import.meta.env.VITE_BASE_URL + "/api/task",
-        params
+        {
+          ...params,
+          time_start: params.time_start.split("T")[0] + time,
+          time_end: params.time_end.split("T")[0] + time
+        }
       );
 
       if (res) {

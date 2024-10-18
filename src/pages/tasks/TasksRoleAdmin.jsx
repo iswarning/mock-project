@@ -3,12 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteTask } from "../../store/actions/taskAction";
 import EditTaskModal from "./EditTaskModal";
 import TaskElementRoleAdmin from "./TaskElementRoleAdmin";
-
-const statusMapping = {
-  1: "pending",
-  2: "inprogress",
-  3: "completed",
-};
+import { statusMapping } from "../../common/constants";
 
 function TasksRoleAdmin() {
   const { listTask } = useSelector((state) => state.taskStore);
@@ -45,29 +40,19 @@ function TasksRoleAdmin() {
             <div className="project-column " key={status}>
               <div className="project-column-heading">
                 <h2 className="project-column-heading__title">
-                  {statusMapping[status].toUpperCase()}
+                  {statusMapping[status].toUpperCase()}{" "}
+                  {filteredTasks[status]?.length}
                 </h2>
               </div>
-              <div className="project-column-body">
-                {filteredTasks[status].map((task) => {
-                  const user = listUser.find(
-                    (user) => user.email === task.user_mail
-                  );
-
-                  if (!user) return;
-
-                  return (
-                    <TaskElementRoleAdmin
-                      key={task.id}
-                      task={task}
-                      user={user}
-                      status={status}
-                      handleEdit={handleEdit}
-                      handleDelete={handleDelete}
-                    />
-                  );
-                })}
-              </div>
+              {filteredTasks[status].map((task) => (
+                <TaskElementRoleAdmin
+                  key={task.id}
+                  task={task}
+                  status={status}
+                  handleEdit={handleEdit}
+                  handleDelete={handleDelete}
+                />
+              ))}
             </div>
           ))}
         </div>

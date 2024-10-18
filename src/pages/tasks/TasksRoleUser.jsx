@@ -3,12 +3,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatus } from "../../store/actions/taskAction";
 import TaskElementRoleUser from './TaskElementRoleUser';
-
-const statusMapping = {
-  1: 'pending',
-  2: 'inprogress',
-  3: 'completed'
-};
+import { statusMapping } from '../../common/constants';
 
 function TasksRoleUser() {
   const { listTask } = useSelector((state) => state.taskStore);
@@ -61,13 +56,11 @@ function TasksRoleUser() {
                       <h2 className='project-column-heading__title'>{statusMapping[status].toUpperCase()}</h2>
                     </div>
                     { filteredTasks[status] && filteredTasks[status].map((task, index) => {
-                        const user = listUser.find((user) => user.email === task.user_mail);
-                        if (!user) return              
                         return (
                           <Draggable key={task.id} draggableId={task.id} index={index}>
                             {(provided) => (
                               <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                <TaskElementRoleUser task={task} user={user} status={status} />
+                                <TaskElementRoleUser task={task} status={status} />
                               </div>
                             )}
                           </Draggable>
