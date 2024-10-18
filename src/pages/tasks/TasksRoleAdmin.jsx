@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTask } from "../../store/actions/taskAction";
 import EditTaskModal from "./EditTaskModal";
@@ -27,7 +27,13 @@ function TasksRoleAdmin() {
     }
   };
 
-  const getTasks = (status) => listTask.filter((task) => task.status == status);
+  const filteredTasks = useMemo(() => {
+    const tasksByStatus = {};
+    Object.keys(statusMapping).forEach(status => {
+      tasksByStatus[status] = listTask.filter(task => task.status === parseInt(status));
+    });
+    return tasksByStatus;
+  }, [listTask]);
 
   return (
     <div className="app">
@@ -40,7 +46,7 @@ function TasksRoleAdmin() {
                   {statusMapping[status].toUpperCase()}
                 </h2>
               </div>
-              {getTasks(status).map((task) => {
+              {filteredTasks[status].map((task) => {
                 const user = listUser.find(
                   (user) => user.email === task.user_mail
                 );

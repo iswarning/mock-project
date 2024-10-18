@@ -1,6 +1,12 @@
 import avatarDefault from "../../assets/avatarUser.png";
 
-function TaskElementRoleUser({ task, user }) {
+const tagMapping = {
+    1: 'copyright',
+    2: 'design',
+    3: 'illustration'
+}
+
+function TaskElementRoleUser({ task, user, status }) {
   const convertDateTime = (dt) => {
     const date = new Date(dt);
 
@@ -11,7 +17,7 @@ function TaskElementRoleUser({ task, user }) {
     <div className="task">
       <div className="task__tags d-flex justify-content-between">
         <div>
-          <span className={`task__tag task__tag--copyright`}>
+          <span className={`task__tag task__tag--${tagMapping[status]}`}>
             {task.project_name}
           </span>
         </div>
