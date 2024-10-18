@@ -57,6 +57,9 @@
 }
 
 @media only screen and (max-width: 767px) {
+  .textMenuBig{
+    font-size: 13px;
+  }
   .sidebar{
     display: none;
     &.open {
@@ -105,7 +108,8 @@
   }
 
   .text-menu {
-    font-size: 16px;
+    font-size: 15px;
+    padding-left: 8px;
   }
 
   .dropdownHeader-toggle img {
@@ -120,7 +124,7 @@
   }
   .sidebar {
   padding: 10px 0 10px 10px;
-  width: 30vw;
+  width: 25vw;
   }
   
 }

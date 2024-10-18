@@ -13,10 +13,10 @@ const TaskElementRoleAdmin = ({
   handleEdit,
   handleDelete,
 }) => {
-    const convertDateTime = (dt) => {
-        const date = new Date(dt);
-        return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-    }
+  const convertDateTime = (dt) => {
+    const date = new Date(dt);
+    return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+  };
 
   return (
     <div className="task">
@@ -59,7 +59,11 @@ const TaskElementRoleAdmin = ({
           </ul>
         </div>
       </div>
-      <p>{task.note}</p>
+      <p
+        className={`${task.note} ? my-truncate text-truncate : my-truncate text-truncate empty`}
+      >
+        {task.note}
+      </p>
       <div className="task__stats mb-3">
         <div>
           <i className="fa-solid fa-hourglass-start"></i>

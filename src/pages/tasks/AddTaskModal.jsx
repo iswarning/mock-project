@@ -53,7 +53,7 @@ function AddTaskModal({ taskNewData }) {
         project_id: taskNewData?.project_id || "",
         time_start: "",
         time_end: "",
-        status: "",
+        status: "1",
         task_name: "",
         note: "",
       });
@@ -87,18 +87,6 @@ function AddTaskModal({ taskNewData }) {
             <div className="modal-body">
               <div className="container mt-2">
                 <form>
-                  <div className="row mb-3">
-                    <label className="col-4 col-form-label">Project id:</label>
-                    <div className="col-8">
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="project_id"
-                        value={formData.project_id}
-                        disabled
-                      />
-                    </div>
-                  </div>
                   <div className="row mb-3">
                     <label className="col-4 col-form-label">Task name:</label>
                     <div className="col-8">
@@ -171,8 +159,8 @@ function AddTaskModal({ taskNewData }) {
                         name="status"
                         value={formData.status}
                         onChange={handleInputChange}
+                        disabled
                       >
-                        <option hidden>Select status...</option>
                         <option value="1">Pending</option>
                         <option value="2">In-progress</option>
                         <option value="3">Complete</option>

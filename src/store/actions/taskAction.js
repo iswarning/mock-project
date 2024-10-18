@@ -55,9 +55,17 @@ export const getListTaskByUserId = (params) => {
 export const createTask = (params) => {
   return async (dispatch, getState) => {
     try {
+      // Chuyển đổi ngày trong params về dạng ISO để đảm bảo không bị trừ ngày
+      const newParams = {
+        ...params,
+
+        time_end: new Date(params.time_end).toISOString(),
+        time_start: new Date(params.time_start).toISOString(),
+      };
+
       const res = await axiosInstance.post(
         import.meta.env.VITE_BASE_URL + "/api/task",
-        params
+        newParams
       );
 
       if (res) {
@@ -98,7 +106,9 @@ export const changeStatus = (params, userId) => {
       );
 
       if (res) {
-        dispatch(getListTaskByUserId({ userId: getState().authStore.userInfo.id }));
+        dispatch(
+          getListTaskByUserId({ userId: getState().authStore.userInfo.id })
+        );
       }
     } catch (error) {
       console.log(error.response?.data?.message);

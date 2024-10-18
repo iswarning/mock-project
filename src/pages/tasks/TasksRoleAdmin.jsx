@@ -29,8 +29,10 @@ function TasksRoleAdmin() {
 
   const filteredTasks = useMemo(() => {
     const tasksByStatus = {};
-    Object.keys(statusMapping).forEach(status => {
-      tasksByStatus[status] = listTask.filter(task => task.status === parseInt(status));
+    Object.keys(statusMapping).forEach((status) => {
+      tasksByStatus[status] = listTask.filter(
+        (task) => task.status === parseInt(status)
+      );
     });
     return tasksByStatus;
   }, [listTask]);
@@ -40,30 +42,32 @@ function TasksRoleAdmin() {
       <main className="project">
         <div className="project-tasks">
           {Object.keys(statusMapping).map((status) => (
-            <div className="project-column" key={status}>
+            <div className="project-column " key={status}>
               <div className="project-column-heading">
                 <h2 className="project-column-heading__title">
                   {statusMapping[status].toUpperCase()}
                 </h2>
               </div>
-              {filteredTasks[status].map((task) => {
-                const user = listUser.find(
-                  (user) => user.email === task.user_mail
-                );
+              <div className="project-column-body">
+                {filteredTasks[status].map((task) => {
+                  const user = listUser.find(
+                    (user) => user.email === task.user_mail
+                  );
 
-                if (!user) return;
+                  if (!user) return;
 
-                return (
-                  <TaskElementRoleAdmin
-                    key={task.id}
-                    task={task}
-                    user={user}
-                    status={status}
-                    handleEdit={handleEdit}
-                    handleDelete={handleDelete}
-                  />
-                );
-              })}
+                  return (
+                    <TaskElementRoleAdmin
+                      key={task.id}
+                      task={task}
+                      user={user}
+                      status={status}
+                      handleEdit={handleEdit}
+                      handleDelete={handleDelete}
+                    />
+                  );
+                })}
+              </div>
             </div>
           ))}
         </div>

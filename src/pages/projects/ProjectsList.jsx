@@ -23,7 +23,7 @@ const ProjectsList = ({ projects }) => {
     project_id: "",
     time_start: "",
     time_end: "",
-    status: "",
+    status: "1",
     task_name: "",
     note: "",
   });

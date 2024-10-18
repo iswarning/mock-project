@@ -31,10 +31,10 @@ body {
   align-items: center;
 }
 
-.app {
+.main-content .app {
   background-color:var(--bg);
   width: 100%;
-  min-height: 100vh;
+  
 }
 
 h1 {
@@ -42,14 +42,14 @@ h1 {
 }
 
 .project {
-  padding: 2rem;
+  padding: 1.5rem;
   max-width: 100%;
   width: 100%;
   display: inline-block;
 
   &-tasks {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); 
+    grid-template-columns: repeat(4, 1fr); 
     width: 100%;
     grid-column-gap: 1.5rem;
   }
@@ -63,7 +63,36 @@ h1 {
         font-size: 20px;
       }
     }
+    &-body {
+      height: 74vh;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 0; /* Ẩn thanh cuộn trên Chrome, Safari và Edge */
+        height: 0;
+      }
+      
+      /* Khi di chuột vào, hiện thanh cuộn */
+      &:hover::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      
+      /* Tùy chỉnh giao diện thanh cuộn khi hiện ra */
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.5); /* Màu của thanh cuộn */
+        border-radius: 4px; /* Bo góc thanh cuộn */
+      }
+      
+      &::-webkit-scrollbar-track {
+        background-color: transparent; /* Màu nền track của thanh cuộn */
+      }
+    }
   }
+}
+
+.empty {
+  background-color: white;
+  height: 20px; /* Tạo dòng trắng */
 }
 
 .task {
@@ -73,7 +102,7 @@ h1 {
   border-radius: 8px;
   width: 100%;
   box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   border: 3px dashed transparent;
 
   &:hover {
@@ -294,7 +323,7 @@ h1 {
 
 @media only screen and (max-width: 1000px) {
   .project-tasks {
-    grid-template-columns: repeat(3, 1fr);;
+    grid-template-columns: repeat(2, 1fr);;
   }
 }
 

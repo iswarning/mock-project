@@ -1,10 +1,10 @@
 import avatarDefault from "../../assets/avatarUser.png";
 
 const tagMapping = {
-    1: 'copyright',
-    2: 'design',
-    3: 'illustration'
-}
+  1: "copyright",
+  2: "design",
+  3: "illustration",
+};
 
 function TaskElementRoleUser({ task, user, status }) {
   const convertDateTime = (dt) => {
