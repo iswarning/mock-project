@@ -8,7 +8,6 @@ export const ROUTES = {
   login: "/login",
   users: "/users",
   projects: "projects",
-  dashboard: "dashboard",
   tasks: "tasks",
   setting: "setting",
 };
