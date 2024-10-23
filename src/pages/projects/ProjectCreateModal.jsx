@@ -13,7 +13,7 @@ function ProjectCreateModal() {
     time_start: new Date().toISOString().split('T')[0],
     time_end: '',
     note: '',
-    priority: '',
+    priority: 1,
   });
   const [errors, setErrors] = useState({});
 
