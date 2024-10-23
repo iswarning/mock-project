@@ -16,7 +16,6 @@ function CreateUserModal() {
   const name = useRef(null);
   const password = useRef(null);
   const confirmPassword = useRef(null);
-  const [isSaving, setSaving] = useState(false);
 
   const [errorMessages, setErrorMessages] = useState(initErrorMessages)
 
@@ -56,9 +55,7 @@ function CreateUserModal() {
                 password: password.current.value,
                 confirmPassword: confirmPassword.current.value,
                 role: 0
-            },
-            () => setSaving(true),
-            () => setSaving(false))
+            })
         )
 
         setErrorMessages(initErrorMessages);
@@ -102,13 +99,9 @@ function CreateUserModal() {
                 </div>
 
                 <div className="modal-footer">
-                    {
-                        isSaving ? <button className="btn btn-primary" disabled>
-                            <span className="saving"></span> Saving...
-                        </button> : <button className="btn btn-primary" onClick={handleOnSubmit}>
-                            Save Changes
-                        </button>
-                    }
+                    <button className="btn btn-primary" onClick={handleOnSubmit}>
+                        Save Changes
+                    </button>
                 </div>
 
                 </div>

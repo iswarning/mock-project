@@ -9,6 +9,9 @@ export default ({ mode }) => {
     base: env.VITE_ROUTER_BASE_URL || '/',
     define: {
       'import.meta.env': env,
+      optimizeDeps: {
+        exclude: ['js-big-decimal']
+      }
     }
   })
 }
