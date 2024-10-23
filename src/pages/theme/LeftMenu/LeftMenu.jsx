@@ -35,7 +35,7 @@ function LeftMenu({ sidebarOpen, closeSidebar }) {
         {userInfo?.role === 1 && (
           <li>
             <NavLink
-              to={ROUTES.dashboard}
+              to={ROUTES.home}
               className={({ isActive }) =>
                 isActive ? "btn text-menu active" : "btn text-menu"
               }
