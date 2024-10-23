@@ -1,34 +1,34 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { convertDateToDMY } from "../../common/dateFormat";
-import { DELETE } from "../../common/messageConfirm";
-import { deleteProject } from "../../store/actions/projectAction";
-import AddTaskModal from "../tasks/AddTaskModal";
-import ProjectCreateModal from "./ProjectCreateModal";
-import ProjectUpdateModal from "./ProjectUpdateModal";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { convertDateToDMY } from '../../common/dateFormat';
+import { DELETE } from '../../common/messageConfirm';
+import { deleteProject } from '../../store/actions/projectAction';
+import AddTaskModal from '../tasks/AddTaskModal';
+import ProjectCreateModal from './ProjectCreateModal';
+import ProjectUpdateModal from './ProjectUpdateModal';
 
 const ProjectsList = ({ projects }) => {
-  console.log("🚀 ~ projects:", projects);
   const [projectData, setProjectData] = useState({
-    name: "",
-    payment: "",
-    time_start: "",
-    time_end: "",
-    note: "",
-    priority: "",
+    name: '',
+    payment: '',
+    time_start: '',
+    time_end: '',
+    note: '',
+    priority: '',
   });
   const [taskData, setTaskData] = useState({
-    user_mail: "",
-    project_id: "",
-    time_start: "",
-    time_end: "",
-    status: "1",
-    task_name: "",
-    note: "",
+    user_mail: '',
+    project_id: '',
+    time_start: '',
+    time_end: '',
+    status: '1',
+    task_name: '',
+    note: '',
   });
-
   const { userInfo } = useSelector((state) => state.authStore);
   const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [priorityFilter, setPriorityFilter] = useState('all');
 
   const handleDelete = (id) => {
     if (confirm(DELETE.project)) dispatch(deleteProject({ id }));
@@ -37,6 +37,20 @@ const ProjectsList = ({ projects }) => {
   const showProjectUpdateModal = (project) => {
     setProjectData(project);
   };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handlePriorityChange = (e) => {
+    setPriorityFilter(e.target.value);
+  };
+
+  const filteredProjects = projects.filter((project) => {
+    const matchesSearchTerm = project.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesPriority = priorityFilter === 'all' || project.priority === +priorityFilter;
+    return matchesSearchTerm && matchesPriority;
+  });
 
   return (
     <>
@@ -54,38 +68,44 @@ const ProjectsList = ({ projects }) => {
           >
             <strong>
               <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                Create Project
-              </span>
-              <span className="d-block d-sm-none d-md-none d-lg-none d-xl-none">
-                <i className="fa-solid fa-plus"></i>
+                <i className="fa-solid fa-plus me-1"></i> Create Project
               </span>
             </strong>
           </button>
         </div>
-        <div>
+        <div className="d-flex">
           <input
             type="text"
-            className="form-control"
-            placeholder="Search..."
-            onChange={(e) => handleSetText(e.target.value)}
+            className="form-control me-2"
+            placeholder="Search by name..."
+            value={searchTerm}
+            onChange={(e) => handleSearchChange(e)}
           />
+          <select
+            className="form-select"
+            aria-label="priority"
+            onChange={(e) => handlePriorityChange(e)}
+            value={priorityFilter}
+          >
+            <option value="all">All Priorities</option>
+            <option value="1">High</option>
+            <option value="2">Medium</option>
+            <option value="3">Low</option>
+          </select>
         </div>
       </div>
       <div className="container my-4">
         <div className="row">
-          {projects &&
-            projects.map((project) => (
-              <div
-                className="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-4"
-                key={project.id}
-              >
+          {filteredProjects &&
+            filteredProjects.map((project) => (
+              <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-4" key={project.id}>
                 <div
                   className={`card bg-light shadow-sm border border-3 ${
                     project.priority === 1
-                      ? "border-danger"
+                      ? 'border-danger'
                       : project.priority === 2
-                      ? "border-warning"
-                      : ""
+                      ? 'border-warning'
+                      : ''
                   }`}
                 >
                   <div className="card-body">
