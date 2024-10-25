@@ -11,20 +11,30 @@ function RoleUser() {
   const { listTask } = useSelector((state) => state.taskStore);
   const { userInfo } = useSelector((state) => state.authStore);
   const { projects } = useSelector((state) => state.projectStore);
-  const currentDate = new Date();
-  const sevenDaysLater = new Date().setDate(currentDate.getDate() + 7);
 
-  // Lọc các task theo thời gian và email người dùng
+  // Hàm formatDate để định dạng ngày tháng
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
   const filteredTasks =
-    listTask?.filter(
-      (task) =>
+    listTask?.filter((task) => {
+      const timeEnd = new Date(task.time_end);
+      const currentDate = new Date();
+      const sevenDaysLater = new Date(
+        currentDate.setDate(currentDate.getDate() + 7)
+      );
+      return (
         task.user_mail === userInfo.email &&
         task.status !== 4 &&
-        new Date(task.time_end) >= currentDate &&
-        new Date(task.time_end) <= sevenDaysLater
-    ) || [];
+        timeEnd <= sevenDaysLater
+      );
+    }) || [];
 
-  // Nhóm các task theo ngày
   const taskByDate = filteredTasks.reduce((acc, task) => {
     const date = new Date(task.time_end).toDateString();
     acc[date] = acc[date] ? [...acc[date], task] : [task];
@@ -34,61 +44,50 @@ function RoleUser() {
   const sortedDates = Object.keys(taskByDate).sort(
     (a, b) => new Date(a) - new Date(b)
   );
-  const dataCounts = sortedDates.map((date) => taskByDate[date].length);
 
-  // Lọc và lấy danh sách dự án từ các task
+  const [selectedTasks, setSelectedTasks] = useState(
+    taskByDate[sortedDates[0]] || []
+  );
+
   const projectIds = filteredTasks.map((task) => task.project_id);
   const filteredProjects = projects.filter((project) =>
     projectIds.includes(project.id)
   );
 
-  // Hàm để ánh xạ priority thành màu và chuỗi tương ứng
   const getColorByPriority = (priority) =>
-    ({
-      1: "rgba(220, 53, 69, 0.7)",
-      2: "rgba(255, 193, 7, 0.7)",
-      3: "rgba(75, 192, 192, 0.7)",
-    }[priority] || "rgba(75, 192, 192, 0.6)");
+    [
+      "rgba(75, 192, 192, 0.6)",
+      "rgba(220, 53, 69, 0.7)",
+      "rgba(255, 193, 7, 0.7)",
+    ][priority - 1];
 
-  const getPriorityLabel = (priority) =>
-    ({
-      1: "High",
-      2: "Medium",
-      3: "Low",
-    }[priority] || "Unknown");
-
-  // Tạo datasets cho biểu đồ theo từng priority
-  const datasets = Array.from(new Set(filteredProjects.map((p) => p.priority)))
-    .sort()
-    .map((priority) => ({
-      label: getPriorityLabel(priority),
-      data: sortedDates.map((date) =>
-        taskByDate[date].some((task) => {
-          const project = filteredProjects.find(
-            (proj) => proj.id === task.project_id
-          );
-          return project?.priority === priority;
-        })
-          ? taskByDate[date].length
-          : 0
-      ),
-      backgroundColor: getColorByPriority(priority),
-      borderColor: "transparent",
-      borderWidth: 0,
-      borderRadius: 5,
-      barPercentage: 0.8,
-    }));
+  const datasets = [
+    {
+      label: "Tasks",
+      data: sortedDates.map((date) => taskByDate[date].length),
+      backgroundColor: sortedDates.map((date) => {
+        const priorities = taskByDate[date].map(
+          (task) =>
+            filteredProjects.find((proj) => proj.id === task.project_id)
+              ?.priority || 0
+        );
+        return getColorByPriority(Math.max(...priorities));
+      }),
+    },
+  ];
 
   const chartData = { labels: sortedDates, datasets };
-
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     onClick: (event, elements) => {
-      if (elements.length) {
-        setSelectedTasks(taskByDate[sortedDates[elements[0].index]]);
+      if (elements.length > 0) {
+        const index = elements[0].index;
+        const selectedDate = sortedDates[index];
+        setSelectedTasks(taskByDate[selectedDate]);
       }
     },
+    // Thêm tùy chọn onHover để thay đổi con trỏ
     onHover: (event, elements) => {
       event.native.target.style.cursor = elements.length
         ? "pointer"
@@ -99,29 +98,82 @@ function RoleUser() {
         position: "bottom",
         labels: {
           font: {
-            size: (context) => (context.chart.width > 1024 ? 16 : 14),
+            size: function (context) {
+              const screenWidth = context.chart.width;
+              return screenWidth > 1024 ? 16 : screenWidth > 768 ? 14 : 12;
+            },
           },
         },
       },
     },
     scales: {
-      y: { beginAtZero: true },
+      y: {
+        beginAtZero: true,
+        ticks: {
+          font: {
+            size: function (context) {
+              const screenWidth = context.chart.width;
+              return screenWidth > 768 ? 14 : 12;
+            },
+          },
+        },
+      },
       x: {
-        offset: true,
-        maxBarThickness: 80,
-        minBarLength: 10,
+        offset: true, // Giúp các cột nằm giữa
+        barThickness: function (context) {
+          const screenWidth = context.chart.width;
+          return screenWidth > 768 ? 50 : 30; // Kích thước cột lớn hơn cho màn hình lớn
+        },
+        maxBarThickness: 80, // Giới hạn chiều rộng tối đa của cột
+        minBarLength: 10, // Đảm bảo cột luôn có độ dài tối thiểu
+        ticks: {
+          font: {
+            size: function (context) {
+              const screenWidth = context.chart.width;
+              return screenWidth > 768 ? 14 : 12;
+            },
+          },
+        },
       },
     },
   };
 
-  const [selectedTasks, setSelectedTasks] = useState(
-    taskByDate[sortedDates[0]] || []
-  );
-
   return (
     <div className="containerTaskUser">
-      <Bar data={chartData} options={chartOptions} />
-      {/* Hiển thị các nhiệm vụ được chọn nếu cần */}
+      <div className="row mb-4">
+        <div className="col-md-7">
+          <div className="card p-3">
+            <h5 className="mb-3 ">Task Chart for the Next 7 Days</h5>
+            <div style={{ height: "45vh" }}>
+              <Bar data={chartData} options={chartOptions} />
+            </div>
+          </div>
+        </div>
+        <div className="col-md-5">
+          <div className="card p-3">
+            <h5 className="mb-3">Task Information</h5>
+            <div>
+              {selectedTasks.length === 0 ? (
+                <p>No tasks available</p>
+              ) : (
+                selectedTasks.map((task) => (
+                  <div key={task.id} className="mb-3 p-2 border rounded">
+                    <h6 className="pb-1">
+                      <strong>{task.task_name}</strong>
+                    </h6>
+                    <p>
+                      <strong>Project:</strong> {task.project_name}
+                    </p>
+                    <p>
+                      <strong>Deadline:</strong> {formatDate(task.time_end)}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
