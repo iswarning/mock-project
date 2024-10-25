@@ -1,18 +1,12 @@
 import React from "react";
-import { PolarArea } from "react-chartjs-2";
-import {
-  Chart,
-  RadialLinearScale,
-  ArcElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import { Chart, registerables } from "chart.js";
 import { useSelector } from "react-redux";
 
 // Đăng ký các thành phần cần thiết của Chart.js
-Chart.register(RadialLinearScale, ArcElement, Tooltip, Legend);
+Chart.register(...registerables);
 
-function UserDashboard(props) {
+function UserChart(props) {
   const { listTask } = useSelector((state) => state.taskStore);
   const { listUser } = useSelector((state) => state.userStore);
   console.log("listUser", listUser);
@@ -39,33 +33,29 @@ function UserDashboard(props) {
     })
   );
 
-  const chartData = {
-    labels: ["Users without Task", "Users with Upcoming Tasks"],
+  const data = {
+    labels: ["Users Without Task", "Users With Upcoming Tasks"],
     datasets: [
       {
-        label: "User Tasks",
+        label: "Number of Users",
         data: [usersWithoutTask.length, usersWithUpcomingTasks.length],
-        backgroundColor: ["rgb(255, 99, 132)", "rgb(75, 192, 192)"],
+        backgroundColor: ["rgba(75, 192, 192, 0.6)", "rgba(255, 159, 64, 0.6)"],
+        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 159, 64, 1)"],
+        borderWidth: 1,
       },
     ],
   };
 
-  const chartOptions = {
+  const options = {
     responsive: true,
     plugins: {
       legend: {
-        display: true,
         position: "top",
       },
     },
   };
 
-  return (
-    <>
-      <h2>Task Distribution for Users</h2>
-      <PolarArea data={chartData} options={chartOptions} />
-    </>
-  );
+  return <Bar data={data} options={options} />;
 }
 
-export default UserDashboard;
+export default UserChart;

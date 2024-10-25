@@ -6,14 +6,14 @@ import { createProject } from '../../store/actions/projectAction';
 
 function ProjectCreateModal() {
   const dispatch = useDispatch();
-  const priority = [1, 2, 3];
+  const priorities = [1, 2, 3];
   const [formData, setFormData] = useState({
     name: '',
     payment: '',
     time_start: new Date().toISOString().split('T')[0],
     time_end: '',
     note: '',
-    priority: '',
+    priority: 1,
   });
   const [errors, setErrors] = useState({});
 
@@ -148,7 +148,15 @@ function ProjectCreateModal() {
                         name="time_start"
                         value={formData.time_start}
                         onChange={handleChange}
+                        min={new Date().toISOString().split('T')[0]}
                       />
+                      {formData.time_start &&
+                        new Date(formData.time_start) <
+                          new Date(new Date().toISOString().split('T')[0]) && (
+                          <p className="text-end" style={{ color: 'red' }}>
+                            Please select a date that is today or in the future!
+                          </p>
+                        )}
                     </div>
                   </div>
                   <div className="row mb-3">
@@ -186,8 +194,8 @@ function ProjectCreateModal() {
                         value={formData.priority}
                         onChange={handleChange}
                       >
-                        {priority &&
-                          priority.map((item, index) => (
+                        {priorities &&
+                          priorities.map((item, index) => (
                             <option value={item} key={index}>
                               {item}
                             </option>

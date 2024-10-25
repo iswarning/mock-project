@@ -23,24 +23,26 @@ ChartJS.register(
   Legend
 );
 
-function RoleUser() {
+function UserDashboard() {
   const { listTask } = useSelector((state) => state.taskStore);
   const { userInfo } = useSelector((state) => state.authStore);
   const { projects } = useSelector((state) => state.projectStore);
 
-  const filteredTasks = listTask.filter((task) => {
-    const timeEnd = new Date(task.time_end);
-    const currentDate = new Date();
-    const sevenDaysLater = new Date();
-    sevenDaysLater.setDate(currentDate.getDate() + 7);
+  const filteredTasks = listTask
+    ? listTask.filter((task) => {
+        const timeEnd = new Date(task.time_end);
+        const currentDate = new Date();
+        const sevenDaysLater = new Date();
+        sevenDaysLater.setDate(currentDate.getDate() + 7);
 
-    return (
-      task.user_mail === userInfo.email &&
-      task.status !== 4 &&
-      timeEnd >= currentDate &&
-      timeEnd <= sevenDaysLater
-    );
-  });
+        return (
+          task.user_mail === userInfo.email &&
+          task.status !== 4 &&
+          timeEnd >= currentDate &&
+          timeEnd <= sevenDaysLater
+        );
+      })
+    : [];
 
   // Group tasks by date
   const taskByDate = filteredTasks.reduce((acc, task) => {
@@ -277,4 +279,4 @@ function RoleUser() {
   );
 }
 
-export default RoleUser;
+export default UserDashboard;

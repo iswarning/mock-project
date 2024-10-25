@@ -61,24 +61,20 @@ export const uploadAvatar = (params) => {
   };
 };
 
-export const createUser = (params, showSaving, hideSaving) => {
+export const createUser = (params) => {
   return async (dispatch, getState) => {
     try {
-      showSaving();
-
       const resp = await axiosInstance.post(
         import.meta.env.VITE_BASE_URL + "/api/user",
         params
       );
       if (resp) {
-        hideSaving();
         document.getElementById("close-create-user-btn").click();
         ToastCommon(TOAST.SUCCESS, "Created user successfully");
         dispatch(getListUser());
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
-      hideSaving();
     }
   };
 };
@@ -100,24 +96,21 @@ export const deleteUser = (params) => {
   };
 };
 
-export const updateUser = (params, showSaving, hideSaving) => {
+export const updateUser = (params) => {
   return async (dispatch, getState) => {
     try {
-      showSaving();
       const res = await axiosInstance.put(
         import.meta.env.VITE_BASE_URL + "/api/user",
         params
       );
 
       if (res) {
-        hideSaving();
         document.getElementById("close-edit-user-btn").click();
         ToastCommon(TOAST.SUCCESS, "Updated user successfully");
         dispatch(getListUser());
       }
     } catch (error) {
       ToastCommon(TOAST.ERROR, error.response?.data?.message || error.message);
-      hideSaving();
     }
   };
 };

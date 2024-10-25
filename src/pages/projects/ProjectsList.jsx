@@ -25,9 +25,10 @@ const ProjectsList = ({ projects }) => {
     task_name: "",
     note: "",
   });
-
   const { userInfo } = useSelector((state) => state.authStore);
   const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState("all");
 
   const handleDelete = (id) => {
     if (confirm(DELETE.project)) dispatch(deleteProject({ id }));
@@ -45,6 +46,23 @@ const ProjectsList = ({ projects }) => {
     });
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handlePriorityChange = (e) => {
+    setPriorityFilter(e.target.value);
+  };
+
+  const filteredProjects = projects.filter((project) => {
+    const matchesSearchTerm = project.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesPriority =
+      priorityFilter === "all" || project.priority === +priorityFilter;
+    return matchesSearchTerm && matchesPriority;
+  });
+
   return (
     <>
       <div
@@ -61,27 +79,36 @@ const ProjectsList = ({ projects }) => {
           >
             <strong>
               <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                Create Project
-              </span>
-              <span className="d-block d-sm-none d-md-none d-lg-none d-xl-none">
-                <i className="fa-solid fa-plus"></i>
+                <i className="fa-solid fa-plus me-1"></i> Create Project
               </span>
             </strong>
           </button>
         </div>
-        <div>
+        <div className="d-flex">
           <input
             type="text"
-            className="form-control"
-            placeholder="Search..."
-            onChange={(e) => handleSetText(e.target.value)}
+            className="form-control me-2"
+            placeholder="Search by name..."
+            value={searchTerm}
+            onChange={(e) => handleSearchChange(e)}
           />
+          <select
+            className="form-select"
+            aria-label="priority"
+            onChange={(e) => handlePriorityChange(e)}
+            value={priorityFilter}
+          >
+            <option value="all">All Priorities</option>
+            <option value="1">High</option>
+            <option value="2">Medium</option>
+            <option value="3">Low</option>
+          </select>
         </div>
       </div>
       <div className="container my-4">
         <div className="row">
-          {projects &&
-            projects.map((project) => (
+          {filteredProjects &&
+            filteredProjects.map((project) => (
               <div
                 className="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-4"
                 key={project.id}
