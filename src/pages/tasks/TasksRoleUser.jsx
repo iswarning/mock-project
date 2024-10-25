@@ -8,6 +8,7 @@ import { ToastCommon } from "../../components/ToastCommon";
 
 function TasksRoleUser() {
   const { listTask } = useSelector((state) => state.taskStore);
+  console.log("listTask", listTask);
 
   const dispatch = useDispatch();
 

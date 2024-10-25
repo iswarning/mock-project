@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import TaskChart from "../../components/TaskChart";
 import { useSelector } from "react-redux";
 import "./style.scss";
-import UserDashboard from "./UserDashboard";
 import UserChart from "../../components/userChart";
 
-function AdminDashboard(props) {
+function RoleAdmin(props) {
   const { listTask } = useSelector((state) => state.taskStore);
   const { listUser } = useSelector((state) => state.userStore);
   const { projects } = useSelector((state) => state.projectStore);
@@ -201,4 +200,4 @@ function AdminDashboard(props) {
   );
 }
 
-export default AdminDashboard;
+export default RoleAdmin;
