@@ -11,19 +11,8 @@ import Loading from "../../components/Loading";
 import { getProjectsData } from "../../store/actions/projectAction";
 
 function WrapperTask() {
-  const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.authStore);
   const { isLoading } = useSelector((state) => state.appStore);
-  console.log("userInfo", userInfo);
-
-  useEffect(() => {
-    if (Number(userInfo.role) === 1) {
-      dispatch(getListTask());
-    } else if (Number(userInfo.role) === 0) {
-      dispatch(getListTaskByUserId({ userId: userInfo.id }));
-    }
-    dispatch(getProjectsData());
-  }, []);
 
   if (isLoading) return <Loading />;
 

@@ -9,7 +9,7 @@ import {
 import { getListUser } from "../../store/actions/userAction";
 import { getProjectsData } from "../../store/actions/projectAction";
 import { useDispatch } from "react-redux";
-import AdminDashboard from "./RoleAdmin";
+import RoleAdmin from "./RoleAdmin";
 
 function Dashboard(props) {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ function Dashboard(props) {
 
   if (isLoading) return <Loading />;
 
-  return <>{Number(userInfo.role) === 1 ? <AdminDashboard /> : <RoleUser />}</>;
+  return <>{Number(userInfo.role) === 1 ? <RoleAdmin /> : <RoleUser />}</>;
 }
 
 export default Dashboard;
