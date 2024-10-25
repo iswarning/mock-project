@@ -1,7 +1,7 @@
 import { TOAST } from "../../common/constants";
 import { ToastCommon } from "../../components/ToastCommon";
 import axiosInstance from "../../config/axios-config";
-import { SET_LIST_TASK } from "../constants";
+import { SET_LIST_TASK, SET_LIST_TASK_BY_USER } from "../constants";
 import { hideLoading, showLoading } from "./appAction";
 
 export const getListTask = () => {
@@ -32,12 +32,12 @@ export const getListTaskByUserId = (params) => {
     try {
       dispatch(showLoading());
       const resp = await axiosInstance.get(
-        import.meta.env.VITE_BASE_URL + "/api/gettaskbyuser/" + params.userId
+        import.meta.env.VITE_BASE_URL + "/api/gettaskbyuser/" + params
       );
 
       if (resp) {
         dispatch({
-          type: SET_LIST_TASK,
+          type: SET_LIST_TASK_BY_USER,
           payload: resp.data,
         });
 
@@ -79,13 +79,13 @@ export const createTask = (params) => {
 export const updateTask = (params) => {
   return async (dispatch, getState) => {
     try {
-      const time = "T17:00:00.000Z"
+      const time = "T17:00:00.000Z";
       const res = await axiosInstance.put(
         import.meta.env.VITE_BASE_URL + "/api/task",
         {
           ...params,
           time_start: params.time_start.split("T")[0] + time,
-          time_end: params.time_end.split("T")[0] + time
+          time_end: params.time_end.split("T")[0] + time,
         }
       );
 

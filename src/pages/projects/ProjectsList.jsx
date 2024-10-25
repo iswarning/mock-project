@@ -1,34 +1,34 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { convertDateToDMY } from '../../common/dateFormat';
-import { DELETE } from '../../common/messageConfirm';
-import { deleteProject } from '../../store/actions/projectAction';
-import AddTaskModal from '../tasks/AddTaskModal';
-import ProjectCreateModal from './ProjectCreateModal';
-import ProjectUpdateModal from './ProjectUpdateModal';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { convertDateToDMY } from "../../common/dateFormat";
+import { DELETE } from "../../common/messageConfirm";
+import { deleteProject } from "../../store/actions/projectAction";
+import AddTaskModal from "../tasks/AddTaskModal";
+import ProjectCreateModal from "./ProjectCreateModal";
+import ProjectUpdateModal from "./ProjectUpdateModal";
 
 const ProjectsList = ({ projects }) => {
   const [projectData, setProjectData] = useState({
-    name: '',
-    payment: '',
-    time_start: '',
-    time_end: '',
-    note: '',
-    priority: '',
+    name: "",
+    payment: "",
+    time_start: "",
+    time_end: "",
+    note: "",
+    priority: "",
   });
   const [taskData, setTaskData] = useState({
-    user_mail: '',
-    project_id: '',
-    time_start: '',
-    time_end: '',
-    status: '1',
-    task_name: '',
-    note: '',
+    user_mail: "",
+    project_id: "",
+    time_start: "",
+    time_end: "",
+    status: "1",
+    task_name: "",
+    note: "",
   });
   const { userInfo } = useSelector((state) => state.authStore);
   const dispatch = useDispatch();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [priorityFilter, setPriorityFilter] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState("all");
 
   const handleDelete = (id) => {
     if (confirm(DELETE.project)) dispatch(deleteProject({ id }));
@@ -36,6 +36,14 @@ const ProjectsList = ({ projects }) => {
 
   const showProjectUpdateModal = (project) => {
     setProjectData(project);
+  };
+
+  const handleAddTask = (id, projectName) => {
+    setTaskData({
+      ...taskData,
+      project_id: id,
+      project_name: projectName,
+    });
   };
 
   const handleSearchChange = (e) => {
@@ -47,8 +55,11 @@ const ProjectsList = ({ projects }) => {
   };
 
   const filteredProjects = projects.filter((project) => {
-    const matchesSearchTerm = project.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesPriority = priorityFilter === 'all' || project.priority === +priorityFilter;
+    const matchesSearchTerm = project.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesPriority =
+      priorityFilter === "all" || project.priority === +priorityFilter;
     return matchesSearchTerm && matchesPriority;
   });
 
@@ -98,14 +109,17 @@ const ProjectsList = ({ projects }) => {
         <div className="row">
           {filteredProjects &&
             filteredProjects.map((project) => (
-              <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-4" key={project.id}>
+              <div
+                className="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-4"
+                key={project.id}
+              >
                 <div
                   className={`card bg-light shadow-sm border border-3 ${
                     project.priority === 1
-                      ? 'border-danger'
+                      ? "border-danger"
                       : project.priority === 2
-                      ? 'border-warning'
-                      : ''
+                      ? "border-warning"
+                      : ""
                   }`}
                 >
                   <div className="card-body">

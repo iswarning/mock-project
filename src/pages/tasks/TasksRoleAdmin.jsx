@@ -41,7 +41,9 @@ function TasksRoleAdmin() {
               <div className="project-column-heading">
                 <h2 className="project-column-heading__title">
                   {statusMapping[status].toUpperCase()}{" "}
-                  {filteredTasks[status]?.length}
+                  <span className="fs-6">
+                    ({filteredTasks[status]?.length})
+                  </span>
                 </h2>
               </div>
               {filteredTasks[status].map((task) => (

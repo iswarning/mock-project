@@ -13,19 +13,20 @@ export const ROUTES = {
 };
 
 export const tagMapping = {
-  1: 'copyright',
-  2: 'design',
-  3: 'illustration'
-}
+  1: "copyright",
+  2: "design",
+  3: "illustration",
+};
 
 export const badgeColorMapping = {
   1: "danger",
   2: "warning",
-  3: "secondary"
-}
+  3: "secondary",
+};
 
 export const statusMapping = {
   1: "pending",
   2: "inprogress",
-  3: "completed",
+  3: "QA Testing",
+  4: "completed",
 };
