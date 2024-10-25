@@ -1,7 +1,7 @@
 import { TOAST } from "../../common/constants";
 import { ToastCommon } from "../../components/ToastCommon";
 import axiosInstance from "../../config/axios-config";
-import { SET_LIST_TASK, SET_LIST_TASK_BY_USER } from "../constants";
+import { SET_LIST_TASK } from "../constants";
 import { hideLoading, showLoading } from "./appAction";
 
 export const getListTask = () => {
@@ -28,16 +28,18 @@ export const getListTask = () => {
 };
 
 export const getListTaskByUserId = (params) => {
+  console.log("getListTaskByUserId", params);
+
   return async (dispatch, getState) => {
     try {
       dispatch(showLoading());
       const resp = await axiosInstance.get(
-        import.meta.env.VITE_BASE_URL + "/api/gettaskbyuser/" + params
+        import.meta.env.VITE_BASE_URL + "/api/gettaskbyuser/" + params.userId
       );
 
       if (resp) {
         dispatch({
-          type: SET_LIST_TASK_BY_USER,
+          type: SET_LIST_TASK,
           payload: resp.data,
         });
 

@@ -1,35 +1,35 @@
-import { useEffect } from "react"
-import { useDispatch } from "react-redux"
-import { getListTask, getListTaskByUserId } from "../../store/actions/taskAction"
-import { useSelector } from "react-redux"
-import TasksRoleAdmin from "./TasksRoleAdmin"
-import TasksRoleUser from "./TasksRoleUser"
-import Loading from "../../components/Loading"
-import { getProjectsData } from "../../store/actions/projectAction"
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {
+  getListTask,
+  getListTaskByUserId,
+} from "../../store/actions/taskAction";
+import { useSelector } from "react-redux";
+import TasksRoleAdmin from "./TasksRoleAdmin";
+import TasksRoleUser from "./TasksRoleUser";
+import Loading from "../../components/Loading";
+import { getProjectsData } from "../../store/actions/projectAction";
 
 function WrapperTask() {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.authStore);
   const { isLoading } = useSelector((state) => state.appStore);
+  console.log("userInfo", userInfo);
 
-    useEffect(() => {
-        if (Number(userInfo.role) === 1) {
-          dispatch(getListTask())
-        } else {
-          dispatch(getListTaskByUserId({ userId: userInfo.id }))
-        }
-        dispatch(getProjectsData())
-    },[])
+  useEffect(() => {
+    if (Number(userInfo.role) === 1) {
+      dispatch(getListTask());
+    } else if (Number(userInfo.role) === 0) {
+      dispatch(getListTaskByUserId({ userId: userInfo.id }));
+    }
+    dispatch(getProjectsData());
+  }, []);
 
   if (isLoading) return <Loading />;
 
   return (
-    <>
-        {
-          Number(userInfo.role) === 1 ? <TasksRoleAdmin /> : <TasksRoleUser />
-        }
-    </>
-  )
+    <>{Number(userInfo.role) === 1 ? <TasksRoleAdmin /> : <TasksRoleUser />}</>
+  );
 }
 
 export default WrapperTask;
