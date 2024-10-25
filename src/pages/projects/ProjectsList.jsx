@@ -8,7 +8,6 @@ import ProjectCreateModal from "./ProjectCreateModal";
 import ProjectUpdateModal from "./ProjectUpdateModal";
 
 const ProjectsList = ({ projects }) => {
-  console.log("🚀 ~ projects:", projects);
   const [projectData, setProjectData] = useState({
     name: "",
     payment: "",
@@ -36,6 +35,14 @@ const ProjectsList = ({ projects }) => {
 
   const showProjectUpdateModal = (project) => {
     setProjectData(project);
+  };
+
+  const handleAddTask = (id, projectName) => {
+    setTaskData({
+      ...taskData,
+      project_id: id,
+      project_name: projectName,
+    });
   };
 
   return (

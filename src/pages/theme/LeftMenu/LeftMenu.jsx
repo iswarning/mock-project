@@ -32,20 +32,18 @@ function LeftMenu({ sidebarOpen, closeSidebar }) {
         <div className="line"></div>
       </div>
       <ul className="m-0 p-0 pt-3">
-        {userInfo?.role === 1 && (
-          <li>
-            <NavLink
-              to={ROUTES.dashboard}
-              className={({ isActive }) =>
-                isActive ? "btn text-menu active" : "btn text-menu"
-              }
-              onClick={closeSidebar}
-            >
-              <i className="fa-solid fa-house"></i>
-              <span className="textMenuBig">Dashboard</span>
-            </NavLink>
-          </li>
-        )}
+        <li>
+          <NavLink
+            to={ROUTES.dashboard}
+            className={({ isActive }) =>
+              isActive ? "btn text-menu active" : "btn text-menu"
+            }
+            onClick={closeSidebar}
+          >
+            <i className="fa-solid fa-house"></i>
+            <span className="textMenuBig">Dashboard</span>
+          </NavLink>
+        </li>
         {userInfo?.role === 1 && (
           <li>
             <NavLink
