@@ -1,113 +1,140 @@
 // BarChart.js
-import React, { useMemo } from 'react';
-import { Line } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js'
-import { useSelector } from 'react-redux';
+import { Chart, registerables } from "chart.js";
+import React, { useMemo } from "react";
+import { Line } from "react-chartjs-2";
+import { useSelector } from "react-redux";
 
-Chart.register(...registerables)
+Chart.register(...registerables);
 
-const monthsCharacter = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const monthsCharacter = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 const TaskChart = () => {
-  
-  const { listTask } = useSelector((state) => state.taskStore)
+  const { listTask } = useSelector((state) => state.taskStore);
 
   const filteredTasks = useMemo(() => {
-    let labels = []
-    const currentDate = new Date(Date.now()).getDate()
+    let labels = [];
+    const currentDate = new Date(Date.now()).getDate();
 
-    const monthOfTimeStart = listTask.map((task) => new Date(task.time_start).getMonth())
-    const monthOfTimeEnd = listTask.map((task) => new Date(task.time_end).getMonth())
+    const monthOfTimeStart = listTask.map((task) =>
+      new Date(task.time_start).getMonth()
+    );
+    const monthOfTimeEnd = listTask.map((task) =>
+      new Date(task.time_end).getMonth()
+    );
 
-    const minMonth = Math.min(...monthOfTimeStart)
-    const maxMonth = Math.max(...monthOfTimeEnd)
+    const minMonth = Math.min(...monthOfTimeStart);
+    const maxMonth = Math.max(...monthOfTimeEnd);
 
     let tasks = {
       overdue: [],
       pending: [],
       inprogress: [],
-      completedNextThreeDay: []
-    }
+      completedNextThreeDay: [],
+    };
 
     for (let i = minMonth; i <= maxMonth; i++) {
-      labels.push(monthsCharacter[i])
+      labels.push(monthsCharacter[i]);
 
-      const totalTasksOfMonth = listTask
-      .filter((task) => new Date(task.time_end).getMonth() === i)
+      const totalTasksOfMonth = listTask.filter(
+        (task) => new Date(task.time_end).getMonth() === i
+      );
 
-      tasks.overdue.push(totalTasksOfMonth
-        .filter((task) => currentDate > (new Date(task.time_end).getDate()))
-        .length
-      )
+      tasks.overdue.push(
+        totalTasksOfMonth.filter(
+          (task) => currentDate > new Date(task.time_end).getDate()
+        ).length
+      );
 
-      tasks.pending.push(totalTasksOfMonth
-       .filter((task) => task.status === 1)
-       .length
-      )
+      tasks.pending.push(
+        totalTasksOfMonth.filter((task) => task.status === 1).length
+      );
 
-      tasks.inprogress.push(totalTasksOfMonth
-       .filter((task) => task.status === 2)
-       .length
-      )
+      tasks.inprogress.push(
+        totalTasksOfMonth.filter((task) => task.status === 2).length
+      );
 
-      tasks.completedNextThreeDay.push(totalTasksOfMonth
-        .filter((task) => task.status === 3 && (new Date(task.time_end).getDate()) - currentDate === 3)
-       .length
-      )
+      tasks.completedNextThreeDay.push(
+        totalTasksOfMonth.filter(
+          (task) =>
+            task.status !== 4 &&
+            new Date(task.time_end).getDate() - currentDate === 3
+        ).length
+      );
     }
     return {
       ...tasks,
-      labels
-    }
-  },[listTask])
+      labels,
+    };
+  }, [listTask]);
 
   const data = {
     labels: filteredTasks.labels,
     datasets: [
       {
-        label: 'Overdue',
+        type: "line",
+        label: "Overdue",
         data: filteredTasks.overdue,
+        borderColor: "#E39FF6",
         fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.4, // This enables cubic interpolation
       },
       {
-        label: 'Pending',
+        type: "bar",
+        label: "Pending",
         data: filteredTasks.pending,
-        fill: false,
-        borderColor: 'pink',
-        tension: 0.4, // This enables cubic interpolation
+        backgroundColor: "rgba(255, 99, 132, 0.6)",
       },
       {
-        label: 'In Progress',
+        type: "bar",
+        label: "In Progress",
         data: filteredTasks.inprogress,
-        fill: false,
-        borderColor: 'green',
-        tension: 0.4, // This enables cubic interpolation
+        backgroundColor: "rgba(54, 162, 235, 0.6)",
       },
       {
-        label: 'Completed in next three days',
+        type: "line",
+        label: "Completed in next three days",
         data: filteredTasks.completedNextThreeDay,
-        fill: false,
-        borderColor: 'purple',
-        tension: 0.4, // This enables cubic interpolation
+        backgroundColor: "rgba(255, 206, 86, 0.6)",
       },
     ],
   };
 
   const options = {
+    responsive: true, // Enable responsive resizing
+    maintainAspectRatio: false, // Allow the chart to fill the container
     scales: {
-      y: {
-        beginAtZero: true,
+      x: {
+        type: "category", // Change from 'time' to 'category'
+        title: {
+          display: true,
+          text: "Months",
+        },
       },
-    },
-    elements: {
-      line: {
-        tension: 0.4, // This also ensures cubic interpolation
+      y: {
+        title: {
+          display: true,
+          text: "Values",
+        },
       },
     },
   };
-  return <Line data={data} options={options} />;
+  return (
+    <div style={{ position: "relative", width: "100%", height: "400px" }}>
+      <Line data={data} options={options} />
+    </div>
+  );
 };
 
 export default TaskChart;

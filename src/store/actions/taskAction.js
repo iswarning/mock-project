@@ -12,7 +12,7 @@ export const getListTask = () => {
         import.meta.env.VITE_BASE_URL + "/api/task"
       );
 
-      if (resp) {
+      if (resp && resp.data.message !== 'No task found' ) {
         dispatch({
           type: SET_LIST_TASK,
           payload: resp.data,
@@ -28,23 +28,22 @@ export const getListTask = () => {
 };
 
 export const getListTaskByUserId = (params) => {
-  console.log("getListTaskByUserId", params);
-
   return async (dispatch, getState) => {
     try {
+      
       dispatch(showLoading());
       const resp = await axiosInstance.get(
         import.meta.env.VITE_BASE_URL + "/api/gettaskbyuser/" + params.userId
       );
 
-      if (resp) {
+      if (resp && resp.data.message !== 'No task found') {
         dispatch({
           type: SET_LIST_TASK,
           payload: resp.data,
         });
-
-        dispatch(hideLoading());
       }
+
+      dispatch(hideLoading());
     } catch (error) {
       console.log(error.response?.data?.message);
       dispatch(hideLoading());
