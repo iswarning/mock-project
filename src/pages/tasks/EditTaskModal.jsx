@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   REQUIRE_NAME,
   REQUIRE_NOTE,
@@ -9,26 +9,12 @@ import {
 } from "../../common/messageError";
 import { updateTask } from "../../store/actions/taskAction";
 import "./style.scss";
-import { useSelector } from "react-redux";
 
 const initErrorMessages = {
   time_end: "",
   note: "",
   time_start: "",
   task_name: "",
-};
-
-const initTask = {
-  task_name: "",
-  note: "",
-  time_start: "",
-  time_end: "",
-  user_name: "",
-  user_mail: "",
-  project_id: "",
-  project_name: "",
-  project_start: "",
-  project_end: "",
 };
 
 function EditTaskModal({ taskEdit }) {
