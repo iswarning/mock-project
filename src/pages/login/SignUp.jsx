@@ -11,6 +11,17 @@ function SignUp() {
   const confirmPassword = useRef(null);
   const name = useRef(null);
 
+  const handleKeyPress = (event, nextFieldRef) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Ngăn chặn hành vi submit mặc định
+      if (nextFieldRef) {
+        nextFieldRef.current.focus(); // Di chuyển tiêu điểm đến trường tiếp theo
+      } else {
+        handleSignUp(); // Gọi hàm đăng ký nếu đã đến ô cuối
+      }
+    }
+  };
+
   const handleSignUp = async () => {
     dispatch(
       signUp({
@@ -24,7 +35,7 @@ function SignUp() {
 
   return (
     <div className="signUp">
-      <form>
+      <form onSubmit={(e) => e.preventDefault()}>
         <label className="labelLogin" htmlFor="chk" aria-hidden="true">
           Sign up
         </label>
@@ -34,6 +45,7 @@ function SignUp() {
           name="name"
           placeholder="Name"
           ref={name}
+          onKeyDown={(e) => handleKeyPress(e, email)}
         />
         <input
           className="inputLogin"
@@ -41,6 +53,7 @@ function SignUp() {
           name="email"
           placeholder="Email"
           ref={email}
+          onKeyDown={(e) => handleKeyPress(e, password)}
         />
         <input
           className="inputLogin"
@@ -48,6 +61,7 @@ function SignUp() {
           name="pswd"
           placeholder="Password"
           ref={password}
+          onKeyDown={(e) => handleKeyPress(e, confirmPassword)}
         />
         <input
           className="inputLogin"
@@ -55,6 +69,7 @@ function SignUp() {
           name="pswd"
           placeholder="Confirm Password"
           ref={confirmPassword}
+          onKeyDown={(e) => handleKeyPress(e, null)}
         />
         <button
           type="button"
