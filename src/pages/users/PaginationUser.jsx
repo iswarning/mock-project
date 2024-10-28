@@ -1,7 +1,6 @@
 import { memo } from "react";
 
 function PaginationUser({ totalPage, currentPage, handleChangePage }) {
-    console.log('pagination');
     
   return (
     <>
