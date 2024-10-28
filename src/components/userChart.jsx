@@ -9,7 +9,6 @@ Chart.register(...registerables);
 function UserChart(props) {
   const { listTask } = useSelector((state) => state.taskStore);
   const { listUser } = useSelector((state) => state.userStore);
-  console.log("listUser", listUser);
 
   // Tìm những user chưa có task
   const usersWithoutTask = listUser.filter(
@@ -48,6 +47,7 @@ function UserChart(props) {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top",
@@ -55,7 +55,11 @@ function UserChart(props) {
     },
   };
 
-  return <Bar data={data} options={options} />;
+  return (
+    <div style={{ position: "relative", width: "100%", height: "400px" }}>
+      <Bar data={data} options={options} />
+    </div>
+  );
 }
 
 export default UserChart;

@@ -7,13 +7,21 @@ import Select from "react-select";
 function AddTaskModal({ taskNewData }) {
   const { listUser } = useSelector((state) => state.userStore);
   const dispatch = useDispatch();
-  const { project_name, ...taskData } = taskNewData;
+  const { project_name, project_start, project_end, ...taskData } = taskNewData;
 
-  const [formData, setFormData] = useState({ ...taskData });
+  const [formData, setFormData] = useState({
+    user_mail: "",
+    project_id: taskData?.project_id || "",
+    time_start: "",
+    time_end: "",
+    status: "1",
+    task_name: "",
+    note: "",
+  });
 
-  const [dateError, setDateError] = useState(false);
+  const [dateError, setDateError] = useState("");
 
-  // Cập nhật formData mỗi khi taskNewData thay đổi
+  // Cập nhật formData khi taskNewData thay đổi
   useEffect(() => {
     setFormData({ ...taskData });
   }, [taskNewData]);
@@ -21,12 +29,48 @@ function AddTaskModal({ taskNewData }) {
   // Xử lý khi input thay đổi
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
+    let error = "";
+
+    // Convert project_start và project_end sang Date
+    const projectStartDate = new Date(project_start);
+    const projectEndDate = new Date(project_end);
+    const newValueDate = new Date(value);
+
+    // Update form data
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
     }));
+
+    // Validate time_start
+    if (name === "time_start") {
+      if (newValueDate < projectStartDate) {
+        error = "Time start must be after project start.";
+      } else if (
+        formData.time_end &&
+        newValueDate > new Date(formData.time_end)
+      ) {
+        error = "Time start must be before time end.";
+      }
+    }
+
+    // Validate time_end
+    if (name === "time_end") {
+      if (newValueDate > projectEndDate) {
+        error = "Time end must be before project end.";
+      } else if (
+        formData.time_start &&
+        newValueDate < new Date(formData.time_start)
+      ) {
+        error = "Time end must be after time start.";
+      }
+    }
+
+    // Cập nhật error
+    setDateError(error);
   };
 
+  // Options cho Select component
   const userOptions =
     listUser?.map((user) => ({
       value: user.email,
@@ -40,14 +84,15 @@ function AddTaskModal({ taskNewData }) {
     });
   };
 
+  // Xử lý tạo task
   const handleCreateTask = () => {
     if (new Date(formData.time_start) >= new Date(formData.time_end)) {
-      setDateError(true); // Hiển thị lỗi
+      setDateError("Time end must be after time start.");
     } else {
-      setDateError(false);
+      setDateError("");
       dispatch(createTask(formData));
 
-      // Đặt lại form về giá trị ban đầu
+      // Reset form
       setFormData({
         user_mail: "",
         project_id: taskNewData?.project_id || "",
@@ -60,7 +105,9 @@ function AddTaskModal({ taskNewData }) {
 
       // Đóng modal nếu không có lỗi
       const modalElement = document.getElementById("addTaskModal");
-      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      const modalInstance = modalElement
+        ? bootstrap.Modal.getInstance(modalElement)
+        : null;
       if (modalInstance) {
         modalInstance.hide(); // Đóng modal
       }
@@ -122,8 +169,15 @@ function AddTaskModal({ taskNewData }) {
                         type="date"
                         className="form-control"
                         name="time_start"
-                        value={formData?.time_start}
+                        value={formData.time_start}
                         onChange={handleInputChange}
+                        min={
+                          project_start
+                            ? new Date(project_start)
+                                .toISOString()
+                                .split("T")[0]
+                            : ""
+                        }
                         style={{ borderColor: dateError ? "red" : "" }}
                       />
                     </div>
@@ -135,8 +189,20 @@ function AddTaskModal({ taskNewData }) {
                         type="date"
                         className="form-control"
                         name="time_end"
-                        value={formData?.time_end}
+                        value={formData.time_end}
                         onChange={handleInputChange}
+                        min={
+                          formData.time_start
+                            ? new Date(formData.time_start)
+                                .toISOString()
+                                .split("T")[0]
+                            : ""
+                        }
+                        max={
+                          project_end
+                            ? new Date(project_end).toISOString().split("T")[0]
+                            : ""
+                        }
                         style={{ borderColor: dateError ? "red" : "" }}
                       />
                     </div>
@@ -144,9 +210,7 @@ function AddTaskModal({ taskNewData }) {
                   {dateError && (
                     <div className="row mb-3">
                       <div className="col-12 text-end">
-                        <span style={{ color: "red" }}>
-                          Time Start must be before Time End.
-                        </span>
+                        <span style={{ color: "red" }}>{dateError}</span>
                       </div>
                     </div>
                   )}

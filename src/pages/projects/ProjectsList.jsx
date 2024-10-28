@@ -38,11 +38,13 @@ const ProjectsList = ({ projects }) => {
     setProjectData(project);
   };
 
-  const handleAddTask = (id, projectName) => {
+  const handleAddTask = (id, projectName, projectStart, projectEnd) => {
     setTaskData({
       ...taskData,
       project_id: id,
       project_name: projectName,
+      project_start: projectStart,
+      project_end: projectEnd,
     });
   };
 
@@ -173,7 +175,14 @@ const ProjectsList = ({ projects }) => {
                         data-bs-toggle="modal"
                         data-bs-target="#addTaskModal"
                         className="btn bgPrimary"
-                        onClick={() => handleAddTask(project.id, project.name)}
+                        onClick={() =>
+                          handleAddTask(
+                            project.id,
+                            project.name,
+                            project.time_start,
+                            project.time_end
+                          )
+                        }
                         disabled={userInfo?.role != 1}
                       >
                         <i className="fa-solid fa-plus"></i> add task
