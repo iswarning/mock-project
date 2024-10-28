@@ -54,8 +54,6 @@ function ListUser({ setUserEdit }) {
   }
 
   const handleEditUser = useCallback((user) => {
-    console.log('handleEditUser');
-    
     setUserEdit({
       ...user,
       password: '',

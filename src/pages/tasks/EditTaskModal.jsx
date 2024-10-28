@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { REQUIRE_NAME, REQUIRE_NOTE, REQUIRE_TIME_END, REQUIRE_TIME_START, TIME_START_LESS_TIME_END } from "../../common/messageError";
 import { updateTask } from "../../store/actions/taskAction";
 import './style.scss';
-import { useSelector } from "react-redux";
 
 const initErrorMessages = {
     time_end: '',
@@ -12,23 +11,10 @@ const initErrorMessages = {
     task_name: '',
 }
 
-const initTask = {
-    task_name: '',
-    note: '',
-    time_start: '',
-    time_end: '',
-    user_name: '',
-    user_mail: '',
-    project_id: '',
-    project_name: '',
-    project_start: '',
-    project_end: ''
-}
-
 function EditTaskModal({ taskEdit }) {
 
     const dispatch = useDispatch()
-    const [taskDetail, setTaskDetail] = useState(taskEdit || initTask)
+    const [taskDetail, setTaskDetail] = useState(taskEdit)
     const [errorMessages, setErrorMessages] = useState(initErrorMessages)
     const { listUser } = useSelector((state) => state.userStore)
     const { projects } = useSelector((state) => state.projectStore)

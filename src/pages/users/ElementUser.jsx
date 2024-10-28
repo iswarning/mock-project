@@ -8,7 +8,6 @@ import { memo } from "react";
 function ElementUser({ user, handleEditUser }) {
     const navigate = useNavigate()
     const dispatch = useDispatch();
-console.log('ElementUser');
 
     const handleChangeRole = (email, role) => {
         if (confirm(CHANGEROLE)) {
