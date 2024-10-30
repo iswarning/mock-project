@@ -69,47 +69,57 @@ function TasksRoleUser() {
       <DragDropContext onDragEnd={onDragEnd}>
         <main className="project">
           <div className="project-tasks">
-            {Object.keys(statusMapping).map((status) => (
-              <Droppable key={status} droppableId={String(status)}>
-                {(provided) => (
-                  <div
-                    className="project-column"
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                  >
-                    <div className="project-column-heading">
-                      <h2 className="project-column-heading__title">
-                        {statusMapping[status].toUpperCase()}
-                      </h2>
+            {Object.keys(statusMapping).map((status) => filteredTasks[status]?.length > 0 ? <Droppable key={status} droppableId={String(status)}>
+                  {(provided) => (
+                    <div
+                      className="project-column"
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                    >
+                      <div className="project-column-heading">
+                        <h2 className="project-column-heading__title">
+                          {statusMapping[status].toUpperCase()}{" "}
+                          <span className="fs-6">
+                            ({filteredTasks[status]?.length})
+                          </span>
+                        </h2>
+                      </div>
+                      {filteredTasks[status].map((task, index) => {
+                          return (
+                            <Draggable
+                              key={task.id}
+                              draggableId={task.id}
+                              index={index}
+                            >
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  <TaskElementRoleUser
+                                    task={task}
+                                    status={status}
+                                  />
+                                </div>
+                              )}
+                            </Draggable>
+                          );
+                        })}
+                      {provided.placeholder}
                     </div>
-                    {filteredTasks[status] &&
-                      filteredTasks[status].map((task, index) => {
-                        return (
-                          <Draggable
-                            key={task.id}
-                            draggableId={task.id}
-                            index={index}
-                          >
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <TaskElementRoleUser
-                                  task={task}
-                                  status={status}
-                                />
-                              </div>
-                            )}
-                          </Draggable>
-                        );
-                      })}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            ))}
+                  )}
+                </Droppable> : <div className="project-column " key={status}>
+                <div className="project-column-heading">
+                  <h2 className="project-column-heading__title">
+                    {statusMapping[status].toUpperCase()}{" "}
+                    <span className="fs-6">
+                      ({filteredTasks[status]?.length})
+                    </span>
+                  </h2>
+                </div>
+              </div>
+            )}
           </div>
         </main>
       </DragDropContext>
