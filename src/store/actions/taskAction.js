@@ -77,7 +77,7 @@ export const createTask = (params) => {
   };
 };
 
-export const updateTask = (params) => {
+export const updateTask = (params, position) => {
   return async (dispatch, getState) => {
     try {
       const time = "T17:00:00.000Z";
@@ -92,9 +92,13 @@ export const updateTask = (params) => {
 
       if (res) {
         ToastCommon(TOAST.SUCCESS, "Task saved successfully");
-        document.getElementById("close-edit-task-btn").click();
+        document.getElementById(`close-edit-task-btn-${params.id}`).click();
         dispatch(getListTask());
+        
       }
+
+      console.log(position);
+      
     } catch (error) {
       console.log(error.response?.data?.message);
     }

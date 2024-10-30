@@ -1,5 +1,5 @@
 // BarChart.js
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Line, Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js'
 import { useSelector } from 'react-redux';
@@ -15,6 +15,7 @@ const TaskChart = () => {
   const filteredTasks = useMemo(() => {
     let labels = []
     const currentDate = new Date(Date.now()).getDate()
+    // console.log(listTask.filter(filter((task) => task.status === 4 && (new Date(task.time_end).getDate()) - new Date(Date.now()).getDate() === 3)));
 
     const monthOfTimeStart = listTask.map((task) => new Date(task.time_start).getMonth())
     const monthOfTimeEnd = listTask.map((task) => new Date(task.time_end).getMonth())
@@ -51,10 +52,11 @@ const TaskChart = () => {
       )
 
       tasks.completedNextThreeDay.push(totalTasksOfMonth
-        .filter((task) => task.status !== 4 && (new Date(task.time_end).getDate()) - currentDate === 3)
-       .length
+        .filter((task) => task.status !== 4 && ((new Date(task.time_end).getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000) > 0 && ((new Date(task.time_end).getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000) < 3
+      ).length
       )
     }
+
     return {
       ...tasks,
       labels
@@ -111,6 +113,7 @@ const TaskChart = () => {
       },
     },
   };
+
   return (
     <div style={{ position: 'relative', width: '100%', height: '400px' }}>
       <Line data={data} options={options} />

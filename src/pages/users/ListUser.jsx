@@ -35,6 +35,7 @@ function ListUser({ setUserEdit }) {
 
   const handleChangePage = (page) => {
     setCurrentPage(page)
+    
   }
 
   const handleSearch = useCallback(
@@ -59,6 +60,8 @@ function ListUser({ setUserEdit }) {
       password: '',
       avarta: user.avarta || null
     })
+    console.log(123);
+
   },[])
 
   return (
