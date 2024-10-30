@@ -9,6 +9,16 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      if (event.target.name === "email") {
+        password.current.focus(); // Chuyển focus sang ô password khi nhấn Enter ở ô email
+      } else {
+        handleLogin(); // Gọi hàm login khi nhấn Enter ở ô password
+      }
+    }
+  };
+
   const handleLogin = () => {
     dispatch(
       login(
@@ -27,7 +37,7 @@ const Login = () => {
 
   return (
     <div className="login">
-      <form>
+      <form onSubmit={(e) => e.preventDefault()}>
         <label className="labelLogin" htmlFor="chk" aria-hidden="true">
           Login
         </label>
@@ -37,6 +47,7 @@ const Login = () => {
           name="email"
           placeholder="Email"
           ref={email}
+          onKeyDown={handleKeyPress}
         />
         <input
           className="inputLogin"
@@ -44,6 +55,7 @@ const Login = () => {
           name="pswd"
           placeholder="Password"
           ref={password}
+          onKeyDown={handleKeyPress}
         />
         <button
           type="button"

@@ -3,7 +3,7 @@ import { ToastCommon } from "../../components/ToastCommon";
 import axiosInstance from "../../config/axios-config";
 import { SET_LIST_USER, SET_USER_INFO } from "../constants";
 import { hideLoading, showLoading } from "./appAction";
-import { logout } from './authAction'
+import { logout } from "./authAction";
 export const getListUser = () => {
   return async (dispatch, getState) => {
     try {
@@ -116,8 +116,6 @@ export const updateUser = (params) => {
 };
 
 export const updateUserByUser = (params) => {
-  console.log(params);
-
   return async (dispatch, getState) => {
     try {
       let request = {
@@ -188,7 +186,7 @@ export const changeRole = (params, navigate) => {
         ToastCommon(TOAST.SUCCESS, "Role has been changed successfully.");
         dispatch(getListUser());
         if (getState().authStore.userInfo.email === params.email) {
-          dispatch(logout())
+          dispatch(logout());
           navigate();
         }
       }

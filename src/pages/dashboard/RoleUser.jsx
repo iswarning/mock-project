@@ -152,12 +152,12 @@ function RoleUser() {
         <div className="col-md-5">
           <div className="card p-3">
             <h5 className="mb-3">Task Information</h5>
-            <div>
+            <div className="py-2">
               {selectedTasks.length === 0 ? (
                 <p>No tasks available</p>
               ) : (
                 selectedTasks.map((task) => (
-                  <div key={task.id} className="mb-3 p-2 border rounded">
+                  <div key={task.id} className="py-4 px-3 mb-3  border rounded">
                     <h6 className="pb-1">
                       <strong>{task.task_name}</strong>
                     </h6>

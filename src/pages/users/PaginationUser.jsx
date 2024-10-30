@@ -1,10 +1,9 @@
 import { memo } from "react";
 
 function PaginationUser({ totalPage, currentPage, handleChangePage }) {
-    
   return (
     <>
-        { totalPage > 1 && (
+      {totalPage > 1 && (
         <div className="col-md-12">
           <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
@@ -60,7 +59,7 @@ function PaginationUser({ totalPage, currentPage, handleChangePage }) {
         </div>
       )}
     </>
-  )
+  );
 }
 
-export default memo(PaginationUser)
+export default memo(PaginationUser);
