@@ -10,8 +10,8 @@ const taskReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         listTask: payload.sort((a, b) => {
-          if (a.time_end < b.time_end) return -1;
-          if (a.time_end > b.time_end) return 1;
+          if (a.id < b.id) return -1;
+          if (a.id > b.id) return 1;
           return 0;
         }),
       };
