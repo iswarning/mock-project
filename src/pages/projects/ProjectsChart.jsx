@@ -40,8 +40,6 @@ const ProjectsChart = () => {
       priority: [],
     };
 
-    console.log(project.completedNextSevenDay);
-
     for (let i = minMonth; i <= maxMonth; i++) {
       labels.push(monthsCharacter[i]);
 
