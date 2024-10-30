@@ -1,35 +1,14 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { statusMapping } from "../../common/constants";
 import { deleteTask } from "../../store/actions/taskAction";
-import EditTaskModal from "./EditTaskModal";
 import TaskElementRoleAdmin from "./TaskElementRoleAdmin";
-
-const initTask = {
-  id: '',
-  status: 1,
-  task_name: '',
-  note: '',
-  time_start: '',
-  time_end: '',
-  user_name: '',
-  user_mail: '',
-  project_id: '',
-  project_name: '',
-  project_start: '',
-  project_end: ''
-}
 
 function TasksRoleAdmin() {
   const { listTask } = useSelector((state) => state.taskStore);
 
   const dispatch = useDispatch();
-  const [taskDetail, setTaskDetail] = useState(initTask);
-
-  const handleEdit = (task) => {
-    setTaskDetail(task);
-  }
-
+  
   const handleDelete = (id) => {
     if (confirm("Are you sure you want to delete")) {
       dispatch(deleteTask({ id }));
@@ -65,7 +44,6 @@ function TasksRoleAdmin() {
                   key={task.id}
                   task={task}
                   status={status}
-                  handleEdit={handleEdit}
                   handleDelete={handleDelete}
                 />
               ))}
@@ -73,7 +51,6 @@ function TasksRoleAdmin() {
           ))}
         </div>
       </main>
-      <EditTaskModal taskEdit={taskDetail} />
     </div>
   );
 }

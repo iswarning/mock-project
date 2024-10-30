@@ -1,9 +1,10 @@
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import avatarDefault from "../../assets/avatarUser.png";
 import { badgeColorMapping, tagMapping } from "../../common/constants";
-import { useMemo } from "react";
+import EditTaskModal from "./EditTaskModal";
 
-const TaskElementRoleAdmin = ({ task, status, handleEdit, handleDelete }) => {
+const TaskElementRoleAdmin = ({ task, status, handleDelete }) => {
   const { projects } = useSelector((state) => state.projectStore);
   const { listUser } = useSelector((state) => state.userStore);
 
@@ -21,7 +22,8 @@ const TaskElementRoleAdmin = ({ task, status, handleEdit, handleDelete }) => {
   };
 
   return (
-    <div className="task">
+    <>
+        <div className="task">
       <div className="task__tags d-flex justify-content-between">
         <div
           className={`my-truncate text-truncate task__tag task__tag--${tagMapping[status]}`}
@@ -41,10 +43,9 @@ const TaskElementRoleAdmin = ({ task, status, handleEdit, handleDelete }) => {
             <li>
               <a
                 data-bs-toggle="modal"
-                data-bs-target="#modalEditTask"
+                data-bs-target={`#modalEditTask-${task.id}`}
                 className="dropdown-item"
                 role="button"
-                onClick={() => handleEdit(task)}
               >
                 <i className="fa-solid fa-pen-to-square"></i> Edit
               </a>
@@ -101,6 +102,10 @@ const TaskElementRoleAdmin = ({ task, status, handleEdit, handleDelete }) => {
         </div>
       </div>
     </div>
+    <EditTaskModal taskEdit={task} />
+
+    </>
+
   );
 };
 
