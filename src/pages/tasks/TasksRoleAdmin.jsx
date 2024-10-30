@@ -6,19 +6,19 @@ import EditTaskModal from "./EditTaskModal";
 import TaskElementRoleAdmin from "./TaskElementRoleAdmin";
 
 const initTask = {
-  id: '',
+  id: "",
   status: 1,
-  task_name: '',
-  note: '',
-  time_start: '',
-  time_end: '',
-  user_name: '',
-  user_mail: '',
-  project_id: '',
-  project_name: '',
-  project_start: '',
-  project_end: ''
-}
+  task_name: "",
+  note: "",
+  time_start: "",
+  time_end: "",
+  user_name: "",
+  user_mail: "",
+  project_id: "",
+  project_name: "",
+  project_start: "",
+  project_end: "",
+};
 
 function TasksRoleAdmin() {
   const { listTask } = useSelector((state) => state.taskStore);
@@ -28,13 +28,13 @@ function TasksRoleAdmin() {
 
   const handleEdit = (task) => {
     setTaskDetail(task);
-  }
+  };
 
   const handleDelete = (id) => {
     if (confirm("Are you sure you want to delete")) {
       dispatch(deleteTask({ id }));
     }
-  }
+  };
 
   const filteredTasks = useMemo(() => {
     const tasksByStatus = {};
@@ -60,15 +60,17 @@ function TasksRoleAdmin() {
                   </span>
                 </h2>
               </div>
-              {filteredTasks[status].map((task) => (
-                <TaskElementRoleAdmin
-                  key={task.id}
-                  task={task}
-                  status={status}
-                  handleEdit={handleEdit}
-                  handleDelete={handleDelete}
-                />
-              ))}
+              <div className="project-column-body">
+                {filteredTasks[status].map((task) => (
+                  <TaskElementRoleAdmin
+                    key={task.id}
+                    task={task}
+                    status={status}
+                    handleEdit={handleEdit}
+                    handleDelete={handleDelete}
+                  />
+                ))}
+              </div>
             </div>
           ))}
         </div>
