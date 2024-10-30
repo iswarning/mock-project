@@ -3,8 +3,6 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import ElementUser from "./ElementUser";
 import PaginationUser from "./PaginationUser";
-import { useDispatch } from "react-redux";
-import { getListUser } from "../../store/actions/userAction";
 
 function ListUser({ setUserEdit }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,19 +58,10 @@ function ListUser({ setUserEdit }) {
   const handleEditUser = useCallback((user) => {
     setUserEdit({
       ...user,
-<<<<<<< HEAD
-      password: '',
-      avarta: user.avarta || null
-    })
-    console.log(123);
-
-  },[])
-=======
       password: "",
       avarta: user.avarta || null,
     });
   }, []);
->>>>>>> fd15169f30feb2e4dc782be9c1b73070288773d2
 
   return (
     <>
