@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Loading from "../../components/Loading";
-import { getProjectsData } from "../../store/actions/projectAction";
-import "./style.scss";
-import ProjectsList from "./ProjectsList";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../../components/Loading';
+import { getProjectsData } from '../../store/actions/projectAction';
+import ProjectsList from './ProjectsList';
+import './style.scss';
 
 const WrapperProjects = () => {
   const { userInfo } = useSelector((state) => state.authStore);
@@ -18,7 +18,11 @@ const WrapperProjects = () => {
 
   if (isLoading) return <Loading />;
 
-  return <ProjectsList projects={projects} />;
+  return (
+    <>
+      <ProjectsList projects={projects} />
+    </>
+  );
 };
 
 export default WrapperProjects;

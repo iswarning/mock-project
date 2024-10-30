@@ -1,15 +1,11 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import RoleUser from "./RoleUser";
-import Loading from "../../components/Loading";
-import {
-  getListTask,
-  getListTaskByUserId,
-} from "../../store/actions/taskAction";
-import { getListUser } from "../../store/actions/userAction";
-import { getProjectsData } from "../../store/actions/projectAction";
-import { useDispatch } from "react-redux";
-import RoleAdmin from "./RoleAdmin";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../../components/Loading';
+import { getProjectsData } from '../../store/actions/projectAction';
+import { getListTask, getListTaskByUserId } from '../../store/actions/taskAction';
+import { getListUser } from '../../store/actions/userAction';
+import RoleAdmin from './RoleAdmin';
+import RoleUser from './RoleUser';
 
 function Dashboard(props) {
   const dispatch = useDispatch();
