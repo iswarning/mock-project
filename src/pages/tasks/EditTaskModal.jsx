@@ -40,13 +40,6 @@ function EditTaskModal({ taskEdit }) {
       return;
     }
 
-    if (Date.parse(taskDetail.time_start) < Date.parse(new Date())) {
-      setErrorMessages({
-        time_start: "Start time must be greater than current time",
-      });
-      return;
-    }
-
     if (taskDetail.time_end.length === 0) {
       setErrorMessages({ time_end: REQUIRE_TIME_END });
       return;
@@ -119,13 +112,13 @@ function EditTaskModal({ taskEdit }) {
   }, [taskEdit]);
 
   return (
-    <div className="modal fade" id="modalEditTask">
+    <div className="modal fade" id={`modalEditTask-${taskEdit.id}`}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
             <h4 className="modal-title">Edit Task</h4>
             <button
-              id="close-edit-task-btn"
+              id={`close-edit-task-btn-${taskDetail.id}`}
               type="button"
               className="btn-close"
               data-bs-dismiss="modal"
