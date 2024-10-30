@@ -12,7 +12,7 @@ export const getListTask = () => {
         import.meta.env.VITE_BASE_URL + "/api/task"
       );
 
-      if (resp) {
+      if (resp && resp.data.message !== 'No task found' ) {
         dispatch({
           type: SET_LIST_TASK,
           payload: resp.data,
@@ -30,19 +30,20 @@ export const getListTask = () => {
 export const getListTaskByUserId = (params) => {
   return async (dispatch, getState) => {
     try {
+      
       dispatch(showLoading());
       const resp = await axiosInstance.get(
         import.meta.env.VITE_BASE_URL + "/api/gettaskbyuser/" + params.userId
       );
 
-      if (resp) {
+      if (resp && resp.data.message !== 'No task found') {
         dispatch({
           type: SET_LIST_TASK,
           payload: resp.data,
         });
-
-        dispatch(hideLoading());
       }
+
+      dispatch(hideLoading());
     } catch (error) {
       console.log(error.response?.data?.message);
       dispatch(hideLoading());
@@ -76,24 +77,28 @@ export const createTask = (params) => {
   };
 };
 
-export const updateTask = (params) => {
+export const updateTask = (params, position) => {
   return async (dispatch, getState) => {
     try {
-      const time = "T17:00:00.000Z"
+      const time = "T17:00:00.000Z";
       const res = await axiosInstance.put(
         import.meta.env.VITE_BASE_URL + "/api/task",
         {
           ...params,
           time_start: params.time_start.split("T")[0] + time,
-          time_end: params.time_end.split("T")[0] + time
+          time_end: params.time_end.split("T")[0] + time,
         }
       );
 
       if (res) {
         ToastCommon(TOAST.SUCCESS, "Task saved successfully");
-        document.getElementById("close-edit-task-btn").click();
+        document.getElementById(`close-edit-task-btn-${params.id}`).click();
         dispatch(getListTask());
+        
       }
+
+      console.log(position);
+      
     } catch (error) {
       console.log(error.response?.data?.message);
     }

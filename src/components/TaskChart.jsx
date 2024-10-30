@@ -1,7 +1,7 @@
 // BarChart.js
+import { Chart, registerables } from 'chart.js';
 import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js';
 import { useSelector } from 'react-redux';
 
 Chart.register(...registerables);
@@ -56,10 +56,14 @@ const TaskChart = () => {
 
       tasks.completedNextThreeDay.push(
         totalTasksOfMonth.filter(
-          (task) => task.status === 3 && new Date(task.time_end).getDate() - currentDate === 3
+          (task) =>
+            task.status !== 4 &&
+            (new Date(task.time_end).getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000 > 0 &&
+            (new Date(task.time_end).getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000 < 3
         ).length
       );
     }
+
     return {
       ...tasks,
       labels,
@@ -70,49 +74,58 @@ const TaskChart = () => {
     labels: filteredTasks.labels,
     datasets: [
       {
+        type: 'line',
         label: 'Overdue',
         data: filteredTasks.overdue,
+        borderColor: '#E39FF6',
         fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.4, // This enables cubic interpolation
       },
       {
+        type: 'bar',
         label: 'Pending',
         data: filteredTasks.pending,
-        fill: false,
-        borderColor: 'pink',
-        tension: 0.4, // This enables cubic interpolation
+        backgroundColor: 'rgba(255, 99, 132, 0.6)',
       },
       {
+        type: 'bar',
         label: 'In Progress',
         data: filteredTasks.inprogress,
-        fill: false,
-        borderColor: 'green',
-        tension: 0.4, // This enables cubic interpolation
+        backgroundColor: 'rgba(54, 162, 235, 0.6)',
       },
       {
+        type: 'line',
         label: 'Completed in next three days',
         data: filteredTasks.completedNextThreeDay,
-        fill: false,
-        borderColor: 'purple',
-        tension: 0.4, // This enables cubic interpolation
+        backgroundColor: 'rgba(255, 206, 86, 0.6)',
       },
     ],
   };
 
   const options = {
+    responsive: true, // Enable responsive resizing
+    maintainAspectRatio: false, // Allow the chart to fill the container
     scales: {
-      y: {
-        beginAtZero: true,
+      x: {
+        type: 'category', // Change from 'time' to 'category'
+        title: {
+          display: true,
+          text: 'Months',
+        },
       },
-    },
-    elements: {
-      line: {
-        tension: 0.4, // This also ensures cubic interpolation
+      y: {
+        title: {
+          display: true,
+          text: 'Values',
+        },
       },
     },
   };
-  return <Line data={data} options={options} />;
+
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '400px' }}>
+      <Line data={data} options={options} />
+    </div>
+  );
 };
 
 export default TaskChart;

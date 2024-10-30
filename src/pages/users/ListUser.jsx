@@ -3,13 +3,11 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import ElementUser from "./ElementUser";
 import PaginationUser from "./PaginationUser";
-import { useDispatch } from "react-redux";
-import { getListUser } from "../../store/actions/userAction";
 
 function ListUser({ setUserEdit }) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
-  const [role, setRole] = useState('default')
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [role, setRole] = useState("default");
 
   const { listUser } = useSelector((state) => state.userStore);
 
@@ -18,12 +16,13 @@ function ListUser({ setUserEdit }) {
   const filteredData = useMemo(() => {
     let result = listUser;
     if (searchTerm.length > 0) {
-      result = result.filter((user) => 
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+      result = result.filter(
+        (user) =>
+          user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    if (role !== 'default') {
+    if (role !== "default") {
       result = result.filter((user) => user.role === Number(role));
     }
     return result;
@@ -31,17 +30,20 @@ function ListUser({ setUserEdit }) {
 
   const totalPage = Math.ceil(filteredData.length / itemsPerPage);
   const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfFirstItem + itemsPerPage);
+  const currentItems = filteredData.slice(
+    indexOfFirstItem,
+    indexOfFirstItem + itemsPerPage
+  );
 
   const handleChangePage = (page) => {
-    setCurrentPage(page)
-  }
+    setCurrentPage(page);
+  };
 
   const handleSearch = useCallback(
     debounce(
       (keyWord) => {
-        setSearchTerm(keyWord)
-        setCurrentPage(1)
+        setSearchTerm(keyWord);
+        setCurrentPage(1);
       },
       [1000]
     ),
@@ -49,25 +51,22 @@ function ListUser({ setUserEdit }) {
   );
 
   const handleFilterRole = (value) => {
-    setRole(value)
-    setCurrentPage(1)
-  }
+    setRole(value);
+    setCurrentPage(1);
+  };
 
   const handleEditUser = useCallback((user) => {
-    console.log('handleEditUser');
-    
     setUserEdit({
       ...user,
-      password: '',
-      avarta: user.avarta || null
-    })
-  },[])
+      password: "",
+      avarta: user.avarta || null,
+    });
+  }, []);
 
   return (
     <>
       <div className="d-flex justify-content-between m-2 ">
-        
-        <div> 
+        <div>
           <button
             className="btn btn-success"
             data-bs-toggle="modal"
@@ -77,7 +76,7 @@ function ListUser({ setUserEdit }) {
             <i className="fa-solid fa-plus"></i>
           </button>
         </div>
-        
+
         <div className="d-flex align-items-center">
           <input
             type="search"
@@ -86,15 +85,15 @@ function ListUser({ setUserEdit }) {
             onChange={(e) => handleSearch(e.target.value)}
           />{" "}
           &nbsp;
-          <select 
-            style={{ width: '40%'}} 
-            className="form-control" 
-            onChange={(e) => handleFilterRole(e.target.value)} 
+          <select
+            style={{ width: "40%" }}
+            className="form-control"
+            onChange={(e) => handleFilterRole(e.target.value)}
             value={role}
           >
             <option value="default">All</option>
-            <option value='1'>Admin</option>
-            <option value='0'>User</option>
+            <option value="1">Admin</option>
+            <option value="0">User</option>
           </select>
         </div>
       </div>
@@ -115,12 +114,20 @@ function ListUser({ setUserEdit }) {
           <tbody>
             {currentItems &&
               currentItems.map((user) => (
-                <ElementUser key={user.id} user={user} handleEditUser={handleEditUser} />
+                <ElementUser
+                  key={user.id}
+                  user={user}
+                  handleEditUser={handleEditUser}
+                />
               ))}
           </tbody>
         </table>
       </div>
-      <PaginationUser totalPage={totalPage} currentPage={currentPage} handleChangePage={(p) => handleChangePage(p)} />
+      <PaginationUser
+        totalPage={totalPage}
+        currentPage={currentPage}
+        handleChangePage={(p) => handleChangePage(p)}
+      />
     </>
   );
 }
