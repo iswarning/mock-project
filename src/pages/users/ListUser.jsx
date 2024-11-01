@@ -3,8 +3,6 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import ElementUser from "./ElementUser";
 import PaginationUser from "./PaginationUser";
-import { useDispatch } from "react-redux";
-import { getListUser } from "../../store/actions/userAction";
 
 function ListUser({ setUserEdit }) {
   const [searchTerm, setSearchTerm] = useState("");

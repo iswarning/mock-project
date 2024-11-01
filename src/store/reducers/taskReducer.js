@@ -9,7 +9,11 @@ const taskReducer = (state = initState, { type, payload }) => {
     case SET_LIST_TASK:
       return {
         ...state,
-        listTask: payload,
+        listTask: payload.sort((a, b) => {
+          if (a.id < b.id) return -1;
+          if (a.id > b.id) return 1;
+          return 0;
+        }),
       };
 
     default:

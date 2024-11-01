@@ -66,14 +66,12 @@ const TaskChart = () => {
         totalTasksOfMonth.filter((task) => task.status === 2).length
       );
 
-      tasks.completedNextThreeDay.push(
-        totalTasksOfMonth.filter(
-          (task) =>
-            task.status !== 4 &&
-            new Date(task.time_end).getDate() - currentDate === 3
-        ).length
-      );
+      tasks.completedNextThreeDay.push(totalTasksOfMonth
+        .filter((task) => task.status !== 4 && ((new Date(task.time_end).getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000) > 0 && ((new Date(task.time_end).getTime() - new Date().getTime()) / 24 / 60 / 60 / 1000) < 3
+      ).length
+      )
     }
+
     return {
       ...tasks,
       labels,
@@ -130,6 +128,7 @@ const TaskChart = () => {
       },
     },
   };
+
   return (
     <div style={{ position: "relative", width: "100%", height: "400px" }}>
       <Line data={data} options={options} />

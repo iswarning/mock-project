@@ -82,30 +82,32 @@ function TasksRoleUser() {
                         {statusMapping[status].toUpperCase()}
                       </h2>
                     </div>
-                    {filteredTasks[status] &&
-                      filteredTasks[status].map((task, index) => {
-                        return (
-                          <Draggable
-                            key={task.id}
-                            draggableId={task.id}
-                            index={index}
-                          >
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <TaskElementRoleUser
-                                  task={task}
-                                  status={status}
-                                />
-                              </div>
-                            )}
-                          </Draggable>
-                        );
-                      })}
-                    {provided.placeholder}
+                    <div className="project-column-body">
+                      {filteredTasks[status] &&
+                        filteredTasks[status].map((task, index) => {
+                          return (
+                            <Draggable
+                              key={task.id}
+                              draggableId={task.id}
+                              index={index}
+                            >
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  <TaskElementRoleUser
+                                    task={task}
+                                    status={status}
+                                  />
+                                </div>
+                              )}
+                            </Draggable>
+                          );
+                        })}
+                      {provided.placeholder}
+                    </div>
                   </div>
                 )}
               </Droppable>
