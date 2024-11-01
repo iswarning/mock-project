@@ -73,7 +73,7 @@ h1 {
     }
 
     &-body {
-      height: 74vh;
+      height: 76.2vh;
       overflow-y: auto;
 
       // Tùy chỉnh thanh cuộn khi di chuột
@@ -345,6 +345,13 @@ h1 {
     grid-template-columns: repeat(2, 31vw); 
     grid-column-gap: 2rem; 
   }
+  .project-column{
+    margin-bottom: 40px;
+    &-body {
+      height: 55vh;
+      overflow-y: auto;
+    }
+    }
 }
 
 @media only screen and (min-width: 431px) and (max-width: 767px) {
@@ -352,6 +359,14 @@ h1 {
     grid-template-columns: repeat(2, 45vw); 
     grid-column-gap: 1.5rem; 
 
+  }
+
+  .project-column{
+    margin-bottom: 30px;
+    &-body {
+      height: 60vh;
+      overflow-y: auto;
+    }
   }
 
   .task-details {
@@ -372,6 +387,13 @@ h1 {
 @media only screen and (max-width: 431px) {
   .project-tasks {
     grid-template-columns: repeat(1, 85vw); 
+  }
+  .project-column{
+  margin-bottom: 30px;
+  &-body {
+    height: 50vh;
+    overflow-y: auto;
+  }
   }
 }
 

@@ -8,12 +8,12 @@ function TasksRoleAdmin() {
   const { listTask } = useSelector((state) => state.taskStore);
 
   const dispatch = useDispatch();
-  
+
   const handleDelete = (id) => {
     if (confirm("Are you sure you want to delete")) {
       dispatch(deleteTask({ id }));
     }
-  }
+  };
 
   const filteredTasks = useMemo(() => {
     const tasksByStatus = {};
@@ -39,14 +39,16 @@ function TasksRoleAdmin() {
                   </span>
                 </h2>
               </div>
-              {filteredTasks[status].map((task) => (
-                <TaskElementRoleAdmin
-                  key={task.id}
-                  task={task}
-                  status={status}
-                  handleDelete={handleDelete}
-                />
-              ))}
+              <div className="project-column-body">
+                {filteredTasks[status].map((task) => (
+                  <TaskElementRoleAdmin
+                    key={task.id}
+                    task={task}
+                    status={status}
+                    handleDelete={handleDelete}
+                  />
+                ))}
+              </div>
             </div>
           ))}
         </div>
