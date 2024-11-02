@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { convertDateWithCurrentTime } from '../../common/dateFormat';
-import { CREATE, FORM_ERRORS } from '../../common/messageConfirm';
-import { createProject } from '../../store/actions/projectAction';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { convertDateWithCurrentTime } from "../../common/dateFormat";
+import { CREATE, FORM_ERRORS } from "../../common/messageConfirm";
+import { createProject } from "../../store/actions/projectAction";
+import ModalConfirm from "../../components/ModalConfirm";
 
 function ProjectCreateModal() {
   const dispatch = useDispatch();
   const priorities = [1, 2, 3];
   const [formData, setFormData] = useState({
-    name: '',
-    payment: '',
-    time_start: new Date().toISOString().split('T')[0],
-    time_end: '',
-    note: '',
+    name: "",
+    payment: "",
+    time_start: new Date().toISOString().split("T")[0],
+    time_end: "",
+    note: "",
     priority: 1,
   });
   const [errors, setErrors] = useState({});
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,6 +28,29 @@ function ProjectCreateModal() {
   };
 
   const handleCreateProject = () => {
+    const newErrors = {};
+    if (!formData.name) newErrors.name = FORM_ERRORS.name;
+    if (!formData.payment) newErrors.payment = FORM_ERRORS.payment;
+    if (
+      !formData.time_end ||
+      new Date(formData.time_start) >= new Date(formData.time_end)
+    )
+      newErrors.time_end = FORM_ERRORS.time_end;
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      setShowConfirmModal(true);
+
+      // Close the modal if there are no errors:
+      const modalElement = document.getElementById("projectCreateModal");
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      if (modalInstance) {
+        modalInstance.hide();
+      }
+    }
+  };
+
+  const confirmCreate = () => {
     const project = {
       name: formData.name,
       payment: formData.payment,
@@ -35,24 +60,8 @@ function ProjectCreateModal() {
       priority: Number(formData.priority),
     };
 
-    const newErrors = {};
-    if (!formData.name) newErrors.name = FORM_ERRORS.name;
-    if (!formData.payment) newErrors.payment = FORM_ERRORS.payment;
-    if (!formData.time_end || new Date(formData.time_start) >= new Date(formData.time_end))
-      newErrors.time_end = FORM_ERRORS.time_end;
-    setErrors(newErrors);
-
-    if (confirm(CREATE.project)) {
-      if (Object.keys(newErrors).length === 0) {
-        dispatch(createProject(project));
-        // Close the modal if there are no errors:
-        const modalElement = document.getElementById('projectCreateModal');
-        const modalInstance = bootstrap.Modal.getInstance(modalElement);
-        if (modalInstance) {
-          modalInstance.hide(); // Close Modal
-        }
-      }
-    }
+    dispatch(createProject(project));
+    setShowConfirmModal(false);
   };
 
   return (
@@ -91,7 +100,9 @@ function ProjectCreateModal() {
                       {errors.name && (
                         <div className="row mb-3">
                           <div className="col-12 text-end">
-                            <span style={{ color: 'red' }}>{FORM_ERRORS.name}</span>
+                            <span style={{ color: "red" }}>
+                              {FORM_ERRORS.name}
+                            </span>
                           </div>
                         </div>
                       )}
@@ -130,14 +141,19 @@ function ProjectCreateModal() {
                       {errors.payment && (
                         <div className="row mb-3">
                           <div className="col-12 text-end">
-                            <span style={{ color: 'red' }}>{FORM_ERRORS.payment}</span>
+                            <span style={{ color: "red" }}>
+                              {FORM_ERRORS.payment}
+                            </span>
                           </div>
                         </div>
                       )}
                     </div>
                   </div>
                   <div className="row mb-3">
-                    <label htmlFor="time_start" className="col-4 col-form-label">
+                    <label
+                      htmlFor="time_start"
+                      className="col-4 col-form-label"
+                    >
                       Time Start:
                     </label>
                     <div className="col-8">
@@ -148,12 +164,12 @@ function ProjectCreateModal() {
                         name="time_start"
                         value={formData.time_start}
                         onChange={handleChange}
-                        min={new Date().toISOString().split('T')[0]}
+                        min={new Date().toISOString().split("T")[0]}
                       />
                       {formData.time_start &&
                         new Date(formData.time_start) <
-                          new Date(new Date().toISOString().split('T')[0]) && (
-                          <p className="text-end" style={{ color: 'red' }}>
+                          new Date(new Date().toISOString().split("T")[0]) && (
+                          <p className="text-end" style={{ color: "red" }}>
                             Please select a date that is today or in the future!
                           </p>
                         )}
@@ -171,14 +187,16 @@ function ProjectCreateModal() {
                         name="time_end"
                         value={formData.time_end}
                         onChange={handleChange}
-                        style={{ borderColor: errors.time_end ? 'red' : '' }}
+                        style={{ borderColor: errors.time_end ? "red" : "" }}
                       />
                     </div>
                   </div>
                   {errors.time_end && (
                     <div className="row mb-3">
                       <div className="col-12 text-end">
-                        <span style={{ color: 'red' }}>{FORM_ERRORS.time_end}</span>
+                        <span style={{ color: "red" }}>
+                          {FORM_ERRORS.time_end}
+                        </span>
                       </div>
                     </div>
                   )}
@@ -207,16 +225,31 @@ function ProjectCreateModal() {
               </div>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn bgPrimary" onClick={() => handleCreateProject()}>
+              <button
+                type="button"
+                className="btn bgPrimary"
+                onClick={() => handleCreateProject()}
+              >
                 Create
               </button>
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
                 Close
               </button>
             </div>
           </div>
         </div>
       </div>
+      {showConfirmModal && (
+        <ModalConfirm
+          message={CREATE.project}
+          onConfirm={confirmCreate}
+          onCancel={() => setShowConfirmModal(false)}
+        />
+      )}
     </>
   );
 }

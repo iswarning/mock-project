@@ -1,26 +1,26 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatus } from "../../store/actions/taskAction";
 import TaskElementRoleUser from "./TaskElementRoleUser";
 import { statusMapping, TOAST } from "../../common/constants";
 import { ToastCommon } from "../../components/ToastCommon";
+import ModalConfirm from "../../components/ModalConfirm";
 
 function TasksRoleUser() {
   const { listTask } = useSelector((state) => state.taskStore);
-
   const dispatch = useDispatch();
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [currentTask, setCurrentTask] = useState(null);
+  const [newStatus, setNewStatus] = useState(null);
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
 
-    // Check if the task was dropped in the same place
-    if (!destination) {
-      return;
-    }
     if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
+      !destination ||
+      (source.droppableId === destination.droppableId &&
+        source.index === destination.index)
     ) {
       return;
     }
@@ -29,31 +29,30 @@ function TasksRoleUser() {
     const task = listTask.find((task) => task.id === taskId);
 
     if (task) {
-      const newStatus = Number(destination.droppableId); // Get the new status from droppableId
-      if (
-        task.status == 3 &&
-        task.status > newStatus &&
-        confirm(
-          `Do you want to change the status of this task to ${statusMapping[
-            newStatus
-          ].toUpperCase()}?`
-        )
-      ) {
-        dispatch(changeStatus({ ...task, status: 2 }));
+      const statusToChange = Number(destination.droppableId);
+
+      if (task.status == 3 && task.status > statusToChange) {
+        setCurrentTask(task);
+        setNewStatus(2); // Thay đổi thành trạng thái 2
+        setShowConfirmModal(true);
       } else if (
-        task.status !== newStatus &&
-        newStatus - task.status == 1 &&
-        confirm(
-          `Do you want to change the status of this task to ${statusMapping[
-            newStatus
-          ].toUpperCase()}?`
-        )
+        task.status !== statusToChange &&
+        statusToChange - task.status == 1
       ) {
-        dispatch(changeStatus({ ...task, status: newStatus }));
+        setCurrentTask(task);
+        setNewStatus(statusToChange);
+        setShowConfirmModal(true);
       } else {
         ToastCommon(TOAST.ERROR, "Change status Error");
       }
     }
+  };
+
+  const confirmChangeStatus = () => {
+    if (currentTask) {
+      dispatch(changeStatus({ ...currentTask, status: newStatus })); // Đổi trạng thái
+    }
+    setShowConfirmModal(false); // Đóng modal
   };
 
   const filteredTasks = useMemo(() => {
@@ -115,6 +114,15 @@ function TasksRoleUser() {
           </div>
         </main>
       </DragDropContext>
+      {showConfirmModal && (
+        <ModalConfirm
+          message={`Do you want to change the status of this task to ${statusMapping[
+            newStatus
+          ].toUpperCase()}?`}
+          onConfirm={confirmChangeStatus}
+          onCancel={() => setShowConfirmModal(false)}
+        />
+      )}
     </div>
   );
 }

@@ -12,7 +12,7 @@ export const getListTask = () => {
         import.meta.env.VITE_BASE_URL + "/api/task"
       );
 
-      if (resp && resp.data.message !== 'No task found' ) {
+      if (resp && resp.data.message !== "No task found") {
         dispatch({
           type: SET_LIST_TASK,
           payload: resp.data,
@@ -30,13 +30,12 @@ export const getListTask = () => {
 export const getListTaskByUserId = (params) => {
   return async (dispatch, getState) => {
     try {
-      
       dispatch(showLoading());
       const resp = await axiosInstance.get(
         import.meta.env.VITE_BASE_URL + "/api/gettaskbyuser/" + params.userId
       );
 
-      if (resp && resp.data.message !== 'No task found') {
+      if (resp && resp.data.message !== "No task found") {
         dispatch({
           type: SET_LIST_TASK,
           payload: resp.data,
@@ -94,11 +93,7 @@ export const updateTask = (params, position) => {
         ToastCommon(TOAST.SUCCESS, "Task saved successfully");
         document.getElementById(`close-edit-task-btn-${params.id}`).click();
         dispatch(getListTask());
-        
       }
-
-      console.log(position);
-      
     } catch (error) {
       console.log(error.response?.data?.message);
     }
@@ -136,6 +131,7 @@ export const deleteTask = (params) => {
 
       if (res) {
         dispatch(getListTask());
+        ToastCommon(TOAST.SUCCESS, "Deleted task successfully");
       }
     } catch (error) {
       console.log(error.response?.data?.message);
