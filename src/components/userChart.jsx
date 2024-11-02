@@ -25,7 +25,7 @@ function UserChart(props) {
 
       return (
         task.user_mail === user.email &&
-        task.status !== 4 &&
+        task.status !== 4 && // Giả sử 4 là trạng thái hoàn thành
         timeEnd >= currentDate &&
         timeEnd <= sevenDaysLater
       );
@@ -33,13 +33,13 @@ function UserChart(props) {
   );
 
   const data = {
-    labels: ["Users Without Task", "Users With Upcoming Tasks"],
+    labels: ["Users Without Task", "Users With Upcoming Tasks"], // Nhãn cho cột biểu đồ
     datasets: [
       {
-        label: "Number of Users",
-        data: [usersWithoutTask.length, usersWithUpcomingTasks.length],
-        backgroundColor: ["rgba(75, 192, 192, 0.6)", "rgba(255, 159, 64, 0.6)"],
-        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 159, 64, 1)"],
+        label: "Number of Users", // Chú thích duy nhất cho cả hai loại dữ liệu
+        data: [usersWithoutTask.length, usersWithUpcomingTasks.length], // Số liệu của từng cột
+        backgroundColor: ["rgba(75, 192, 192, 0.6)", "rgba(255, 159, 64, 0.6)"], // Màu sắc cho từng cột
+        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 159, 64, 1)"], // Màu viền cho từng cột
         borderWidth: 1,
       },
     ],
@@ -50,7 +50,13 @@ function UserChart(props) {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: "top",
+        display: true, // Hiển thị legend
+        labels: {
+          boxWidth: 0, // Đặt chiều rộng khối chữ nhật thành 0 để không có màu
+          font: {
+            size: 14, // Kích thước chữ
+          },
+        },
       },
     },
   };

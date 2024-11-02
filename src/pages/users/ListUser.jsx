@@ -3,13 +3,22 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import ElementUser from "./ElementUser";
 import PaginationUser from "./PaginationUser";
+import { changeRole, deleteUser } from "../../store/actions/userAction";
+import { useNavigate } from "react-router-dom";
+import ModalConfirm from "../../components/ModalConfirm";
+import { useDispatch } from "react-redux";
 
 function ListUser({ setUserEdit }) {
+  const { listUser } = useSelector((state) => state.userStore);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [role, setRole] = useState("default");
-
-  const { listUser } = useSelector((state) => state.userStore);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [actionType, setActionType] = useState(null);
+  const [actionPayload, setActionPayload] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const itemsPerPage = 5;
 
@@ -62,6 +71,22 @@ function ListUser({ setUserEdit }) {
       avarta: user.avarta || null,
     });
   }, []);
+
+  const handleShowModal = (message, type, payload) => {
+    setModalMessage(message);
+    setActionType(type);
+    setActionPayload(payload);
+    setShowModal(true);
+  };
+
+  const handleConfirm = () => {
+    if (actionType === "changeRole") {
+      dispatch(changeRole(actionPayload, () => navigate("/login")));
+    } else if (actionType === "deleteUser") {
+      dispatch(deleteUser(actionPayload));
+    }
+    setShowModal(false);
+  };
 
   return (
     <>
@@ -128,6 +153,14 @@ function ListUser({ setUserEdit }) {
         currentPage={currentPage}
         handleChangePage={(p) => handleChangePage(p)}
       />
+      {/* Render the confirmation modal */}
+      {showModal && (
+        <ModalConfirm
+          message={modalMessage}
+          onConfirm={handleConfirm}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
     </>
   );
 }

@@ -70,7 +70,9 @@ function Header({ openSidebar }) {
               </button>
               {isOpen && (
                 <ul className="dropdownHeader-menu">
-                  <li>Setting</li>
+                  <li>
+                    <a href={ROUTES.setting}>Setting</a>
+                  </li>
                   <li onClick={handleLogout}>Logout</li>
                 </ul>
               )}

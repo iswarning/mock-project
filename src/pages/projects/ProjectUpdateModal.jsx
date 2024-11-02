@@ -1,13 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { convertDateToYMD, convertDateWithCurrentTime } from '../../common/dateFormat';
-import { FORM_ERRORS, UPDATE } from '../../common/messageConfirm';
-import { updateProject } from '../../store/actions/projectAction';
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  convertDateToYMD,
+  convertDateWithCurrentTime,
+} from "../../common/dateFormat";
+import { FORM_ERRORS, UPDATE } from "../../common/messageConfirm";
+import { updateProject } from "../../store/actions/projectAction";
+import ModalConfirm from "../../components/ModalConfirm";
 
 function ProjectUpdateModal({ projectData }) {
   const [project, setProject] = useState(projectData);
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const handleProjectNameChange = (e) => {
     setProject({ ...project, name: e.target.value });
@@ -44,17 +49,21 @@ function ProjectUpdateModal({ projectData }) {
       newErrors.time_end = FORM_ERRORS.time_end;
     setErrors(newErrors);
 
-    if (confirm(UPDATE.project)) {
-      if (Object.keys(newErrors).length === 0) {
-        dispatch(updateProject(project));
-        // Close the modal if there are no errors:
-        const modalElement = document.getElementById('projectUpdateModal');
-        const modalInstance = bootstrap.Modal.getInstance(modalElement);
-        if (modalInstance) {
-          modalInstance.hide(); // Close Modal
-        }
+    if (Object.keys(newErrors).length === 0) {
+      setShowConfirmModal(true);
+
+      // Close the modal if there are no errors:
+      const modalElement = document.getElementById("projectUpdateModal");
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      if (modalInstance) {
+        modalInstance.hide();
       }
     }
+  };
+
+  const confirmUpdate = () => {
+    dispatch(updateProject(project));
+    setShowConfirmModal(false);
   };
 
   useEffect(() => {
@@ -158,12 +167,14 @@ function ProjectUpdateModal({ projectData }) {
                         id="timeEnd"
                         value={convertDateToYMD(project?.time_end)}
                         onChange={(e) => handleTimeEndChange(e)}
-                        style={{ borderColor: errors.time_end ? 'red' : '' }}
+                        style={{ borderColor: errors.time_end ? "red" : "" }}
                       />
                       {errors.time_end && (
                         <div className="row mb-3">
                           <div className="col-12 text-end">
-                            <span style={{ color: 'red' }}>{FORM_ERRORS.time_end}</span>
+                            <span style={{ color: "red" }}>
+                              {FORM_ERRORS.time_end}
+                            </span>
                           </div>
                         </div>
                       )}
@@ -197,13 +208,24 @@ function ProjectUpdateModal({ projectData }) {
               >
                 Update
               </button>
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
                 Close
               </button>
             </div>
           </div>
         </div>
       </div>
+      {showConfirmModal && (
+        <ModalConfirm
+          message={UPDATE.project}
+          onConfirm={confirmUpdate}
+          onCancel={() => setShowConfirmModal(false)}
+        />
+      )}
     </>
   );
 }
