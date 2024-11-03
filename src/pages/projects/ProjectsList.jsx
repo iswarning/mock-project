@@ -6,6 +6,7 @@ import { deleteProject } from "../../store/actions/projectAction";
 import AddTaskModal from "../tasks/AddTaskModal";
 import ProjectCreateModal from "./ProjectCreateModal";
 import ProjectUpdateModal from "./ProjectUpdateModal";
+import ModalConfirm from "../../components/ModalConfirm";
 
 const ProjectsList = ({ projects }) => {
   const [projectData, setProjectData] = useState({
@@ -29,9 +30,17 @@ const ProjectsList = ({ projects }) => {
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("all");
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [projectIdToDelete, setProjectIdToDelete] = useState(null);
 
   const handleDelete = (id) => {
-    if (confirm(DELETE.project)) dispatch(deleteProject({ id }));
+    setProjectIdToDelete(id);
+    setShowConfirmModal(true);
+  };
+
+  const confirmDelete = () => {
+    dispatch(deleteProject({ id: projectIdToDelete }));
+    setShowConfirmModal(false);
   };
 
   const showProjectUpdateModal = (project) => {
@@ -197,6 +206,13 @@ const ProjectsList = ({ projects }) => {
       <ProjectCreateModal />
       <AddTaskModal taskNewData={taskData} />
       <ProjectUpdateModal projectData={projectData} />
+      {showConfirmModal && (
+        <ModalConfirm
+          message={DELETE.project}
+          onConfirm={confirmDelete}
+          onCancel={() => setShowConfirmModal(false)}
+        />
+      )}
     </>
   );
 };
