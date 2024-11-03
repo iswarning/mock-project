@@ -69,22 +69,22 @@ function TasksRoleUser() {
       <DragDropContext onDragEnd={onDragEnd}>
         <main className="project">
           <div className="project-tasks">
-            {Object.keys(statusMapping).map((status) => filteredTasks[status]?.length > 0 ? <Droppable key={status} droppableId={String(status)}>
-                  {(provided) => (
-                    <div
-                      className="project-column"
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                    >
-                      <div className="project-column-heading">
-                        <h2 className="project-column-heading__title">
-                          {statusMapping[status].toUpperCase()}{" "}
-                          <span className="fs-6">
-                            ({filteredTasks[status]?.length})
-                          </span>
-                        </h2>
-                      </div>
-                      {filteredTasks[status].map((task, index) => {
+            {Object.keys(statusMapping).map((status) => (
+              <Droppable key={status} droppableId={String(status)}>
+                {(provided) => (
+                  <div
+                    className="project-column"
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    <div className="project-column-heading">
+                      <h2 className="project-column-heading__title">
+                        {statusMapping[status].toUpperCase()}
+                      </h2>
+                    </div>
+                    <div className="project-column-body">
+                      {filteredTasks[status] &&
+                        filteredTasks[status].map((task, index) => {
                           return (
                             <Draggable
                               key={task.id}
@@ -108,18 +108,10 @@ function TasksRoleUser() {
                         })}
                       {provided.placeholder}
                     </div>
-                  )}
-                </Droppable> : <div className="project-column " key={status}>
-                <div className="project-column-heading">
-                  <h2 className="project-column-heading__title">
-                    {statusMapping[status].toUpperCase()}{" "}
-                    <span className="fs-6">
-                      ({filteredTasks[status]?.length})
-                    </span>
-                  </h2>
-                </div>
-              </div>
-            )}
+                  </div>
+                )}
+              </Droppable>
+            ))}
           </div>
         </main>
       </DragDropContext>

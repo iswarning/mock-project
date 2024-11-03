@@ -8,12 +8,12 @@ function TasksRoleAdmin() {
   const { listTask } = useSelector((state) => state.taskStore);
 
   const dispatch = useDispatch();
-  
+
   const handleDelete = (id) => {
     if (confirm("Are you sure you want to delete")) {
       dispatch(deleteTask({ id }));
     }
-  }
+  };
 
   const filteredTasks = useMemo(() => {
     const tasksByStatus = {};

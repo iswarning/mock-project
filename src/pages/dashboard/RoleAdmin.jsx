@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
-import TaskChart from "../../components/TaskChart";
-import { useSelector } from "react-redux";
-import "./style.scss";
-import UserChart from "../../components/userChart";
-import TaskStatusChart from "../../components/TaskStatusChart";
+import React, { useEffect } from 'react';
+import TaskChart from '../../components/TaskChart';
+import { useSelector } from 'react-redux';
+import './style.scss';
+import UserChart from '../../components/userChart';
+import TaskStatusChart from '../../components/TaskStatusChart';
+import ProjectsChart from '../projects/ProjectsChart';
 
 function RoleAdmin(props) {
   const { listTask } = useSelector((state) => state.taskStore);
@@ -24,9 +25,7 @@ function RoleAdmin(props) {
                   <div className="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                     USERS
                   </div>
-                  <div className="h5 mb-0 font-weight-bold text-secondary">
-                    {listUser.length}
-                  </div>
+                  <div className="h5 mb-0 font-weight-bold text-secondary">{listUser.length}</div>
                 </div>
                 <div className="col-auto">
                   <i className="fa-solid fa-user fa-2x text-secondary"></i>
@@ -43,9 +42,7 @@ function RoleAdmin(props) {
                   <div className="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                     PROJECTS
                   </div>
-                  <div className="h5 mb-0 font-weight-bold text-secondary">
-                    {projects.length}
-                  </div>
+                  <div className="h5 mb-0 font-weight-bold text-secondary">{projects.length}</div>
                 </div>
                 <div className="col-auto">
                   <i className="fa-solid fa-diagram-project fa-2x text-secondary"></i>
@@ -62,9 +59,7 @@ function RoleAdmin(props) {
                   <div className="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                     TASKS
                   </div>
-                  <div className="h5 mb-0 font-weight-bold text-secondary">
-                    {listTask.length}
-                  </div>
+                  <div className="h5 mb-0 font-weight-bold text-secondary">{listTask.length}</div>
                 </div>
                 <div className="col-auto">
                   <i className="fa-solid fa-list-check fa-2x text-secondary"></i>
@@ -108,7 +103,9 @@ function RoleAdmin(props) {
                 <b>Projects</b>
               </h6>
             </div>
-            <div className="card-body"></div>
+            <div className="card-body">
+              <ProjectsChart />
+            </div>
           </div>
         </div>
 
