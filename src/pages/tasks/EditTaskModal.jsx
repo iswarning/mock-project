@@ -175,8 +175,8 @@ function EditTaskModal({ taskEdit }) {
               </div>
               <div className="mb-3">
                 <label className="form-label">Note </label>
-                <input
-                  className='form-control'
+                <textarea
+                  className="form-control"
                   value={taskDetail?.note}
                   onChange={(e) => handleSetNote(e.target.value)}
                 />

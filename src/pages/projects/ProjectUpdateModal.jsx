@@ -112,10 +112,10 @@ function ProjectUpdateModal({ projectData }) {
                   </div>
                   <div className="row mb-3">
                     <label htmlFor="note" className="col-4 col-form-label">
-                      Email
+                      Note
                     </label>
                     <div className="col-8">
-                      <input
+                      <textarea
                         type="text"
                         className="form-control"
                         id="note"

@@ -117,6 +117,9 @@ const ProjectsChart = () => {
     scales: {
       y: {
         beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
       },
     },
     elements: {
