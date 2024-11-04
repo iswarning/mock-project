@@ -111,7 +111,7 @@ function ListUser({ setUserEdit }) {
           &nbsp;
           <select
             style={{ width: "40%" }}
-            className="form-control"
+            className="form-control form-select"
             onChange={(e) => handleFilterRole(e.target.value)}
             value={role}
           >

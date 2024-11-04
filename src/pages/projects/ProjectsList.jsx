@@ -121,7 +121,7 @@ const ProjectsList = ({ projects }) => {
           {filteredProjects &&
             filteredProjects.map((project) => (
               <div
-                className="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-4"
+                className="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-4 hoverCard"
                 key={project.id}
               >
                 <div

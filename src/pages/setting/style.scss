@@ -21,6 +21,8 @@
     
 }
 
+
+
 .widthInput {
     width: 70%;
 }
@@ -43,7 +45,12 @@
         h2 {
             font-weight: 600;
             font-size: 16px;
-            
         }
+    }
+    .buttonImg{
+        font-size: 14px;
+    }
+    .containerButtonImg {
+        justify-content: center;
     }
 }

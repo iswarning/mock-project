@@ -113,8 +113,7 @@ function ProjectCreateModal() {
                       Note:
                     </label>
                     <div className="col-8">
-                      <input
-                        type="text"
+                      <textarea
                         className="form-control"
                         id="note"
                         name="note"

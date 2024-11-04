@@ -37,6 +37,11 @@
 }
 .card {
     border: none;
+    
+}
+.card-body:hover {
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
+    
 }
 .form-select {
     cursor: pointer;

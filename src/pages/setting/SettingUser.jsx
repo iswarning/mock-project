@@ -61,12 +61,15 @@ function SettingUser() {
   };
 
   const getAvatarUrl = () => {
-    if (!userInfo.avarta || userInfo.avarta.length === 0) {
-      return avatarDefault;
-    }
     if (formState.avarta instanceof File) {
-      return URL.createObjectURL(formState.avarta)
-    } else return formState.avarta
+      return URL.createObjectURL(formState.avarta);
+    } else {
+      if (!userInfo.avarta || userInfo.avarta.length === 0) {
+        return avatarDefault;
+      } else {
+        return userInfo.avarta;
+      }
+    }
   };
 
   const handleChangeAvatar = (e) => {
@@ -86,6 +89,12 @@ function SettingUser() {
   };
 
   const handleRemoveFile = () => {
+    if (!userInfo.avarta || userInfo.avarta.length === 0) {
+      setFormState((prev) => ({
+        ...prev,
+        avarta: avatarDefault,
+      }));
+    }
     setFormState((prev) => ({
       ...prev,
       avarta: userInfo.avarta,
@@ -97,11 +106,11 @@ function SettingUser() {
       <div className="containerInfo">
         <h2>Change avatar</h2>
         <div className="row mt-4">
-          <div className="col-3 mb-2">
+          <div className="col-12 col-md-3 mb-2 text-center">
             <img
               id="avatar-edit"
               src={getAvatarUrl()}
-              className="rounded-circle w-100 h-100"
+              className="rounded-circle avatar"
               alt="example placeholder"
             />
             <input
@@ -112,15 +121,15 @@ function SettingUser() {
               className="d-none"
             />
           </div>
-          <div className="col-9 d-flex align-items-center">
+          <div className="col-12 col-md-9 d-flex align-items-center containerButtonImg">
             <button
-              className="btn btn-outline-primary"
+              className="btn btn-outline-primary buttonImg"
               onClick={handleAttachFile}
             >
               <i className="fa-solid fa-paperclip"></i> &nbsp; Change picture
             </button>
             <button
-              className="btn btn-outline-danger ms-3"
+              className="btn btn-outline-danger ms-3 buttonImg"
               onClick={handleRemoveFile}
             >
               <i className="fa-solid fa-xmark"></i> &nbsp; Delete picture

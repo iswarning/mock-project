@@ -46,9 +46,9 @@ function TaskElementRoleUser({ task, status }) {
         </div>
       </div>
       <div className="d-flex justify-content-between">
-        <div>
+        <div className="w-75">
           <span
-            className={`badge bg-${
+            className={`my-truncate text-truncate badge bg-${
               badgeColorMapping[filteredData?.project?.priority]
             }`}
           >

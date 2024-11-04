@@ -234,7 +234,7 @@ function AddTaskModal({ taskNewData }) {
                   <div className="row mb-3">
                     <label className="col-4 col-form-label">Note:</label>
                     <div className="col-8">
-                      <input
+                      <textarea
                         type="text"
                         className="form-control"
                         name="note"
