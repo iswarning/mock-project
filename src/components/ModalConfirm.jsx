@@ -21,6 +21,7 @@ function ModalConfirm({ message, onConfirm, onCancel }) {
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
       style={{ zIndex: "50000" }}
+      data-bs-keyboard="false" data-bs-backdrop="static"
     >
       <div className="modal-dialog">
         <div className="modal-content">
