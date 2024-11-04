@@ -46,16 +46,17 @@ function TasksRoleAdmin() {
                   </span>
                 </h2>
               </div>
-              {
-                filteredTasks[status]?.length > 0 && filteredTasks[status].map((task) => (
-                  <TaskElementRoleAdmin
-                    key={task.id}
-                    task={task}
-                    status={status}
-                    handleDelete={handleDelete}
-                  />
-                ))
-              }
+              <div className="project-column-body">
+                {filteredTasks[status]?.length > 0 &&
+                  filteredTasks[status].map((task) => (
+                    <TaskElementRoleAdmin
+                      key={task.id}
+                      task={task}
+                      status={status}
+                      handleDelete={handleDelete}
+                    />
+                  ))}
+              </div>
             </div>
           ))}
         </div>
