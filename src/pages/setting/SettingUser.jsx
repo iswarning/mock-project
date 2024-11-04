@@ -61,11 +61,12 @@ function SettingUser() {
   };
 
   const getAvatarUrl = () => {
-    return formState.avarta
-      ? typeof formState.avarta === "string"
-        ? formState.avarta
-        : URL.createObjectURL(formState.avarta)
-      : avatarDefault;
+    if (!userInfo.avarta || userInfo.avarta.length === 0) {
+      return avatarDefault;
+    }
+    if (formState.avarta instanceof File) {
+      return URL.createObjectURL(formState.avarta)
+    } else return formState.avarta
   };
 
   const handleChangeAvatar = (e) => {
@@ -85,17 +86,10 @@ function SettingUser() {
   };
 
   const handleRemoveFile = () => {
-    if (userInfo.avarta) {
-      ToastCommon(
-        TOAST.ERROR,
-        "Cannot set avatar as default after updating avatar"
-      );
-    } else {
-      setFormState((prev) => ({
-        ...prev,
-        avarta: null,
-      }));
-    }
+    setFormState((prev) => ({
+      ...prev,
+      avarta: userInfo.avarta,
+    }));
   };
 
   return (

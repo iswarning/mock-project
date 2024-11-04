@@ -143,6 +143,7 @@ function ListUser({ setUserEdit }) {
                   key={user.id}
                   user={user}
                   handleEditUser={handleEditUser}
+                  handleShowModal={handleShowModal}
                 />
               ))}
           </tbody>

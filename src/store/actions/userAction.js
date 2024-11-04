@@ -132,7 +132,7 @@ export const updateUserByUser = (params) => {
 
       let success = false;
 
-      if (params?.avarta) {
+      if (params?.avarta && params.avarta instanceof File) {
         const formData = new FormData();
         formData.append("image", params.avarta);
         formData.append("email", params.email);

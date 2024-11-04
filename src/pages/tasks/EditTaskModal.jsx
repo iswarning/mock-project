@@ -1,8 +1,7 @@
-import { memo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   REQUIRE_NAME,
-  REQUIRE_NOTE,
   REQUIRE_TIME_END,
   REQUIRE_TIME_START,
   TIME_START_LESS_TIME_END,
@@ -27,11 +26,6 @@ function EditTaskModal({ taskEdit }) {
   const handleOnSubmit = () => {
     if (taskDetail.task_name.length === 0) {
       setErrorMessages({ task_name: REQUIRE_NAME });
-      return;
-    }
-
-    if (taskDetail.note.length === 0) {
-      setErrorMessages({ note: REQUIRE_NOTE });
       return;
     }
 
@@ -182,13 +176,10 @@ function EditTaskModal({ taskEdit }) {
               <div className="mb-3">
                 <label className="form-label">Note </label>
                 <input
-                  className={`form-control ${
-                    errorMessages.note?.length > 0 && "is-invalid"
-                  }`}
+                  className='form-control'
                   value={taskDetail?.note}
                   onChange={(e) => handleSetNote(e.target.value)}
                 />
-                <span className="invalid-feedback">{errorMessages.note}</span>
               </div>
               <div className="mb-3">
                 <label className="form-label">Select User</label>

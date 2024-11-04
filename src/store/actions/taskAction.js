@@ -18,8 +18,17 @@ export const getListTask = () => {
           payload: resp.data,
         });
 
-        dispatch(hideLoading());
       }
+
+      if(resp.data.message === "No task found") {
+        dispatch({
+          type: SET_LIST_TASK,
+          payload: [],
+        });
+      }
+
+      dispatch(hideLoading());
+
     } catch (error) {
       console.log(error.response?.data?.message);
       dispatch(hideLoading());
@@ -39,6 +48,13 @@ export const getListTaskByUserId = (params) => {
         dispatch({
           type: SET_LIST_TASK,
           payload: resp.data,
+        });
+      }
+
+      if(resp.data.message === "No task found") {
+        dispatch({
+          type: SET_LIST_TASK,
+          payload: [],
         });
       }
 
