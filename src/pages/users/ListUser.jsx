@@ -1,12 +1,11 @@
 import { debounce } from "lodash";
 import React, { useCallback, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ElementUser from "./ElementUser";
 import PaginationUser from "./PaginationUser";
 import { changeRole, deleteUser } from "../../store/actions/userAction";
 import { useNavigate } from "react-router-dom";
 import ModalConfirm from "../../components/ModalConfirm";
-import { useDispatch } from "react-redux";
 
 function ListUser({ setUserEdit }) {
   const { listUser } = useSelector((state) => state.userStore);
@@ -143,6 +142,7 @@ function ListUser({ setUserEdit }) {
                   key={user.id}
                   user={user}
                   handleEditUser={handleEditUser}
+                  handleShowModal={handleShowModal}
                 />
               ))}
           </tbody>
